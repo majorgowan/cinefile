@@ -1,0 +1,13 @@
+{% extends "journal/layout.html" %}
+
+{% block body %}
+
+<form method="post" action="{% url 'signup' %}" novalidate>
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

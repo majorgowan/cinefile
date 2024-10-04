@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinefile!!</title>
+    {% load static %}
+    <link rel="stylesheet"
+          href="{% static 'journal/css/layout.css' %}">
+    <script id="utils_script"
+            type="text/javascript"
+            src="{% static 'journal/javascript/utils.js' %}"></script>
+
+    {% block headblock %}
+    {% endblock %}
+
+</head>
+<body>
+
+    {% block modalblock %}
+    {% endblock %}
+
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="app_title">
+                <h4>
+                    {% if username %}
+                        {{ username }}'s Cinefile
+                    {% else %}
+                        Cinefile!!
+                    {% endif %}
+                    <span class="beta">beta</span>
+                </h4>
+            </div>
+
+            <ul class="sidebar_list">
+                {% block sidebar_links %}
+                {% endblock %}
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'user_login' %}">Log out {{ user.username }}</a></li>
+                {% else %}
+                    <li><a href="{% url 'user_login'%}">Log in</a></li>
+                {% endif %}
+                <BR>
+                <li><a id="about_link">About</a></li>
+            </ul>
+        </div>
+        <div class="main_block">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+
+</body>
+</html>

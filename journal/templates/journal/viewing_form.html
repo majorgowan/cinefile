@@ -1,0 +1,100 @@
+<form id="new_viewing_form" method="post">
+    <BR>
+    <table id="new_viewing_form_table">
+        <tr id="movie_name_row">
+            <td>
+                <label for="movie_name_input">Film: </label>
+            </td>
+            <td>
+                <input id="movie_name_input" name="title" type="text" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="date_input">Date: </label>
+            </td>
+            <td>
+                <input id="date_input" name="date" type="date">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="radio_flex_box">
+                    <label for="cinema_radio_input">
+                        <input id="cinema_radio_input" type="radio"
+                               name="cinema_video_select" value="Cinema">
+                        Cinema
+                    </label>&emsp;&emsp;
+                    <label for="video_radio_input">
+                    <input id="video_radio_input" type="radio"
+                           name="cinema_video_select" value="Video">
+                        Video
+                    </label>
+                </div>
+            </td>
+        </tr>
+        <tr id="location_form_row" class="invisible_table_row">
+            <td>
+                <label for="location_input">Location: </label>
+            </td>
+            <td>
+                <input id="location_input" name="location" type="text">
+            </td>
+        </tr>
+        <tr id="cinema_form_row" class="invisible_table_row">
+            <td>
+                <label for="cinema_input">Cinema: </label>
+            </td>
+            <td>
+                <input name="cinema" id="cinema_input" type="text">
+            </td>
+        </tr>
+        <tr id="medium_row" class="invisible_table_row">
+            <td colspan="2">
+                <div class="radio_flex_box">
+                    <label for="tv_input">
+                        <input id="tv_input" type="radio"
+                               name="medium_select" value="TV">
+                        TV
+                    </label>&emsp;&emsp;
+                    <label for="streaming_input">
+                        <input id="streaming_input" type="radio"
+                               name="medium_select" value="Streaming">
+                        Streaming
+                    </label>&emsp;&emsp;
+                    <label for="dvd_input">
+                        <input id="dvd_input" type="radio"
+                               name="medium_select" value="DVD/PPV">
+                        DVD
+                    </label>
+                </div>
+            </td>
+        </tr>
+        <tr id="tv_station_row" class="invisible_table_row">
+            <td>
+                <label for="tv_station_input">Channel: </label>
+            </td>
+            <td>
+                <input id="tv_station_input" name="channel" type="text">
+            </td>
+        </tr>
+        <tr id="streaming_platform_row" class="invisible_table_row">
+            <td>
+                <label for="streaming_platform_input">Platform: </label>
+            </td>
+            <td>
+                <input id="streaming_platform_input" name="platform" type="text">
+            </td>
+        </tr>
+    </table>
+    <BR>
+    <textarea name="comments" id="viewing_comments" placeholder="Remarks" cols="80" rows="10"></textarea><BR><BR>
+    <input type="hidden" id="tmdb_id_hidden" name="tmdb_id_hidden" value="">
+    <input type="hidden" id="viewing_update_hidden"
+           name="viewing_update_hidden" value="new"
+           data-query_url="{% url 'query_viewing' %}">
+    <input class="select_button"
+           id="new_viewing_save_button" type="submit"
+           value="Save"
+           data-url="{% url 'new_viewing' %}">
+</form>

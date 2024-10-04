@@ -1,0 +1,84 @@
+{% extends "journal/layout.html" %}
+
+{% block headblock %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'journal/javascript/import.js' %}"></script>
+{% endblock %}
+
+{% block sidebar_links %}
+    <li><a id="profile_link" href="{% url 'profile' %}">Back to profile</a></li><BR>
+{% endblock %}
+
+{% block modalblock %}
+    {% include "journal/tmdb_detail.html" %}
+{% endblock %}
+
+{% block body %}
+<div id="import_page_div">
+    <div id="file_upload_form_div">
+        {% if uploaded_files %}
+            <select name="uploaded_file_chooser"
+                    id="uploaded_file_chooser"
+                    data-import_url="{% url 'import_tool' %}">
+                <option value="">--Select uploaded file--</option>
+                {% for uploaded_file in uploaded_files %}
+                    <option value="{{ uploaded_file }}">{{ uploaded_file }}</option>
+                {% endfor %}
+            </select>
+            &emsp;&emsp;
+        {% endif %}
+        <form id="file_upload_form"
+              enctype="multipart/form-data"
+              action="{% url 'import_tool' %}"
+              method="post">
+            {% csrf_token %}
+            <input type="file"
+                   accept="application/json"
+                   name="viewings_file">
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+    <div id="import_div">
+        <div id="import_viewing_list">
+            {% if viewings %}
+                <ul id="uploaded_titles_list">
+                {% for viewing in viewings %}
+                    <li class="uploaded_title"
+                        data-counter="{{ forloop.counter }}">
+                        <span class="validated_indicator">
+                            {% if viewing.validated %}
+                                &#x2713;
+                            {% else %}
+                                &#9633;
+                            {% endif %}
+                            &ensp;
+                        </span>
+                        <span class="viewing_title">
+                            {{ viewing.title }}
+                        </span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div id="import_viewing_detail_div">
+            <div id="import_search_results_div"
+                 data-url="{% url 'tmdb' api_command='search' %}"
+                 data-page="1"
+                 data-credits_url="{% url 'tmdb' api_command='credits' %}">
+                <input class="tmdb_search_text_input"
+                       id="tmdb_search_text_import" type="text">
+                <div id="import_search_results_content"></div>
+            </div>
+            <div id="new_viewing_form_import_div"
+                 data-get_session_url="{% url 'get_session_data' %}"
+                 data-import_url="{% url 'import_tool' %}">
+                <div class="top_corner">
+                    <span class="close">&times;</span>
+                </div>
+                {% include "journal/viewing_form.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
