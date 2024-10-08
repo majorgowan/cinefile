@@ -43,20 +43,29 @@
             {% if viewings %}
                 <ul id="uploaded_titles_list">
                 {% for viewing in viewings %}
-                    <li class="uploaded_title"
-                        data-counter="{{ forloop.counter }}">
-                        <span class="validated_indicator">
-                            {% if viewing.validated %}
+                    {% if viewing.validated %}
+                        <li class="uploaded_title validated_title"
+                            data-counter="{{ forloop.counter }}">
+                            <span class="validated_indicator">
                                 &#x2713;
-                            {% else %}
-                                &#9633;
-                            {% endif %}
+                            </span>
                             &ensp;
-                        </span>
-                        <span class="viewing_title">
-                            {{ viewing.title }}
-                        </span>
-                    </li>
+                            <span class="viewing_title">
+                                {{ viewing.title }}
+                            </span>
+                        </li>
+                    {% else %}
+                        <li class="uploaded_title unvalidated_title"
+                            data-counter="{{ forloop.counter }}">
+                            <span class="validated_indicator">
+                                &#9633;
+                            </span>
+                            &ensp;
+                            <span class="viewing_title">
+                                {{ viewing.title }}
+                            </span>
+                        </li>
+                    {% endif %}
                 {% endfor %}
                 </ul>
             {% endif %}

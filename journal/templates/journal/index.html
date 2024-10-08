@@ -48,7 +48,10 @@
 {% endblock %}
 
 {% block sidebar_links %}
-    {% if username == user.username %}
+    <li><input id="view_another_profile_input"
+               type="text"
+               placeholder="view another cinefile" /></li><BR>
+    {% if user.is_authenticated and username == user.username %}
         <li><a id="add_movie_link">Add viewing</a></li><BR>
         <li><a id="export_data_link">Export data</a></li>
         <li><a id="import_data_link" href="{% url 'import_tool' %}" >Import data</a></li><BR>

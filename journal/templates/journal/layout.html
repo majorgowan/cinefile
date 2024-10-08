@@ -39,6 +39,7 @@
                     <li><a href="{% url 'user_login' %}">Log out {{ user.username }}</a></li>
                 {% else %}
                     <li><a href="{% url 'user_login'%}">Log in</a></li>
+                    <li><a href="{% url 'signup' %}">New Cinefile</a></li>
                 {% endif %}
                 <BR>
                 <li><a id="about_link">About</a></li>

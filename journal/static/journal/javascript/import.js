@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const importSearchResults = document.querySelector("#import_search_results_div");
     const importSearchResultsContent = document.querySelector("#import_search_results_content");
     // variables for the imported title links
-    const uploadedTitles = document.querySelectorAll(".uploaded_title");
+    const uploadedTitles = document.querySelectorAll(".uploaded_title.unvalidated_title");
     // text input for modifying title search
     const tmdbSearchTextInput = document.querySelector("#tmdb_search_text_import");
     // for the detail modal
@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                     // TODO: after processing form (if successful), change "validated" field to true
                                     // or remove from list ... maybe better?
 
-                                    // TODO: implement search field in case file title not found on TMDB
                                     // TODO: manual override for film outside TMDB!
 
                                 });

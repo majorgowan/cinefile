@@ -243,30 +243,44 @@ def import_tool(request):
                           })
         else:
             # process POST request with processed viewing
-            # TODO: use javascript to force refresh of titles list instead of redirect but attention to listeners
             # TODO: save the change to the file on disk
             post_request = json.loads(request.body)
             if "validated" in post_request:
                 viewing_number = post_request["validated"]
                 request.session["uploaded_viewings"][viewing_number]["validated"] = True
                 request.session.modified = True
+                # write updated viewings to file
+                with (ImportedFile
+                      .objects
+                      .get(pk=request.session["file_loaded"])
+                      .upload
+                      .open("w")) as jsf:
+                    json.dump([viewing for k, viewing
+                               in request.session["uploaded_viewings"].items()],
+                              jsf, indent=2, sort_keys=True)
             # render the import page with the updated validated flag
             return redirect("import_tool")
 
     elif request.method == "GET":
         # get request to load previously imported file
         filename = request.GET.get("filename", "")
-        if filename != request.session.get("file_loaded", ""):
+        if "file_loaded" in request.session:
+            filename_loaded = (ImportedFile
+                               .objects
+                               .get(pk=request.session["file_loaded"])).name
+        else:
+            filename_loaded = ""
+        if filename != filename_loaded:
             if (ImportedFile.objects.filter(name=filename,
                                             user=request.user).exists()):
-                viewings = json.load(ImportedFile.objects
-                                     .get(name=filename)
-                                     .upload)
-                request.session["uploaded_viewings"] = {
-                    (ii + 1): viewing
-                    for ii, viewing in enumerate(viewings)
-                }
-                request.session["file_loaded"] = request.GET.get("filename")
+                IFobj = ImportedFile.objects.get(name=filename)
+                if IFobj.pk != request.session.get("file_loaded", None):
+                    viewings = json.load(IFobj.upload)
+                    request.session["uploaded_viewings"] = {
+                        (ii + 1): viewing
+                        for ii, viewing in enumerate(viewings)
+                    }
+                    request.session["file_loaded"] = IFobj.pk
 
     viewings = [viewing for k, viewing
                 in request.session["uploaded_viewings"].items()]

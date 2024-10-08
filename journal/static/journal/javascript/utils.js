@@ -9,7 +9,7 @@ function get_cookie(cookie_name) {
 function replaceElement(element) {
     const new_element = element.cloneNode(true);
     element.parentNode.replaceChild(new_element, element);
-    console.log(new_element);
+    // console.log(new_element);
     return new_element;
 }
 
@@ -372,10 +372,17 @@ function process_new_viewing_form(mode, movieData={}) {
                        // do an ajax request to get "uploaded_viewings" from session
                        // and edit the "validated" indicator accordingly in the DOM
                        //
-                       // also change the class of validated entries to remove the
-                       // hover and clickability (event listener)
+                       // modify the just-validated title to look and work like it
+                       // will once page refreshes
                        const import_counter = movieData["import_counter"];
-                       document.querySelector(`.uploaded_title[data-counter="${import_counter}"] .validated_indicator`).innerHTML = "&#x2713;&ensp;";
+                       const theTitle = document.querySelector(`.uploaded_title[data-counter="${import_counter}"]`);
+                       theTitle.querySelector(".validated_indicator").innerHTML = "&#x2713;";
+                       // change the class to change the colour
+                       theTitle.setAttribute("class", "uploaded_title validated_title");
+                       // change the background colour (since it's no longer in the array of titles)
+                       theTitle.style.backgroundColor = "inherit";
+                       // reset the element to remove the listener
+                       replaceElement(theTitle);
                     } else {
                        throw new Error('Request failed: ' + xhr_validate.statusText);
                     }
