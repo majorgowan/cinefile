@@ -50,7 +50,7 @@
 {% block sidebar_links %}
     <li><input id="view_another_profile_input"
                type="text"
-               placeholder="view another cinefile" /></li><BR>
+               placeholder=" view another cinefile" /></li><BR>
     {% if user.is_authenticated and username == user.username %}
         <li><a id="add_movie_link">Add viewing</a></li><BR>
         <li><a id="export_data_link">Export data</a></li>
@@ -62,7 +62,7 @@
 <div class="movie_list" id="profile_movie_list"
      data-profile_url="{% url 'profile' %}">
     {% for viewing in viewings %}
-        {% if username == user.username or not viewing.private %}
+        {% if username == user.username or not viewing.private.value %}
             <div class="viewing_row">
                 <div class="movie_details">
                     <div class="movie_title">
@@ -79,12 +79,12 @@
                         </div>
                         <div class="movie_people">
                             Director: {{ viewing.film.director }}<BR>
-                            Starring: {{ viewing.film.starring }}
+                            Starring: {{ viewing.film.starring }}<BR>
                         </div>
                     </div>
                 </div>
                 <div class="movie_location">
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and username == user.username %}
                         {{ viewing.date | date:"F j, Y" }}
                         {% if viewing.location %}
                             <br>{{ viewing.location }}
@@ -105,6 +105,10 @@
                 </div>
                 <div class="movie_comment">
                     {{ viewing.comments | linebreaks }}
+                </div>
+                <div class="movie_overview">
+                    <a class="overview_link" data-overview_id="overview_{{ forloop.counter }}">show tmdb overview</a>
+                    <span class="hidden_overview" id="overview_{{ forloop.counter }}"><BR>{{ viewing.film.overview }}</span>
                 </div>
             </div>
         {% endif %}

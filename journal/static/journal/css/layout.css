@@ -92,7 +92,7 @@ body {
     text-decoration: underline;
 }
 #view_another_profile_input {
-    width: 90%;
+    width: 92%;
     font-size: 18px;
 }
 
@@ -282,8 +282,9 @@ body {
     grid-template-rows: auto;
     grid-template-areas:
      'details_div location_div'
+     'overview_div location_div'
      'comment_div location_div';
-    gap: 20px;
+    gap: 8px;
     padding: 10px 20px 20px 20px;
     border-style: solid;
     border-width: 2px 0 0 0;
@@ -294,6 +295,26 @@ body {
 .viewing_edit_button:hover {
     font-size: 20px;
     cursor: pointer;
+}
+.movie_overview {
+    grid-area: overview_div;
+    font-size: 17px;
+}
+.movie_overview:hover {
+    cursor: pointer;
+}
+.overview_link {
+    color: darkblue;
+    padding: 4px;
+    font-variant: small-caps;
+    background-color: mistyrose;
+}
+.shown_overview {
+    display: block;
+    color: darkblue;
+}
+.hidden_overview {
+    display: none;
 }
 .movie_comment {
     grid-area: comment_div;

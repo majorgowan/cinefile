@@ -16,13 +16,27 @@ document.addEventListener("DOMContentLoaded", function() {
     // divs holding viewings
     const viewingEditButtons = document.querySelectorAll(".viewing_edit_button");
     const viewingTMDBButtons = document.querySelectorAll(".viewing_row .tmdb_link_div img");
+    const viewingOverviewLinks = document.querySelectorAll(".overview_link");
 
     // on user clicking "Add" in the sidebar, open the search modal
-    document.querySelector("#add_movie_link").onclick = (event) => {
-        event.preventDefault();
-        modalOverlay.style.display = "block";
-        tmdbSearchModal.style.display = "block";
+    const addMovieLink = document.querySelector("#add_movie_link");
+    if (addMovieLink != null) {
+        addMovieLink.onclick = (event) => {
+            event.preventDefault();
+            modalOverlay.style.display = "block";
+            tmdbSearchModal.style.display = "block";
+        }
     }
+
+    // implement "view another cinefile" input (on keyup, navigate to profile if exists)
+    const viewAnotherProfileInput = document.getElementById("view_another_profile_input");
+    viewAnotherProfileInput.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            // enter key
+            const other_profile = viewAnotherProfileInput.value;
+            window.location.pathname = "/journal/profile/" + other_profile;
+        }
+    });
 
     // search bar for TMDB title search
     const tmdbSearchText = document.querySelector("#tmdb_search_text");
@@ -163,6 +177,22 @@ document.addEventListener("DOMContentLoaded", function() {
             window.open(tmdb_url, "_blank");
         });
     });
+
+    // event listener for Overview links in Viewings (default to hide overview)
+    viewingOverviewLinks.forEach(function(overviewLink) {
+        overviewLink.addEventListener("click", function(event) {
+            // get the corresponding overview span and toggle its class
+            const overviewSpan = document.getElementById(overviewLink.dataset["overview_id"]);
+            if (overviewSpan.className == "hidden_overview") {
+                overviewSpan.className = "shown_overview";
+                overviewLink.innerHTML = "hide tmdb overview";
+            } else {
+                overviewSpan.className = "hidden_overview";
+                overviewLink.innerHTML = "show tmdb overview";
+            }
+        });
+    });
+
 
     // implement About modal
     document.querySelector("#about_link").addEventListener("click", function() {
