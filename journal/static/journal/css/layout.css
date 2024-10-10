@@ -12,6 +12,11 @@ body {
 .beta {
     font-size: 16px;
 }
+.username_span {
+    font-weight: bold;
+    font-family: impact, sans-serif;
+}
+
 .wrapper {
     display: flex;
 }
@@ -300,14 +305,14 @@ body {
     grid-area: overview_div;
     font-size: 17px;
 }
-.movie_overview:hover {
-    cursor: pointer;
-}
 .overview_link {
     color: darkblue;
     padding: 4px;
     font-variant: small-caps;
     background-color: mistyrose;
+}
+.overview_link:hover {
+    cursor: pointer;
 }
 .shown_overview {
     display: block;

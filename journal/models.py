@@ -22,7 +22,7 @@ class Viewing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE,
                              related_name="viewings")
-    private = models.BooleanField(default=False),
+    private = models.BooleanField(default=False)
     film = models.ForeignKey(Film, on_delete=models.PROTECT,
                              related_name="viewings")
     date = models.DateField(default=datetime.date.today)

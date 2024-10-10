@@ -148,6 +148,7 @@ def new_viewing(request):
                                   .get("overview", None)))
             film.save()
         # populate and save new Viewing entry
+        private_checkbox = form.get("private", "off")
         viewing = Viewing(pk=pk,
                           user=request.user,
                           film=film,
@@ -157,6 +158,7 @@ def new_viewing(request):
                           tv_channel=form.get("channel"),
                           streaming_platform=form.get("platform"),
                           cinema=form.get("cinema"),
+                          private=(private_checkbox == "on"),
                           comments=form.get("comments"))
         viewing.save()
     return JsonResponse({
@@ -281,9 +283,11 @@ def import_tool(request):
                         for ii, viewing in enumerate(viewings)
                     }
                     request.session["file_loaded"] = IFobj.pk
-
-    viewings = [viewing for k, viewing
-                in request.session["uploaded_viewings"].items()]
+    if "uploaded_viewings" in request.session:
+        viewings = [viewing for k, viewing
+                    in request.session["uploaded_viewings"].items()]
+    else:
+        viewings = []
     return render(request, "journal/import.html",
                   {
                       "username": request.user.username,

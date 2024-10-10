@@ -155,6 +155,8 @@ function process_new_viewing_form(mode, movieData={}) {
                     newViewingForm.querySelector("#streaming_input").checked = true;
                     // unhide Streaming input
                     newViewingForm.querySelector("#streaming_platform_row").style.display = "table-row";
+                } else if (viewingData.video_medium === "DVD/PPV") {
+                    newViewingForm.querySelector("#dvd_input").checked = true;
                 }
 
             }
@@ -243,7 +245,7 @@ function process_new_viewing_form(mode, movieData={}) {
                         newViewingForm.querySelector("#tv_input").checked = true;
                         newViewingForm.querySelector("#streaming_input").checked = false;
                         newViewingForm.querySelector("#dvd_input").checked = false;
-                    } else if (responseData["video_medium"] === "DVD") {
+                    } else if (responseData["video_medium"] === "DVD/PPV") {
                         newViewingForm.querySelector("#tv_input").checked = false;
                         newViewingForm.querySelector("#streaming_input").checked = false;
                         newViewingForm.querySelector("#dvd_input").checked = true;

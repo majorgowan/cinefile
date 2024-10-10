@@ -55,6 +55,9 @@
         <li><a id="add_movie_link">Add viewing</a></li><BR>
         <li><a id="export_data_link">Export data</a></li>
         <li><a id="import_data_link" href="{% url 'import_tool' %}" >Import data</a></li><BR>
+    {% elif user.is_authenticated %}
+        <li><a id="my_profile_link"
+             href="{% url 'profile' %}"><span class="username_span">{{ user.username }}</span>'s cinefile</a></li><BR>
     {% endif %}
 {% endblock %}
 
@@ -62,13 +65,15 @@
 <div class="movie_list" id="profile_movie_list"
      data-profile_url="{% url 'profile' %}">
     {% for viewing in viewings %}
-        {% if username == user.username or not viewing.private.value %}
+        {% if username == user.username or not viewing.private %}
             <div class="viewing_row">
                 <div class="movie_details">
                     <div class="movie_title">
                         {{ viewing.film.title }} ({{ viewing.film.year }})
-                        &emsp;&emsp;
-                        <span data-viewing_id="{{ viewing.id }}" class="viewing_edit_button">&#x1F589;</span>
+                        {% if user.is_authenticated and username == user.username %}
+                            &ensp;
+                            <span data-viewing_id="{{ viewing.id }}" class="viewing_edit_button">&#x1F589;</span>
+                        {% endif %}
                     </div>
                     <div class="movie_info">
                         <div class="tmdb_link_div">
@@ -97,6 +102,9 @@
                         {% endif %}
                         {% if viewing.streaming_platform %}
                             <br>{{ viewing.streaming_platform }}
+                        {% endif %}
+                        {% if viewing.video_medium == "DVD/PPV" %}
+                            <br>DVD / PPV
                         {% endif %}
                     {% else %}
                         {{ viewing.date | date:"F, Y" }}

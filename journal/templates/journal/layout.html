@@ -36,7 +36,7 @@
                 {% block sidebar_links %}
                 {% endblock %}
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'user_login' %}">Log out {{ user.username }}</a></li>
+                    <li><a href="{% url 'user_login' %}">Log out <span class="username_span">{{ user.username }}</span></a></li>
                 {% else %}
                     <li><a href="{% url 'user_login'%}">Log in</a></li>
                     <li><a href="{% url 'signup' %}">New Cinefile</a></li>
