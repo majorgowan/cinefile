@@ -162,7 +162,24 @@ def new_viewing(request):
                           comments=form.get("comments"))
         viewing.save()
     return JsonResponse({
-        "error": "I get what you're saying but what do I do with it??"
+        "response": "I think I did what you wanted (save)"
+    })
+
+
+def delete_viewing(request):
+    """
+    Delete an existing viewing
+    """
+    if request.method == "POST":
+        post_request = json.loads(request.body)
+        # print(post_request)
+        # delete the viewing from the database
+        pk = int(post_request["viewing_id"])
+        to_delete = Viewing.objects.get(pk=pk)
+        # print(to_delete)
+        to_delete.delete()
+    return JsonResponse({
+        "response": "I think I did what you wanted (delete)"
     })
 
 
@@ -245,7 +262,6 @@ def import_tool(request):
                           })
         else:
             # process POST request with processed viewing
-            # TODO: save the change to the file on disk
             post_request = json.loads(request.body)
             if "validated" in post_request:
                 viewing_number = post_request["validated"]

@@ -87,6 +87,7 @@ function process_new_viewing_form(mode, movieData={}) {
     const streamingInputButton = replaceElement(newViewingForm.querySelector("#streaming_input"));
     const DVDInputButton = replaceElement(newViewingForm.querySelector("#dvd_input"));
     const newViewingSaveButton = replaceElement(document.querySelector("#new_viewing_save_button"));
+    const deleteViewingButton = replaceElement(document.querySelector("#delete_viewing_button"));
 
     // make sure Save button is enabled
     newViewingSaveButton.disabled = false;
@@ -102,7 +103,7 @@ function process_new_viewing_form(mode, movieData={}) {
     }
 
     if (mode === "edit") {
-        // query database and populate fields
+        // query database to populate fields
         const xhr_query_viewing = new XMLHttpRequest();
         let query_url = updateHidden.dataset["query_url"];
         query_url = query_url + `?viewing_id=${updateHidden.value}`
@@ -111,7 +112,7 @@ function process_new_viewing_form(mode, movieData={}) {
         // Set the callback function for when the response is received
         xhr_query_viewing.onload = function() {
             if (xhr_query_viewing.status === 200) {
-                console.log(xhr_query_viewing.responseText);
+                // console.log(xhr_query_viewing.responseText);
                 let viewingData = JSON.parse(xhr_query_viewing.responseText);
 
                 // populate fields in form
@@ -159,6 +160,10 @@ function process_new_viewing_form(mode, movieData={}) {
                     newViewingForm.querySelector("#dvd_input").checked = true;
                 }
 
+                // change "Save" button to "Save Changes"
+                newViewingSaveButton.value = "Save Changes";
+                // unhide "Delete" button
+                deleteViewingButton.style.display = "inline-block";
             }
         }
 
@@ -401,6 +406,37 @@ function process_new_viewing_form(mode, movieData={}) {
         }
 
         xhr_new_viewing.send(formData);
+    });
+
+    // implement Delete Viewing button ("edit" mode only)
+    deleteViewingButton.addEventListener("click", function(event) {
+        // make POST request to "delete_viewing" view with viewingID as payload
+        const delete_viewing_url = deleteViewingButton.dataset["url"];
+
+        // Create an XMLHttpRequest object
+        const xhr_delete_viewing = new XMLHttpRequest();
+        xhr_delete_viewing.open("POST", delete_viewing_url, false);
+
+        // Set header data
+        xhr_delete_viewing.setRequestHeader("X-CSRFToken", get_cookie("csrftoken"));
+        xhr_delete_viewing.setRequestHeader('Content-Type', 'application/json');
+
+        // console.log("gonna send it!");
+        // console.log(updateHidden.value);
+        // console.log(delete_viewing_url);
+
+        // Set the callback function for when the response is received
+        xhr_delete_viewing.onload = function() {
+            // console.log(xhr_delete_viewing.responseText);
+            document.querySelector("#new_viewing_form_modal").style.display = "none";
+            document.querySelector("#modal_overlay").style.display = "none";
+            // navigate (back) to index view
+            window.location.replace(profile_url);
+        }
+
+        xhr_delete_viewing.send(JSON.stringify({
+            viewing_id: updateHidden.value
+        }));
     });
 }
 
