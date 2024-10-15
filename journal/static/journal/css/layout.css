@@ -178,7 +178,9 @@ body {
     height: 40px;
 }
 .select_button {
-    font-size: 24px;
+    font-size: 18px;
+    border: none;
+    padding: 5px;
     cursor: pointer;
 }
 
@@ -194,15 +196,19 @@ body {
     z-index: 10; /* Sit on top */
     left: 20%;
     top: 10%;
-    padding: 0 50px 50px;
-    max-height: 500px;
+    padding: 0 40px 40px;
+    max-height: 520px;
     background-color: lightsteelblue;
     overflow: auto; /* Enable scroll if needed */
 }
 #new_viewing_form input[type="text"], input[type="date"], label {
-    padding: 2px;
-    font-size: 20px;
+    padding: 3px;
+    border: none;
+    font-size: 18px;
     font-family: Arial;
+}
+#new_viewing_form input[type="text"], input[type="date"] {
+    background-color: rgb(240, 240, 250);
 }
 #new_viewing_form tr {
     padding: 40px 0;
@@ -215,6 +221,13 @@ body {
 }
 .invisible_table_row {
     display: none;
+}
+#new_viewing_form textarea {
+    font-family: Arial;
+    font-size: 18px;
+    border: none;
+    padding: 5px;
+    background-color: rgb(240, 240, 250);
 }
 #delete_viewing_button {
     display: none;
@@ -236,11 +249,11 @@ body {
 /* The Close Button */
 .close {
     color: #777;
-    font-size: 30px;
+    font-size: 35px;
     font-weight: bold;
     position: absolute;
     top: 5px;
-    right: 5px;
+    right: 15px;
 }
 .close:hover,
 .close:focus {

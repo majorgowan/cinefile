@@ -109,6 +109,15 @@
                     {% else %}
                         {{ viewing.date | date:"F, Y" }}
                     {% endif %}
+                    {% if viewing.cinema_or_tv == "Cinema" %}
+                        <BR><img alt="cinema_icon"
+                                 width="110px"
+                                 src="{% static 'images/cinemamarquee_top_phase.png' %}">
+                    {% elif viewing.cinema_or_tv == "Video" %}
+                        <BR><img alt="tv_icon"
+                                 width="80px"
+                                 src="{% static 'images/old_tv_set.png' %}">
+                    {% endif %}
                     {% load static %}
                 </div>
                 <div class="movie_comment">
