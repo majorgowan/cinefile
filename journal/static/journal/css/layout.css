@@ -96,9 +96,14 @@ body {
     background-color: transparent;
     text-decoration: underline;
 }
+#view_another_label {
+    font-size: 17px;
+}
 #view_another_profile_input {
-    width: 92%;
-    font-size: 18px;
+    width: 80%;
+    font-size: 20px;
+    position: relative;
+    top: -5px;
 }
 
 .overlay {
@@ -150,7 +155,7 @@ body {
     top: 10%;
     width: 50%;
     padding: 10px;
-    max-height: 300px;
+    max-height: 400px;
     background-color: lightsteelblue;
     overflow: hidden auto; /* Enable scroll if needed */
 }
@@ -178,7 +183,7 @@ body {
     height: 40px;
 }
 .select_button {
-    font-size: 18px;
+    font-size: 20px;
     border: none;
     padding: 5px;
     cursor: pointer;
@@ -272,13 +277,14 @@ body {
     font-size: 24px;
     width: 70%;
     height: 40px;
+    border: none;
 }
 #tmdb_search_results {
     display: none;
-    font-size: 18px;
+    font-size: 20px;
     padding: 20px;
     line-height: 1.4;
-    color: firebrick;
+    color: maroon;
 }
 #tmdb_search_results a:hover {
   color: inherit;

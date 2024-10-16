@@ -62,6 +62,10 @@ def tmdb_search(request, api_command):
                 candidates = result["candidates"]
             else:
                 search_results = tmdb.search_movie(query, page=page)
+                if search_results["status_code"] != 200:
+                    print(search_results)
+                    return JsonResponse({},
+                                        status=search_results["status_code"])
                 candidates = search_results["candidates"]
                 total_pages = search_results["total_pages"]
                 result = {
@@ -83,6 +87,10 @@ def tmdb_search(request, api_command):
                 details = request.session["credits"][movie_id]
             else:
                 details = tmdb.movie_credits(movie_id, nstars=5)
+                if details["status_code"] != 200:
+                    print(details)
+                    return JsonResponse({},
+                                        status=details["status_code"])
                 # cache search result
                 request.session["credits"][movie_id] = details
             # cache movie details as latest result

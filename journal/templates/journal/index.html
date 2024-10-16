@@ -48,9 +48,10 @@
 {% endblock %}
 
 {% block sidebar_links %}
-    <li><input id="view_another_profile_input"
+    <li><label id="view_another_label">view another cinefile<BR></label>
+        <input id="view_another_profile_input"
                type="text"
-               placeholder=" view another cinefile" /></li><BR>
+               placeholder=" username" /></li><BR>
     {% if user.is_authenticated and username == user.username %}
         <li><a id="add_movie_link">Add viewing</a></li><BR>
         <li><a id="export_data_link">Export data</a></li>
@@ -111,11 +112,11 @@
                     {% endif %}
                     {% if viewing.cinema_or_tv == "Cinema" %}
                         <BR><img alt="cinema_icon"
-                                 width="110px"
+                                 width="100px"
                                  src="{% static 'images/cinemamarquee_top_phase.png' %}">
                     {% elif viewing.cinema_or_tv == "Video" %}
                         <BR><img alt="tv_icon"
-                                 width="80px"
+                                 width="72px"
                                  src="{% static 'images/old_tv_set.png' %}">
                     {% endif %}
                     {% load static %}
