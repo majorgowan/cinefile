@@ -1,5 +1,5 @@
-from django.core.files.base import File
-from django.http import JsonResponse
+from django.core.files.base import File, ContentFile
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.apps import apps
 from datetime import datetime
@@ -229,6 +229,7 @@ def import_tool(request):
     if request.method == "POST":
         # check if the POST request contains a viewings_file:
         if "viewings_file" in request.FILES:
+            # TODO: automatically process all viewings with "tmdb" field and valid date
             # process uploaded file
             viewings_file = request.FILES.get("viewings_file")
             if viewings_file is not None:
@@ -318,6 +319,40 @@ def import_tool(request):
                       "viewings": viewings,
                       "uploaded_files": uploaded_files
                   })
+
+
+def export_data(request):
+    # get query-set of user's viewings
+    viewings = list(Viewing.objects.filter(user__id=request.user.id).values())
+    # add film info for each viewing
+    for viewing in viewings:
+        # don't need to export user_id and film_id
+        viewing.pop("user_id")
+        film_id = viewing.pop("film_id")
+        # convert date to string
+        viewing["date"] = datetime.strftime(viewing["date"],
+                                            "%Y-%m-%d")
+        # get film info and add it to viewing for export
+        film_data = Film.objects.get(id=film_id)
+        print(film_data.title)
+        viewing["tmdb"] = film_data.tmdb
+        viewing["title"] = film_data.title
+        viewing["year"] = film_data.year
+        viewing["original_title"] = film_data.original_title
+        viewing["director"] = film_data.director
+        viewing["starring"] = film_data.starring
+        viewing["release_date"] = datetime.strftime(film_data.release_date,
+                                                    "%Y-%m-%d")
+    # prepare response
+    content = ContentFile(json.dumps(viewings,
+                                     indent=2,
+                                     sort_keys=False).encode("latin-1"),
+                          name="cinefile_export.json")
+    content.in_memory = False
+    response = HttpResponse(content, content_type="application/json")
+    response["Content-Disposition"] = \
+        'attachment; filename="cinefile_export.json"'
+    return response
 
 
 def get_session_data(request):

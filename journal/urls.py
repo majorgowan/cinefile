@@ -9,5 +9,6 @@ urlpatterns = [
     path("delete_viewing", views.delete_viewing, name="delete_viewing"),
     path("query_viewing", views.query_viewing, name="query_viewing"),
     path("import_tool", views.import_tool, name="import_tool"),
+    path("export_data", views.export_data, name="export_data"),
     path("get_session_data", views.get_session_data, name="get_session_data")
 ]
