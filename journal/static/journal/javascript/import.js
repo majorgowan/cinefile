@@ -40,6 +40,44 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // enable "Submit" button when file chosen
+    const viewingsFileUploader = document.getElementById("viewings_file_uploader");
+    const viewingsFileSubmitButton = document.getElementById("viewings_file_submit_button");
+    viewingsFileUploader.addEventListener("change", function(event) {
+        if (viewingsFileUploader.value !== "") {
+            viewingsFileSubmitButton.disabled = false;
+        } else {
+            viewingsFileSubmitButton.disabled = false;
+        }
+    });
+
+    // implement "Delete" button on loaded viewings file
+    const deleteViewingsFileButton = document.getElementById("delete_viewings_file_button");
+    deleteViewingsFileButton.addEventListener("click", function(event) {
+        const delete_url = deleteViewingsFileButton.dataset["delete_url"];
+
+        // Create an XMLHttpRequest object
+        const xhr_delete_file = new XMLHttpRequest();
+        xhr_delete_file.open("POST", delete_url, false);
+
+        // Set header data
+        xhr_delete_file.setRequestHeader("X-CSRFToken", get_cookie("csrftoken"));
+        xhr_delete_file.setRequestHeader('Content-Type', 'application/json');
+
+        // Set the callback function for when the response is received
+        xhr_delete_file.onload = function() {
+            if (xhr_delete_file.status === 200) {
+                console.log("file deleted");
+                window.location.replace(delete_url);
+            }
+        }
+
+        xhr_delete_file.send(JSON.stringify({
+            action: "delete_viewings_file"
+        }));
+
+    });
+
     function search_tmdb_import(search_pattern, results_page, counter) {
         const searchParams = new URLSearchParams({
             "pattern": encodeURIComponent(search_pattern),
@@ -106,9 +144,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
                                     newViewingFormImport.style.display = "block";
                                     process_new_viewing_form("import", movieData);
-
-                                    // TODO: after processing form (if successful), change "validated" field to true
-                                    // or remove from list ... maybe better?
 
                                     // TODO: manual override for film outside TMDB!
 

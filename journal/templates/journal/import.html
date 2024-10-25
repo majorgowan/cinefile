@@ -22,7 +22,7 @@
                     data-import_url="{% url 'import_tool' %}">
                 <option value="">--Select uploaded file--</option>
                 {% for uploaded_file in uploaded_files %}
-                    <option value="{{ uploaded_file }}">{{ uploaded_file }}</option>
+                    <option value="{{ uploaded_file }}">{{ uploaded_file | cut:".json" }}</option>
                 {% endfor %}
             </select>
             &emsp;&emsp;
@@ -34,13 +34,20 @@
             {% csrf_token %}
             <input type="file"
                    accept="application/json"
-                   name="viewings_file">
-            <input type="submit" value="Upload">
+                   name="viewings_file"
+                   id="viewings_file_uploader">
+            <input type="submit" value="Upload"
+                   class="select_button"
+                   id="viewings_file_submit_button" disabled>
         </form>
     </div>
     <div id="import_div">
         <div id="import_viewing_list">
             {% if viewings %}
+                <span id="import_file_loaded_span">{{ uploaded_file }}&emsp;
+                <button class="select_button"
+                        id="delete_viewings_file_button"
+                        data-delete_url="{% url 'import_tool' %}">Delete</button></span>
                 <ul id="uploaded_titles_list">
                 {% for viewing in viewings %}
                     {% if viewing.validated %}

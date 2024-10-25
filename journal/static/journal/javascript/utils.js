@@ -428,10 +428,6 @@ function process_new_viewing_form(mode, movieData={}) {
         xhr_delete_viewing.setRequestHeader("X-CSRFToken", get_cookie("csrftoken"));
         xhr_delete_viewing.setRequestHeader('Content-Type', 'application/json');
 
-        // console.log("gonna send it!");
-        // console.log(updateHidden.value);
-        // console.log(delete_viewing_url);
-
         // Set the callback function for when the response is received
         xhr_delete_viewing.onload = function() {
             // console.log(xhr_delete_viewing.responseText);

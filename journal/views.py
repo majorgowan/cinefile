@@ -227,66 +227,97 @@ def import_tool(request):
     uploaded_files = [uf.name for uf
                       in ImportedFile.objects.filter(user=request.user)]
     if request.method == "POST":
-        # check if the POST request contains a viewings_file:
-        if "viewings_file" in request.FILES:
-            # TODO: automatically process all viewings with "tmdb" field and valid date
-            # process uploaded file
-            viewings_file = request.FILES.get("viewings_file")
-            if viewings_file is not None:
-                viewings = json.load(viewings_file)
-                # replace ampersand characters:
-                for viewing in viewings:
-                    viewing["title"] = viewing["title"].replace("&", "and")
-                    # if no "validated" field, add it:
-                    if "validated" not in viewing:
-                        viewing["validated"] = False
-                if viewings_file not in uploaded_files:
-                    # if it's new, store the processed file
-                    print("Going to save the file now!!!")
-                    importedFile = ImportedFile(
-                        user=request.user,
-                        name=viewings_file.name,
-                        upload=File(name=viewings_file.name,
-                                    file=StringIO(json.dumps(viewings,
-                                                             sort_keys=True,
-                                                             indent=2)))
-                    )
-                    importedFile.save()
-                    # update the list of uploaded_files
-                    uploaded_files = [uf.name for uf
-                                      in (ImportedFile.objects
-                                          .filter(user=request.user))]
-                # cache the uploaded viewings
-                request.session["uploaded_viewings"] = {
-                    (ii + 1): viewing
-                    for ii, viewing in enumerate(viewings)
-                }
-            else:
-                viewings = []
-            return render(request, "journal/import.html",
-                          {
-                              "username": request.user.username,
-                              "viewings": viewings,
-                              "uploaded_files": uploaded_files
-                          })
+        content_type = request.META.get("CONTENT_TYPE")
+        # implement DELETE viewings file
+        if content_type == "application/json":
+            json_request = json.loads(request.body)
+            request_action = json_request.get("action", None)
+            if request_action == "delete_viewings_file":
+                filename = request.session["uploaded_file"]
+                print(f"going to delete {filename}!")
+                file_obj = ImportedFile.objects.get(user=request.user,
+                                                    name=filename)
+                file_obj.delete()
+                # clear file data from request.session
+                del request.session["file_loaded"]
+                del request.session["uploaded_file"]
+                del request.session["uploaded_viewings"]
+                return redirect("import_tool")
+
         else:
-            # process POST request with processed viewing
-            post_request = json.loads(request.body)
-            if "validated" in post_request:
-                viewing_number = post_request["validated"]
-                request.session["uploaded_viewings"][viewing_number]["validated"] = True
-                request.session.modified = True
-                # write updated viewings to file
-                with (ImportedFile
-                      .objects
-                      .get(pk=request.session["file_loaded"])
-                      .upload
-                      .open("w")) as jsf:
-                    json.dump([viewing for k, viewing
-                               in request.session["uploaded_viewings"].items()],
-                              jsf, indent=2, sort_keys=True)
-            # render the import page with the updated validated flag
-            return redirect("import_tool")
+            # check if the POST request contains a viewings_file:
+            if "viewings_file" in request.FILES:
+                # TODO: automatically process all viewings with "tmdb" field and valid date
+                # process uploaded file
+                viewings_file = request.FILES.get("viewings_file")
+                if viewings_file is not None:
+                    viewings = json.load(viewings_file)
+                    # replace ampersand characters:
+                    for viewing in viewings:
+                        viewing["title"] = viewing["title"].replace("&", "and")
+                        # if no "validated" field, add it:
+                        if "validated" not in viewing:
+                            viewing["validated"] = False
+                    if viewings_file.name not in uploaded_files:
+                        # if it's new, store the processed file
+                        print("Going to save the file now!!!")
+                        importedFile = ImportedFile(
+                            user=request.user,
+                            name=viewings_file.name,
+                            upload=File(name=viewings_file.name,
+                                        file=StringIO(json.dumps(viewings,
+                                                                 sort_keys=True,
+                                                                 indent=2)))
+                        )
+                        importedFile.save()
+                        # update the list of uploaded_files
+                        uploaded_files = [uf.name for uf
+                                          in (ImportedFile.objects
+                                              .filter(user=request.user))]
+                    # set loaded_file in request.session
+                    IFobj = ImportedFile.objects.get(user=request.user,
+                                                     name=viewings_file.name)
+                    request.session["file_loaded"] = IFobj.pk
+
+                    # cache the uploaded viewings
+                    request.session["uploaded_viewings"] = {
+                        (ii + 1): viewing
+                        for ii, viewing in enumerate(viewings)
+                    }
+                    request.session["uploaded_file"] = viewings_file.name
+                    uploaded_file = viewings_file.name
+                else:
+                    viewings = []
+                    uploaded_file = ""
+                return render(request, "journal/import.html",
+                              {
+                                  "username": request.user.username,
+                                  "viewings": viewings,
+                                  "uploaded_files": uploaded_files,
+                                  "uploaded_file": (uploaded_file
+                                                    .rsplit(".",
+                                                            1)[0])
+                              })
+            else:
+                # process POST request with processed viewing
+                post_request = json.loads(request.body)
+                if "validated" in post_request:
+                    viewing_number = post_request["validated"]
+                    request.session["uploaded_viewings"][viewing_number]["validated"] = True
+                    request.session.modified = True
+                    # write updated viewings to file
+                    with (ImportedFile
+                          .objects
+                          .get(pk=request.session["file_loaded"])
+                          .upload
+                          .open("w")) as jsf:
+                        json.dump(
+                            [viewing for k, viewing
+                             in request.session["uploaded_viewings"].items()],
+                            jsf, indent=2, sort_keys=True
+                        )
+                # render the import page with the updated validated flag
+                return redirect("import_tool")
 
     elif request.method == "GET":
         # get request to load previously imported file
@@ -308,16 +339,23 @@ def import_tool(request):
                         for ii, viewing in enumerate(viewings)
                     }
                     request.session["file_loaded"] = IFobj.pk
+                    request.session["uploaded_file"] = filename
+                    uploaded_file = filename
+
     if "uploaded_viewings" in request.session:
         viewings = [viewing for k, viewing
                     in request.session["uploaded_viewings"].items()]
+        uploaded_file = request.session["uploaded_file"]
     else:
         viewings = []
+        uploaded_file = ""
+
     return render(request, "journal/import.html",
                   {
                       "username": request.user.username,
                       "viewings": viewings,
-                      "uploaded_files": uploaded_files
+                      "uploaded_files": uploaded_files,
+                      "uploaded_file": uploaded_file.rsplit(".", 1)[0]
                   })
 
 

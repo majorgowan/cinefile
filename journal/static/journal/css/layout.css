@@ -408,6 +408,12 @@ body {
     border-style: solid;
     border-width: 1px 0;
 }
+#import_file_loaded_span {
+    color: firebrick;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 10px 10px 0;
+}
 #import_viewing_list {
     grid-area: viewing_list_div;
     border-style: solid;

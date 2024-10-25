@@ -57,7 +57,6 @@
                placeholder=" username" /></li><BR>
     {% if user.is_authenticated and username == user.username %}
         <li><a id="add_viewing_link">Add viewing</a></li><BR>
-        <!-- TODO: Implement export-data -->
         <li><a id="export_data_link"
                href="{% url 'export_data' %}">Export data</a></li>
         <li><a id="import_data_link"
