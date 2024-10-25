@@ -18,6 +18,9 @@
                        data-page="1"
                        data-url="{% url 'tmdb' api_command='search' %}"
                        data-credits_url="{% url 'tmdb' api_command='credits' %}">
+                <button class="select_button"
+                        id="tmdb_search_search_button">Search</button>
+                &nbsp;
             </div>
             <div id="tmdb_search_results"></div>
             {% include "journal/tmdb_detail.html" %}
@@ -53,7 +56,7 @@
                type="text"
                placeholder=" username" /></li><BR>
     {% if user.is_authenticated and username == user.username %}
-        <li><a id="add_movie_link">Add viewing</a></li><BR>
+        <li><a id="add_viewing_link">Add viewing</a></li><BR>
         <!-- TODO: Implement export-data -->
         <li><a id="export_data_link"
                href="{% url 'export_data' %}">Export data</a></li>

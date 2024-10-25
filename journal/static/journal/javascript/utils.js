@@ -112,6 +112,7 @@ function process_new_viewing_form(mode, movieData={}) {
         // Set the callback function for when the response is received
         xhr_query_viewing.onload = function() {
             if (xhr_query_viewing.status === 200) {
+
                 // console.log(xhr_query_viewing.responseText);
                 let viewingData = JSON.parse(xhr_query_viewing.responseText);
 
@@ -171,7 +172,13 @@ function process_new_viewing_form(mode, movieData={}) {
 
     } else if (mode === "new") {
 
+        // reset the form
         newViewingForm.reset();
+
+        // reset hiddenness of conditional rows
+        newViewingForm.querySelectorAll(".invisible_table_row").forEach(function(invisibleRow) {
+            invisibleRow.style.display = "none";
+        });
 
         // set tmdb id
         const tmdbIDHidden = newViewingForm.querySelector("#tmdb_id_hidden");

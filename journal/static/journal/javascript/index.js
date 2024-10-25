@@ -19,10 +19,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const viewingOverviewLinks = document.querySelectorAll(".overview_link");
 
     // on user clicking "Add" in the sidebar, open the search modal
-    const addMovieLink = document.querySelector("#add_movie_link");
-    if (addMovieLink != null) {
-        addMovieLink.onclick = (event) => {
+    const addViewingLink = document.querySelector("#add_viewing_link");
+    if (addViewingLink != null) {
+        addViewingLink.onclick = (event) => {
             event.preventDefault();
+            // clear the search bar and results
+            document.querySelector("#tmdb_search_text").value = "";
+            document.querySelector("#tmdb_search_results").innerHTML = "";
+            document.querySelector("#tmdb_search_results").style.display = "none";
             modalOverlay.style.display = "block";
             tmdbSearchModal.style.display = "block";
         }
@@ -40,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // search bar for TMDB title search
     const tmdbSearchText = document.querySelector("#tmdb_search_text");
+    const tmdbSearchSearchButton = document.querySelector("#tmdb_search_search_button");
     // close buttons (x in top right corner)
     const tmdbSearchClose = tmdbSearchModal.querySelector(".close");
     const tmdbDetailClose = tmdbDetailModal.querySelector(".close");
@@ -138,13 +143,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // add event listeners to trigger modal opening and closing etc.
-    tmdbSearchText.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
+
+    // run TMDB search
+    function tmdbSearchGo(event) {
             // get search text
             let search_pattern = tmdbSearchText.value;
             const results_page = tmdbSearchText.dataset["page"];
-
             search_tmdb(search_pattern, results_page);
+    }
+    // allow either clicking search or pressing Enter
+    tmdbSearchSearchButton.addEventListener("click", tmdbSearchGo);
+    tmdbSearchText.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            tmdbSearchGo(event);
         }
     });
 
