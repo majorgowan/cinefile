@@ -16,8 +16,25 @@
 </head>
 <body>
 
-    {% block modalblock %}
-    {% endblock %}
+    <div class="overlay" id="modal_overlay">
+        {% block modalblock %}
+        {% endblock %}
+
+        <div id="about_modal" class="modal" title="">
+            <div class="top_corner">
+                <span class="close">&times;</span>
+            </div>
+            <div>
+                <p><span class="cinefile">Cinefile</span> is a journal for keeping
+                    track of films you've seen.</p>
+                <p><span class="cinefile">Cinefile</span> uses data
+                    from <a href="https://www.themoviedb.org/">The Movie Database</a>.</p>
+                <BR>
+                <p>Copyright 2024 by Mark Fruman &ensp;<span class="email">mark.fruman@yahoo.com</span></p>
+            </div>
+        </div>
+
+    </div>
 
     <div class="wrapper">
         <div class="sidebar">

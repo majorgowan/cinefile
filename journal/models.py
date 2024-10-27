@@ -8,6 +8,7 @@ class Film(models.Model):
     tmdb = models.IntegerField(unique=True)
     title = models.CharField(max_length=64)
     original_title = models.CharField(max_length=64, blank=True)
+    original_language = models.CharField(max_length=4, blank=True)
     release_date = models.DateField(blank=True)
     year = models.IntegerField()
     director = models.CharField(max_length=32, blank=True)

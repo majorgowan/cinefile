@@ -135,11 +135,11 @@ def new_viewing(request):
                         title=(request.session
                                .get("candidates", {})
                                .get(tmdb_id, {})
-                               .get("title", "unkown")),
+                               .get("title", "unknown")),
                         original_title=(request.session
                                         .get("candidates", {})
                                         .get(tmdb_id, {})
-                                        .get("original_title", "unkown")),
+                                        .get("original_title", "unknown")),
                         release_date=(request.session
                                       .get("candidates", {})
                                       .get(tmdb_id, {})
@@ -247,7 +247,7 @@ def import_tool(request):
         else:
             # check if the POST request contains a viewings_file:
             if "viewings_file" in request.FILES:
-                # TODO: automatically process all viewings with "tmdb" field and valid date
+
                 # process uploaded file
                 viewings_file = request.FILES.get("viewings_file")
                 if viewings_file is not None:
@@ -279,6 +279,63 @@ def import_tool(request):
                                                      name=viewings_file.name)
                     request.session["file_loaded"] = IFobj.pk
 
+                    # automatically process all viewings with "tmdb" field and valid date
+                    for viewing in viewings:
+                        processed_viewing = tmdb.validate_viewing(viewing)
+                        # print(processed_viewing)
+                        if "error" in processed_viewing:
+                            print(viewing["title"])
+                            print(processed_viewing["error"])
+                            continue
+
+                        # save Film and Viewing to databases
+                        film_dict = processed_viewing["film_dict"]
+                        viewing_dict = processed_viewing["viewing_dict"]
+
+                        # check if Film already in database
+                        filmobjs = Film.objects.filter(tmdb=film_dict["tmdb"])
+                        if len(filmobjs) > 0:
+                            filmobj = filmobjs[0]
+                            # print(f"found film: {film_dict['title']}")
+                        else:
+                            filmobj = Film(
+                                tmdb=film_dict["tmdb"],
+                                title=film_dict["title"],
+                                original_title=film_dict["original_title"],
+                                release_date=film_dict["release_date"],
+                                year=film_dict["year"],
+                                director=film_dict["director"],
+                                starring=", ".join(film_dict["starring"]),
+                                overview=film_dict["overview"]
+                            )
+                            filmobj.save()
+                            # print(f"saved film: {film_dict['title']}")
+
+                        # check if Viewing object is already in database
+                        if (Viewing.objects.filter(
+                                user=request.user,
+                                film=filmobj,
+                                date=viewing_dict["date"]).exists()):
+                            # print(f"viewing of {film_dict['title']} exists")
+                            pass
+                        else:
+                            viewingobj = Viewing(
+                                user=request.user,
+                                film=filmobj,
+                                date=viewing_dict["date"],
+                                location=viewing_dict["location"],
+                                cinema_or_tv=viewing_dict["cinema_or_tv"],
+                                tv_channel=viewing_dict["tv_channel"],
+                                streaming_platform=viewing_dict["streaming_platform"],
+                                cinema=viewing_dict["cinema"],
+                                private=viewing_dict["private"],
+                                comments=viewing_dict["comments"]
+                            )
+                            viewingobj.save()
+                            # print("saved viewing!")
+
+                        viewing["validated"] = True
+
                     # cache the uploaded viewings
                     request.session["uploaded_viewings"] = {
                         (ii + 1): viewing
@@ -286,6 +343,7 @@ def import_tool(request):
                     }
                     request.session["uploaded_file"] = viewings_file.name
                     uploaded_file = viewings_file.name
+
                 else:
                     viewings = []
                     uploaded_file = ""
@@ -340,7 +398,6 @@ def import_tool(request):
                     }
                     request.session["file_loaded"] = IFobj.pk
                     request.session["uploaded_file"] = filename
-                    uploaded_file = filename
 
     if "uploaded_viewings" in request.session:
         viewings = [viewing for k, viewing

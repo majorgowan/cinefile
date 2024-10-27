@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // form for adding a new Viewing of the selected movie
     const newViewingFormModal = document.querySelector("#new_viewing_form_modal");
     const newViewingForm = newViewingFormModal.querySelector("#new_viewing_form");
-    // about modal
-    const aboutModal = document.querySelector("#about_modal");
 
     // divs holding viewings
     const viewingEditButtons = document.querySelectorAll(".viewing_edit_button");
@@ -49,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const tmdbSearchClose = tmdbSearchModal.querySelector(".close");
     const tmdbDetailClose = tmdbDetailModal.querySelector(".close");
     const newViewingClose = newViewingFormModal.querySelector(".close");
-    const aboutClose = aboutModal.querySelector(".close");
     // select button for accepting movie from search results
     const tmdbDetailSelect = tmdbDetailModal.querySelector("#tmdb_detail_select_button");
     // div with search results (to be populated with return from TMDB API)
@@ -204,13 +201,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-
-    // implement About modal
-    document.querySelector("#about_link").addEventListener("click", function() {
-        modalOverlay.style.display = "block";
-        aboutModal.style.display = "block";
-    });
-
     // implement close buttons
     tmdbSearchClose.addEventListener("click", function() {
         tmdbSearchModal.style.display = "none";
@@ -221,10 +211,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     newViewingClose.addEventListener("click", function() {
         newViewingFormModal.style.display = "none";
-        modalOverlay.style.display = "none";
-    });
-    aboutClose.addEventListener("click", function() {
-        aboutModal.style.display = "none";
         modalOverlay.style.display = "none";
     });
 

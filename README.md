@@ -1,7 +1,10 @@
-# Cinefile: a personal cinema journal
+# Cinefile: your personal cinema journal
 - by Mark Fruman mark.fruman@yahoo.com
 
 Deployed at _url_for_heroku_deployment_
+
+![Cinefile profile page](kenton_cinefile.png)
+
 
 ### Features
 - keep record of films you see in cinemas and video

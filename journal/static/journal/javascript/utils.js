@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // implement About modal
+    const modalOverlay = document.querySelector("#modal_overlay");
+    const aboutModal = document.querySelector("#about_modal");
+    const aboutClose = aboutModal.querySelector(".close");
+    document.querySelector("#about_link").addEventListener("click", function() {
+        modalOverlay.style.display = "block";
+        aboutModal.style.display = "block";
+    });
+    aboutClose.addEventListener("click", function() {
+        aboutModal.style.display = "none";
+        modalOverlay.style.display = "none";
+    });
+});
+
 // script for parsing browser cookie
 function get_cookie(cookie_name) {
     const cookie_value = (document

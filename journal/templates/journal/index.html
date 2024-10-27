@@ -6,47 +6,30 @@
 {% endblock %}
 
 {% block modalblock %}
-    <div class="overlay" id="modal_overlay">
-        <div id="tmdb_search_modal" class="modal" title="">
-            <div class="top_corner">
-                <span class="close">&times;</span>
-            </div>
-            <div id="movie_title_form">
-                <input id="tmdb_search_text" type="text"
-                       class="tmdb_search_text_input"
-                       placeholder="title"
-                       data-page="1"
-                       data-url="{% url 'tmdb' api_command='search' %}"
-                       data-credits_url="{% url 'tmdb' api_command='credits' %}">
-                <button class="select_button"
-                        id="tmdb_search_search_button">Search</button>
-                &nbsp;
-            </div>
-            <div id="tmdb_search_results"></div>
-            {% include "journal/tmdb_detail.html" %}
+    <div id="tmdb_search_modal" class="modal" title="">
+        <div class="top_corner">
+            <span class="close">&times;</span>
         </div>
-
-        <div id="new_viewing_form_modal" class="modal" title="">
-            <div class="top_corner">
-                <span class="close">&times;</span>
-            </div>
-            {% include "journal/viewing_form.html" %}
+        <div id="movie_title_form">
+            <input id="tmdb_search_text" type="text"
+                   class="tmdb_search_text_input"
+                   placeholder="title"
+                   data-page="1"
+                   data-url="{% url 'tmdb' api_command='search' %}"
+                   data-credits_url="{% url 'tmdb' api_command='credits' %}">
+            <button class="select_button"
+                    id="tmdb_search_search_button">Search</button>
+            &nbsp;
         </div>
+        <div id="tmdb_search_results"></div>
+        {% include "journal/tmdb_detail.html" %}
+    </div>
 
-        <div id="about_modal" class="modal" title="">
-            <div class="top_corner">
-                <span class="close">&times;</span>
-            </div>
-            <div>
-                <p><span class="cinefile">Cinefile</span> is a journal for keeping
-                track of films you've seen.</p>
-                <p><span class="cinefile">Cinefile</span> uses data
-                from <a href="https://www.themoviedb.org/">The Movie Database</a>.</p>
-                <BR>
-                <p>Copyright 2024 by Mark Fruman &ensp;<span class="email">mark.fruman@yahoo.com</span></p>
-            </div>
+    <div id="new_viewing_form_modal" class="modal" title="">
+        <div class="top_corner">
+            <span class="close">&times;</span>
         </div>
-
+        {% include "journal/viewing_form.html" %}
     </div>
 {% endblock %}
 
