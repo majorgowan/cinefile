@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // text input for modifying title search
     const tmdbSearchTextInput = document.querySelector("#tmdb_search_text_import");
     // for the detail modal
+    const modalOverlay = document.querySelector("#modal_overlay");
     const tmdbDetailModal = document.querySelector("#tmdb_detail_modal");
     const tmdbDetailModalContent = document.querySelector("#tmdb_detail_modal_content");
     const tmdbDetailClose = tmdbDetailModal.querySelector(".close");
@@ -123,6 +124,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         xhr_credits.onload = function() {
                             if (xhr_credits.status === 200) {
+
+                                // make overlay visible
+                                modalOverlay.style.display = "block";
                                 // show detail modal
                                 tmdbDetailModal.style.display = "block";
                                 let creditsData = JSON.parse(xhr_credits.responseText);
@@ -140,12 +144,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                                     // close everything and show viewing form!
                                     tmdbDetailModal.style.display = "none";
+                                    modalOverlay.style.display = "none";
                                     importSearchResults.style.display = "none";
 
                                     newViewingFormImport.style.display = "block";
                                     process_new_viewing_form("import", movieData);
-
-                                    // TODO: manual override for film outside TMDB!
 
                                 });
                             }
@@ -203,6 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // close buttons
     tmdbDetailClose.addEventListener("click", function() {
         tmdbDetailModal.style.display = "none";
+        modalOverlay.style.display = "none";
     });
     newViewingFormClose.addEventListener("click", function() {
         newViewingFormImport.style.display = "none";

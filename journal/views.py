@@ -242,7 +242,29 @@ def import_tool(request):
                 del request.session["file_loaded"]
                 del request.session["uploaded_file"]
                 del request.session["uploaded_viewings"]
-                return redirect("import_tool")
+
+            elif "validated" in json_request:
+                # it must be an update to a viewing in the import list
+
+                viewing_number = json_request["validated"]
+                request.session["uploaded_viewings"][viewing_number]["validated"] = True
+                request.session.modified = True
+                # write updated viewings to file
+                # TODO: this doesn't seem to be permanent
+                print("updating file on disk!")
+                with (ImportedFile
+                        .objects
+                        .get(pk=request.session["file_loaded"])
+                        .upload
+                        .open("w")) as jsf:
+                    json.dump(
+                        [viewing for k, viewing
+                         in request.session["uploaded_viewings"].items()],
+                        jsf, indent=2, sort_keys=True
+                    )
+
+            # render the updated import page
+            return redirect("import_tool")
 
         else:
             # check if the POST request contains a viewings_file:
@@ -250,7 +272,11 @@ def import_tool(request):
 
                 # process uploaded file
                 viewings_file = request.FILES.get("viewings_file")
-                if viewings_file is not None:
+
+                # if filename doesn't already exist, process it!
+                # TODO: tell user if file already exists!
+                if viewings_file.name not in uploaded_files:
+
                     viewings = json.load(viewings_file)
                     # replace ampersand characters:
                     for viewing in viewings:
@@ -258,26 +284,6 @@ def import_tool(request):
                         # if no "validated" field, add it:
                         if "validated" not in viewing:
                             viewing["validated"] = False
-                    if viewings_file.name not in uploaded_files:
-                        # if it's new, store the processed file
-                        print("Going to save the file now!!!")
-                        importedFile = ImportedFile(
-                            user=request.user,
-                            name=viewings_file.name,
-                            upload=File(name=viewings_file.name,
-                                        file=StringIO(json.dumps(viewings,
-                                                                 sort_keys=True,
-                                                                 indent=2)))
-                        )
-                        importedFile.save()
-                        # update the list of uploaded_files
-                        uploaded_files = [uf.name for uf
-                                          in (ImportedFile.objects
-                                              .filter(user=request.user))]
-                    # set loaded_file in request.session
-                    IFobj = ImportedFile.objects.get(user=request.user,
-                                                     name=viewings_file.name)
-                    request.session["file_loaded"] = IFobj.pk
 
                     # automatically process all viewings with "tmdb" field and valid date
                     for viewing in viewings:
@@ -336,6 +342,27 @@ def import_tool(request):
 
                         viewing["validated"] = True
 
+                    # store the uploaded file in the database
+                    print("Going to save the file now!!!")
+                    importedFile = ImportedFile(
+                        user=request.user,
+                        name=viewings_file.name,
+                        upload=File(name=viewings_file.name,
+                                    file=StringIO(json.dumps(viewings,
+                                                             sort_keys=True,
+                                                             indent=2)))
+                    )
+                    importedFile.save()
+                    # update the list of uploaded_files
+                    uploaded_files = [uf.name for uf
+                                      in (ImportedFile.objects
+                                          .filter(user=request.user))]
+
+                    # set loaded_file in request.session
+                    IFobj = ImportedFile.objects.get(user=request.user,
+                                                     name=viewings_file.name)
+                    request.session["file_loaded"] = IFobj.pk
+
                     # cache the uploaded viewings
                     request.session["uploaded_viewings"] = {
                         (ii + 1): viewing
@@ -356,26 +383,6 @@ def import_tool(request):
                                                     .rsplit(".",
                                                             1)[0])
                               })
-            else:
-                # process POST request with processed viewing
-                post_request = json.loads(request.body)
-                if "validated" in post_request:
-                    viewing_number = post_request["validated"]
-                    request.session["uploaded_viewings"][viewing_number]["validated"] = True
-                    request.session.modified = True
-                    # write updated viewings to file
-                    with (ImportedFile
-                          .objects
-                          .get(pk=request.session["file_loaded"])
-                          .upload
-                          .open("w")) as jsf:
-                        json.dump(
-                            [viewing for k, viewing
-                             in request.session["uploaded_viewings"].items()],
-                            jsf, indent=2, sort_keys=True
-                        )
-                # render the import page with the updated validated flag
-                return redirect("import_tool")
 
     elif request.method == "GET":
         # get request to load previously imported file

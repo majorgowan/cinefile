@@ -16,6 +16,9 @@
                         <td></td>
                         <td class="help_text">
                             ({{ field.help_text }})
+                            {% if field.errors %}
+                                {{ field.errors }}
+                            {% endif %}
                         </td>
                     </tr>
                 {% endif %}
