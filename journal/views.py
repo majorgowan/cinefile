@@ -24,10 +24,11 @@ def index(request, user=None):
         # check for existence of user
         JUser = apps.get_model('accounts', 'JUser')
         matches = JUser.objects.filter(username=user)
-        if len(matches) == 1:
+        if matches.exists():
             user_obj = matches[0]
             username = user_obj.username
             viewings = user_obj.viewings.all().order_by("-date")
+
     elif request.user.is_authenticated:
         # use logged-in user
         viewings = request.user.viewings.all().order_by("-date")

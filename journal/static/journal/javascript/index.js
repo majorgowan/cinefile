@@ -30,16 +30,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // implement "view another cinefile" input (on keyup, navigate to profile if exists)
-    const viewAnotherProfileInput = document.getElementById("view_another_profile_input");
-    viewAnotherProfileInput.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            // enter key
-            const other_profile = viewAnotherProfileInput.value;
-            window.location.pathname = "/journal/profile/" + other_profile;
-        }
-    });
-
     // search bar for TMDB title search
     const tmdbSearchText = document.querySelector("#tmdb_search_text");
     const tmdbSearchSearchButton = document.querySelector("#tmdb_search_search_button");

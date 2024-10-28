@@ -296,7 +296,13 @@ body {
   text-decoration: underline;
 }
 
-
+#no_such_user_div {
+    font-size: 50px;
+    font-variant: small-caps;
+    margin: 80px;
+    padding: 80px;
+    color: firebrick;
+}
 .viewing_row {
     display: grid;
     grid-template-columns: auto 18%;

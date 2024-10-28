@@ -34,10 +34,6 @@
 {% endblock %}
 
 {% block sidebar_links %}
-    <li><label id="view_another_label">view another cinefile<BR></label>
-        <input id="view_another_profile_input"
-               type="text"
-               placeholder=" username" /></li><BR>
     {% if user.is_authenticated and username == user.username %}
         <li><a id="add_viewing_link">Add viewing</a></li><BR>
         <li><a id="export_data_link"
@@ -51,6 +47,11 @@
 {% endblock %}
 
 {% block body %}
+{% if username == "" %}
+    <div id="no_such_user_div">
+        <p>Sorry, no such cinefile</p>
+    </div>
+{% endif %}
 <div class="movie_list" id="profile_movie_list"
      data-profile_url="{% url 'profile' %}">
     {% for viewing in viewings %}

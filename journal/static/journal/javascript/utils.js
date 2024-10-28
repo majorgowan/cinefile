@@ -11,6 +11,16 @@ document.addEventListener("DOMContentLoaded", function() {
         aboutModal.style.display = "none";
         modalOverlay.style.display = "none";
     });
+
+    // implement "view another cinefile" input (on keyup, navigate to profile if exists)
+    const viewAnotherProfileInput = document.getElementById("view_another_profile_input");
+    viewAnotherProfileInput.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            // enter key
+            const other_profile = viewAnotherProfileInput.value;
+            window.location.pathname = "/journal/profile/" + other_profile;
+        }
+    });
 });
 
 // script for parsing browser cookie

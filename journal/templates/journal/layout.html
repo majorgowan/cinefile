@@ -50,6 +50,10 @@
             </div>
 
             <ul class="sidebar_list">
+                <li><label id="view_another_label">view another cinefile<BR></label>
+                    <input id="view_another_profile_input"
+                           type="text"
+                           placeholder=" username" /></li><BR>
                 {% block sidebar_links %}
                 {% endblock %}
                 {% if user.is_authenticated %}
