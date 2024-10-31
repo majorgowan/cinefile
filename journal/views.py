@@ -244,6 +244,11 @@ def import_tool(request):
                 del request.session["uploaded_file"]
                 del request.session["uploaded_viewings"]
 
+            elif request_action == "close_viewings_file":
+                del request.session["file_loaded"]
+                del request.session["uploaded_file"]
+                del request.session["uploaded_viewings"]
+
             elif "validated" in json_request:
                 # it must be an update to a viewing in the import list
 
@@ -251,7 +256,6 @@ def import_tool(request):
                 request.session["uploaded_viewings"][viewing_number]["validated"] = True
                 request.session.modified = True
                 # write updated viewings to file
-                # TODO: this doesn't seem to be permanent
                 print("updating file on disk!")
                 with (ImportedFile
                         .objects

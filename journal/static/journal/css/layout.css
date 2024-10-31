@@ -256,13 +256,15 @@ body {
 }
 
 /* The Close Button */
+.close_corner {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+}
 .close {
     color: #777;
     font-size: 40px;
     font-weight: bold;
-    position: absolute;
-    top: 5px;
-    right: 15px;
 }
 .close:hover,
 .close:focus {

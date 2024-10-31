@@ -44,10 +44,15 @@
     <div id="import_div">
         <div id="import_viewing_list">
             {% if viewings %}
-                <span id="import_file_loaded_span">{{ uploaded_file }}&emsp;
-                <button class="select_button"
-                        id="delete_viewings_file_button"
-                        data-delete_url="{% url 'import_tool' %}">Delete</button></span>
+                <span id="import_file_loaded_span">
+                    {{ uploaded_file }}
+                    &emsp;
+                    <button class="select_button"
+                            id="delete_viewings_file_button"
+                            data-delete_url="{% url 'import_tool' %}">Delete</button>
+                    &ensp;
+                    <span class="close" data-close_url="{% url 'import_tool' %}">&times;</span>
+                </span>
                 <ul id="uploaded_titles_list">
                 {% for viewing in viewings %}
                     {% if viewing.validated %}
@@ -90,7 +95,7 @@
                  data-get_session_url="{% url 'get_session_data' %}"
                  data-import_url="{% url 'import_tool' %}">
                 <div class="top_corner">
-                    <span class="close">&times;</span>
+                    <span class="close close_corner">&times;</span>
                 </div>
                 {% include "journal/viewing_form.html" %}
             </div>

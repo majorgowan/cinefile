@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const tmdbDetailModal = document.querySelector("#tmdb_detail_modal");
     const tmdbDetailModalContent = document.querySelector("#tmdb_detail_modal_content");
     const tmdbDetailClose = tmdbDetailModal.querySelector(".close");
+    const importViewingListClose = importViewingList.querySelector(".close");
     // for new viewing form
     const newViewingFormImport = document.querySelector("#new_viewing_form_import_div");
     const newViewingFormClose = newViewingFormImport.querySelector(".close");
@@ -203,7 +204,30 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // close buttons
+    // implement close buttons
+    importViewingListClose.addEventListener("click", function() {
+        const close_url = importViewingListClose.dataset["close_url"];
+
+        // Create an XMLHttpRequest object
+        const xhr_close_file = new XMLHttpRequest();
+        xhr_close_file.open("POST", close_url, false);
+
+        // Set header data
+        xhr_close_file.setRequestHeader("X-CSRFToken", get_cookie("csrftoken"));
+        xhr_close_file.setRequestHeader('Content-Type', 'application/json');
+
+        // Set the callback function for when the response is received
+        xhr_close_file.onload = function() {
+            if (xhr_close_file.status === 200) {
+                console.log("file closed");
+                window.location.replace(close_url);
+            }
+        }
+
+        xhr_close_file.send(JSON.stringify({
+            action: "close_viewings_file"
+        }));
+    });
     tmdbDetailClose.addEventListener("click", function() {
         tmdbDetailModal.style.display = "none";
         modalOverlay.style.display = "none";
