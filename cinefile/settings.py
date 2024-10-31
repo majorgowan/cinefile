@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import dj_database_url
 
 from pathlib import Path
+
+DEPLOY_LOCATION = os.getenv("DEPLOY_LOCATION", "heroku")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6(=-khoq_d#dsi-z&gmsr(-779sf*nh74o+a^=mzwt=$ixnte8'
+if DEPLOY_LOCATION == "heroku":
+    SECRET_KEY = os.getenv("SECRET_KEY")
+else:
+    SECRET_KEY = 'django-insecure-6(=-khoq_d#dsi-z&gmsr(-779sf*nh74o+a^=mzwt=$ixnte8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if DEPLOY_LOCATION == "heroku":
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["marks-cinefile.herokuapp.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -76,12 +85,18 @@ WSGI_APPLICATION = 'cinefile.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEPLOY_LOCATION == "heroku":
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_USER_MODEL = 'accounts.JUser'
 
@@ -118,7 +133,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
+if DEPLOY_LOCATION == "heroku":
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
@@ -130,6 +146,12 @@ MEDIA_URL = '/media/'  # URL prefix for serving media files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+# for secure deployment
+if DEPLOY_LOCATION == "heroku":
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
