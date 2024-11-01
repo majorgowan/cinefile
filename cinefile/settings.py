@@ -35,7 +35,7 @@ if DEPLOY_LOCATION == "heroku":
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ["marks-cinefile*.herokuapp.com",
+ALLOWED_HOSTS = [".herokuapp.com",
                  "localhost",
                  "127.0.0.1"]
 
