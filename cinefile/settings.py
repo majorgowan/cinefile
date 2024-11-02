@@ -14,7 +14,7 @@ import dj_database_url
 
 from pathlib import Path
 
-DEPLOY_LOCATION = os.getenv("DEPLOY_LOCATION", "heroku")
+DEPLOY_LOCATION = os.getenv("DEPLOY_LOCATION", "localhost")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -149,9 +150,29 @@ STORAGES = {
     },
 }
 
-# Media files (user uploaded files)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # path to the media directory
-MEDIA_URL = '/media/'  # URL prefix for serving media files
+# for media files (user uploaded files)
+if DEPLOY_LOCATION == "heroku":
+    STORAGES["default"] = {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+        }
+    }
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+    MEDIA_ROOT = "/media/"
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+else:
+    STORAGES["default"] = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+        }
+    }
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # path to the media directory
+    MEDIA_URL = '/media/'  # URL prefix for serving media files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
