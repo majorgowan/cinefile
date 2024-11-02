@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.keyCode === 13) {
             // enter key
             const other_profile = viewAnotherProfileInput.value;
-            window.location.pathname = "/journal/profile/" + other_profile;
+            window.location.pathname = "/profile/" + other_profile;
         }
     });
 });
