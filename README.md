@@ -1,7 +1,9 @@
 # Cinefile: your personal cinema journal
 - by Mark Fruman mark.fruman@yahoo.com
 
-Deployed at https://marks-cinefile-b5664d4051bf.herokuapp.com/journal/
+Deployed at https://marks-cinefile-b5664d4051bf.herokuapp.com/
+
+<!-- Deployed at https://www.cinefile.me -->
 
 ![Cinefile profile page](kenton_cinefile.png)
 

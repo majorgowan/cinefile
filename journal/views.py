@@ -18,6 +18,7 @@ def index(request, user=None):
     :param user: str
         username of the user whose journal to display
     """
+    # TODO: default to a welcome screen, not "no such cinefile"
     viewings = []
     username = ""
     if user is not None:
@@ -108,6 +109,7 @@ def new_viewing(request):
     Register a new Viewing instance (and a new Film instance if the film
     is not already in the database)
     """
+    # TODO: record date entered with date viewed optional
     if request.method == "POST":
         form = request.POST
 
