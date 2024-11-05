@@ -36,6 +36,7 @@ else:
     DEBUG = True
 
 ALLOWED_HOSTS = [".herokuapp.com",
+                 ".cinefile.me",
                  "localhost",
                  "127.0.0.1"]
 
@@ -182,6 +183,7 @@ if DEPLOY_LOCATION == "heroku":
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
