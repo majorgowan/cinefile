@@ -48,6 +48,8 @@
 
 {% block body %}
 {% if username == "" %}
+    {% include "journal/welcome.html" %}
+{% elif username == "__no_such_user__" %}
     <div id="no_such_user_div">
         <p>Sorry, no such cinefile</p>
     </div>

@@ -5,5 +5,6 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 # custom user
 class JUser(AbstractUser):
-    # identical to normal User class (for now)
-    pass
+    # for making user's file private
+    private = models.BooleanField(default=False)
+    displayname = models.CharField(max_length=32, blank=True)

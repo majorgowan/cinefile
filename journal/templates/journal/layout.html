@@ -42,18 +42,21 @@
     <div class="wrapper">
         <div class="sidebar">
             <div class="app_title">
-                <h4>
-                    {% if username %}
-                        {{ username }}'s Cinefile
+                <h5>
+                    {% if displayname %}
+                        {{ displayname }}'s<BR>Cinefile
+                    {% elif username %}
+                        {{ username }}'s<BR>Cinefile
                     {% else %}
                         Cinefile!!
                     {% endif %}
                     <span class="beta">beta</span>
-                </h4>
+                </h5>
             </div>
 
             <ul class="sidebar_list">
-                <li><label id="view_another_label">view another cinefile<BR></label>
+                <li><label for="view_another_profile_input"
+                           id="view_another_label">view another cinefile<BR></label>
                     <input id="view_another_profile_input"
                            type="text"
                            placeholder=" username" /></li><BR>

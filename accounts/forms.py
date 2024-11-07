@@ -24,10 +24,14 @@ class SignupForm(forms.ModelForm):
                                 help_text="reenter same password")
     email = forms.CharField(label="Email address",
                             widget=forms.EmailInput)
+    displayname = forms.CharField(label="Display Name")
+    private = forms.BooleanField(label="Make Cinefile private",
+                                 initial=False)
 
     class Meta:
         model = JUser
-        fields = ("username", "password1", "password2", "email")
+        fields = ("username", "password1", "password2",
+                  "email", "displayname", "private")
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

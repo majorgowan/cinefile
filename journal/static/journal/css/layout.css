@@ -16,14 +16,25 @@ body {
     font-weight: bold;
     font-family: impact, sans-serif;
 }
+.cinefile {
+    font-family: Garamond, serif;
+    font-weight: bold;
+    color: firebrick;
+}
+#welcome_div {
+    font-size: 35px;
+    margin: 100px;
+    padding: 0;
+    color: darkolive;
+}
 
 .wrapper {
     display: flex;
 }
 .main_block {
     font-size: 27px;
-    margin-left: 15%;
-    width: 85%;
+    margin-left: 16%;
+    width: 84%;
     background-color: inherit;
     display: flex;
     flex-direction: column;
@@ -58,7 +69,7 @@ body {
 }
 
 .sidebar {
-    width: 15%;
+    width: 16%;
     height: 100vh;
     min-height: 200px;
     overflow: auto;
@@ -131,7 +142,7 @@ body {
     width: 40%;
     padding: 50px;
     max-height: 200px;
-    background-color: lightsteelblue;
+    background-color: aliceblue; /* lightsteelblue; */
 }
 #about_modal .cinefile {
     font-family: Garamond, serif;

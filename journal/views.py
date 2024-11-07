@@ -21,6 +21,8 @@ def index(request, user=None):
     # TODO: default to a welcome screen, not "no such cinefile"
     viewings = []
     username = ""
+    displayname = ""
+
     if user is not None:
         # check for existence of user
         JUser = apps.get_model('accounts', 'JUser')
@@ -28,15 +30,21 @@ def index(request, user=None):
         if matches.exists():
             user_obj = matches[0]
             username = user_obj.username
+            displayname = user_obj.displayname
             viewings = user_obj.viewings.all().order_by("-date")
+        else:
+            username = "__no_such_user__"
 
     elif request.user.is_authenticated:
         # use logged-in user
         viewings = request.user.viewings.all().order_by("-date")
         username = request.user.username
+        displayname = request.user.displayname
+
     return render(request, "journal/index.html",
                   {
                       "username": username,
+                      "displayname": displayname,
                       "viewings": viewings,
                   })
 
