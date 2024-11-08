@@ -1,12 +1,17 @@
 {% extends "journal/layout.html" %}
 
+{% block sidebar_links %}
+    <li><a id="my_profile_link"
+           href="{% url 'profile' %}">Back</a></li>
+{% endblock %}
+
 {% block body %}
 
 <div class="form_title">
-    Create new <span class="cinefile">Cinefile</span>
+    Modify user settings
 </div>
 <form class="cinefile_form"
-      method="post" action="{% url 'signup' %}" novalidate>
+      method="post" action="{% url 'settings' %}" novalidate>
     {% csrf_token %}
     <div class="signup_login_form">
         <table>
@@ -29,7 +34,7 @@
             {% endfor %}
         </table>
         <div class="form_submit">
-            <button class="select_button" type="submit">Submit</button>
+            <button class="select_button" type="submit">Save Changes</button>
         </div>
     </div>
 </form>

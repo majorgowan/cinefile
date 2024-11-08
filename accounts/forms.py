@@ -49,3 +49,53 @@ class SignupForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class SettingsForm(forms.ModelForm):
+    """
+    For customizing user preferences
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.instance = kwargs.get("instance")
+
+    error_messages = {
+        "invalid_username": "username cannot contain spaces.",
+        "username_exists": "user with that name exists.",
+    }
+
+    username = forms.CharField(label="Username")
+    email = forms.CharField(label="Email address",
+                            widget=forms.EmailInput)
+    displayname = forms.CharField(label="Display Name")
+    private = forms.BooleanField(label="Make Cinefile private",
+                                 required=False)
+
+    class Meta:
+        model = JUser
+        fields = ("username", "email", "displayname", "private")
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if " " in username:
+            raise forms.ValidationError(
+                self.error_messages["invalid_username"],
+                code="invalid_username"
+            )
+        if username != self.instance.username:
+            if JUser.objects.filter(username=username).exists():
+                raise forms.ValidationError(
+                    self.error_messages["username_exists"],
+                    code="username_exists"
+                )
+        return self.cleaned_data.get("username")
+
+    def save(self, commit=True):
+        user = self.instance
+        user.username = self.cleaned_data.get("username")
+        user.displayname = self.cleaned_data.get("displayname")
+        user.email = self.cleaned_data.get("email")
+        user.private = self.cleaned_data.get("private")
+        if commit:
+            user.save()
+        return user

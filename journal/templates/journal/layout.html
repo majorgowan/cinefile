@@ -45,6 +45,8 @@
                 <h5>
                     {% if displayname %}
                         {{ displayname }}'s<BR>Cinefile
+                    {% elif username == "__no_such_user__" %}
+                        Cinefile!!
                     {% elif username %}
                         {{ username }}'s<BR>Cinefile
                     {% else %}
@@ -56,7 +58,7 @@
 
             <ul class="sidebar_list">
                 <li><label for="view_another_profile_input"
-                           id="view_another_label">view another cinefile<BR></label>
+                           id="view_another_label">view a cinefile<BR></label>
                     <input id="view_another_profile_input"
                            type="text"
                            placeholder=" username" /></li><BR>

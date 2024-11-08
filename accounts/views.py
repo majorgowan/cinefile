@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, SettingsForm
 
 
 # Create your views here.
@@ -52,3 +52,20 @@ def user_login(request):
         form = LoginForm()
     return render(request, "accounts/user_login.html",
                   {"form": form})
+
+
+def settings(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = SettingsForm(request.POST, instance=request.user)
+            print(form.is_valid())
+            print(form.errors)
+            if form.is_valid():
+                form.save(commit=True)
+                return HttpResponseRedirect(reverse("profile"))
+        else:
+            form = SettingsForm(instance=request.user)
+        return render(request, "accounts/settings.html",
+                      {"form": form})
+    else:
+        return HttpResponseRedirect(reverse("profile"))

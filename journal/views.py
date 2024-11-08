@@ -22,6 +22,7 @@ def index(request, user=None):
     viewings = []
     username = ""
     displayname = ""
+    private = False
 
     if user is not None:
         # check for existence of user
@@ -31,7 +32,11 @@ def index(request, user=None):
             user_obj = matches[0]
             username = user_obj.username
             displayname = user_obj.displayname
-            viewings = user_obj.viewings.all().order_by("-date")
+            if username != request.user.username and user_obj.private:
+                viewings = []
+                private = True
+            else:
+                viewings = user_obj.viewings.all().order_by("-date")
         else:
             username = "__no_such_user__"
 
@@ -46,6 +51,7 @@ def index(request, user=None):
                       "username": username,
                       "displayname": displayname,
                       "viewings": viewings,
+                      "private": private,
                   })
 
 
