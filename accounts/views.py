@@ -1,14 +1,17 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import (authenticate, login, logout,
+                                 update_session_auth_hash)
 
-from .forms import SignupForm, LoginForm, SettingsForm
+from .forms import (SignupForm, LoginForm, SettingsForm,
+                    ChangePasswordForm, DeleteAccountForm)
 
 
 # Create your views here.
 def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
+        print(form)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse("user_login"))
@@ -58,14 +61,45 @@ def settings(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             form = SettingsForm(request.POST, instance=request.user)
-            print(form.is_valid())
-            print(form.errors)
             if form.is_valid():
                 form.save(commit=True)
                 return HttpResponseRedirect(reverse("profile"))
         else:
             form = SettingsForm(instance=request.user)
         return render(request, "accounts/settings.html",
+                      {"form": form})
+    else:
+        return HttpResponseRedirect(reverse("profile"))
+
+
+def change_password(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = ChangePasswordForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save(commit=True)
+                # prevent logging out user on password change
+                update_session_auth_hash(request, request.user)
+                return HttpResponseRedirect(reverse("settings"))
+        else:
+            form = ChangePasswordForm(instance=request.user)
+        return render(request, "accounts/change_password.html",
+                      {"form": form})
+    else:
+        return HttpResponseRedirect(reverse("profile"))
+
+
+def delete_account(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = DeleteAccountForm(request.POST)
+            if form.is_valid():
+                # delete user
+                request.user.delete()
+                return HttpResponseRedirect(reverse("profile"))
+        else:
+            form = DeleteAccountForm()
+        return render(request, "accounts/delete_account.html",
                       {"form": form})
     else:
         return HttpResponseRedirect(reverse("profile"))

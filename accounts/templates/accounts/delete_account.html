@@ -1,0 +1,47 @@
+{% extends "journal/layout.html" %}
+
+{% block sidebar_links %}
+    <li><a id="my_profile_link"
+           href="{% url 'settings' %}">Back to settings</a></li>
+{% endblock %}
+
+{% block body %}
+
+<div class="form_title">
+    Delete account
+</div>
+<div id="account_delete_div">
+    <p>
+        Are you sure you want to delete the account?!<BR>
+        <b>All data will be lost.  This cannot be undone.</b>
+    </p>
+    <p>
+        Consider exporting your data before deleting.
+    </p>
+</div>
+
+<form class="cinefile_form"
+      method="post" action="{% url 'delete_account' %}" novalidate>
+    {% csrf_token %}
+    <div class="signup_login_form">
+        <table>
+            {% for field in form %}
+                <tr>
+                    <td class="signup_label">{{ field.label_tag }}</td>
+                    <td class="signup_field">{{ field }}</td>
+                </tr>
+                {% if field.errors %}
+                    <td></td>
+                    <td class="help_text">
+                        {{ field.errors }}
+                    </td>
+                {% endif %}
+            {% endfor %}
+        </table>
+        <div class="form_submit">
+            <button class="select_button" type="submit">Delete Account</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

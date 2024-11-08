@@ -44,7 +44,9 @@
         <li><a id="my_profile_link"
              href="{% url 'profile' %}"><span class="username_span">{{ user.username }}</span>'s cinefile</a></li><BR>
     {% endif %}
-    <li><a href="{% url 'settings' %}">User settings</a></li>
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'settings' %}">User settings</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block body %}

@@ -26,7 +26,8 @@ class SignupForm(forms.ModelForm):
                             widget=forms.EmailInput)
     displayname = forms.CharField(label="Display Name")
     private = forms.BooleanField(label="Make Cinefile private",
-                                 initial=False)
+                                 initial=False,
+                                 required=False)
 
     class Meta:
         model = JUser
@@ -99,3 +100,62 @@ class SettingsForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class ChangePasswordForm(forms.ModelForm):
+    """
+    For changing password
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.instance = kwargs.get("instance")
+
+    error_messages = {
+        "wrong_password": "Old password incorrect",
+        "password_mismatch": "Passwords do not match.",
+    }
+
+    old_password = forms.CharField(label="Old Password",
+                                   widget=forms.PasswordInput(
+                                       attrs={"style": "margin: 30px 0"}
+                                   ))
+    password1 = forms.CharField(label="New Password",
+                                widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Confirm New Password",
+                                widget=forms.PasswordInput,
+                                help_text="reenter same password")
+
+    class Meta:
+        model = JUser
+        fields = ("old_password", "password1", "password2",)
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get("old_password")
+        if not self.instance.check_password(old_password):
+            raise forms.ValidationError(
+                self.error_messages["wrong_password"],
+                code="wrong_password",
+            )
+        return old_password
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages["password_mismatch"],
+                code="password_mismatch",
+            )
+        return password2
+
+    def save(self, commit=True):
+        user = self.instance
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
+
+
+class DeleteAccountForm(forms.Form):
+    confirm = forms.BooleanField(label="Confirm delete account",
+                                 initial=False, required=True)

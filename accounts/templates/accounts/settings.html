@@ -2,7 +2,7 @@
 
 {% block sidebar_links %}
     <li><a id="my_profile_link"
-           href="{% url 'profile' %}">Back</a></li>
+           href="{% url 'profile' %}">Back to profile</a></li>
 {% endblock %}
 
 {% block body %}
@@ -30,6 +30,13 @@
                             {% endif %}
                         </td>
                     </tr>
+                {% else %}
+                    {% if field.errors %}
+                        <td></td>
+                        <td class="help_text">
+                            {{ field.errors }}
+                        </td>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </table>
@@ -38,5 +45,15 @@
         </div>
     </div>
 </form>
+<div id="more_settings_actions">
+    <ul>
+        <li>
+            <a href="{% url 'change_password' %}">Change Password</a>
+        </li>
+        <li>
+            <a href="{% url 'delete_account' %}">Delete Account...</a>
+        </li>
+    </ul>
+</div>
 
 {% endblock %}
