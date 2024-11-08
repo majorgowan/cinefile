@@ -18,6 +18,5 @@
 
 ### In Development
 - post entries to X
-- user account management / preferences
 - mobile-friendly version
 - flexibility in import files (field names, CSV file)

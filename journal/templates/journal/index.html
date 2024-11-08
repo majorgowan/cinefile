@@ -65,7 +65,7 @@
      data-profile_url="{% url 'profile' %}">
     {% for viewing in viewings %}
         {% if username == user.username or not viewing.private %}
-            <div class="viewing_row">
+            <div class="viewing_row viewing_private_{{ viewing.private }}">
                 <div class="movie_details">
                     <div class="movie_title">
                         {{ viewing.film.title }} ({{ viewing.film.year }})
@@ -116,6 +116,15 @@
                         <BR><img alt="tv_icon"
                                  width="72px"
                                  src="{% static 'images/old_tv_set.png' %}">
+                    {% endif %}
+                    {% if viewing.private %}
+                        <BR><BR>
+                        <span class="incognito_symbol">
+                            <img alt="private"
+                                 width="30px"
+                                 src="{% static 'images/incognito.svg' %}">
+                        </span>
+                        &nbsp;
                     {% endif %}
                     {% load static %}
                 </div>

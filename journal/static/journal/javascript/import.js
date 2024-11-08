@@ -96,6 +96,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 let searchData = JSON.parse(xhr_search.responseText);
                 let innercontent = process_tmdb_search(searchData);
 
+                // clean query string (otherwise gets contaminated with %blahblah)
+                const decodedQuery = decodeURIComponent(searchData["query"]);
+
                 // add to div and unhide
                 importSearchResultsContent.innerHTML = innercontent;
                 importSearchResults.style.display = "block";
@@ -103,14 +106,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 // add listeners to Next bzw. Previous page links:
                 const previousPageLink = document.querySelector("#previous_page_link");
                 const nextPageLink = document.querySelector("#next_page_link");
+
                 if (previousPageLink !== null) {
                     previousPageLink.addEventListener("click", function() {
-                        search_tmdb_import(searchData["query"], previousPageLink.dataset["page"]);
+                        search_tmdb_import(decodedQuery, previousPageLink.dataset["page"]);
                     });
                 }
                 if (nextPageLink !== null) {
                     nextPageLink.addEventListener("click", function() {
-                        search_tmdb_import(searchData["query"], nextPageLink.dataset["page"]);
+                        search_tmdb_import(decodedQuery, nextPageLink.dataset["page"]);
                     });
                 }
 

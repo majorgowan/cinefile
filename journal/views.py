@@ -226,7 +226,8 @@ def query_viewing(request):
                 "tv_channel": viewing.tv_channel,
                 "streaming_platform": viewing.streaming_platform,
                 "cinema": viewing.cinema,
-                "comments": viewing.comments
+                "comments": viewing.comments,
+                "private": viewing.private
             }
             return JsonResponse(viewing_dict)
         except Viewing.DoesNotExist:

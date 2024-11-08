@@ -348,6 +348,9 @@ body {
     border-style: solid;
     border-width: 2px 0 0 0;
 }
+.viewing_private_True {
+    background-color: lavender;
+}
 .viewing_edit_button {
     font-size: 20px;
 }

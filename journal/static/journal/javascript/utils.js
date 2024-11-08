@@ -186,6 +186,10 @@ function process_new_viewing_form(mode, movieData={}) {
                     newViewingForm.querySelector("#dvd_input").checked = true;
                 }
 
+                if (viewingData.private) {
+                    newViewingForm.querySelector("#viewing_private_checkbox").checked = true;
+                }
+
                 // change "Save" button to "Save Changes"
                 newViewingSaveButton.value = "Save Changes";
                 // unhide "Delete" button
