@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const viewingTMDBButtons = document.querySelectorAll(".viewing_row .tmdb_link_div img");
     const viewingOverviewLinks = document.querySelectorAll(".overview_link");
 
-    // on user clicking "Add" in the sidebar, open the search modal
+    // on user clicking "Add viewing" in the sidebar, open the search modal
     const addViewingLink = document.querySelector("#add_viewing_link");
     if (addViewingLink != null) {
         addViewingLink.onclick = (event) => {
@@ -27,6 +27,57 @@ document.addEventListener("DOMContentLoaded", function() {
             document.querySelector("#tmdb_search_results").style.display = "none";
             modalOverlay.style.display = "block";
             tmdbSearchModal.style.display = "block";
+        }
+    }
+
+    // on user clicking "Follow / Unfollow" link in the sidebar
+    const followLink = document.querySelector('[id$="follow_link"]');
+    // if user not logged in, then there won't be a follow link
+    if (followLink != null) {
+        followLink.onclick = (event) => {
+
+            const follow_url = followLink.dataset["follow_url"];
+            const follower_name = followLink.dataset["follower"];
+            const followed_name = followLink.dataset["followed"];
+
+            let follow_action;
+            const followLink_text = followLink.innerHTML;
+            if (followLink_text.startsWith("Un")) {
+                follow_action = "unfollow";
+            } else {
+                follow_action = "follow";
+            }
+
+            const xhr_follow = new XMLHttpRequest();
+            xhr_follow.open("POST", follow_url, true);
+
+            // Set header data
+            xhr_follow.setRequestHeader("Content-Type", "application/json");
+            xhr_follow.setRequestHeader("X-CSRFToken", get_cookie("csrftoken"));
+
+            xhr_follow.send(JSON.stringify({
+                follower: follower_name,
+                followed: followed_name,
+                action: follow_action
+            }));
+
+            // Set the callback function for when the response is received
+            xhr_follow.onload = function() {
+                if (xhr_follow.status === 200) {
+                    // Process the response data
+
+                    // if success toggle the follow / unfollow
+                    if (followLink_text.startsWith("Un")) {
+                        followLink.innerHTML = followLink_text.replace("Unfollow", "Follow");
+                    } else {
+                        followLink.innerHTML = followLink_text.replace("Follow", "Unfollow");
+                    }
+
+                    // console.log(JSON.parse(xhr_follow.responseText));
+
+                }
+            }
+
         }
     }
 

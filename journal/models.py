@@ -15,8 +15,8 @@ class Film(models.Model):
     starring = models.CharField(max_length=128, blank=True)
     overview = models.CharField(max_length=1024, blank=True)
 
-    def __repr__(self):
-        return f"({self.year}) {self.title} [{self.director}]"
+    def __str__(self):
+        return f"({self.year}) {self.title} [{self.director}] ({self.tmdb})"
 
 
 class Viewing(models.Model):
@@ -35,8 +35,21 @@ class Viewing(models.Model):
     cinema = models.CharField(max_length=32, blank=True)
     comments = models.TextField(max_length=4096, blank=True)
 
-    def __repr__(self):
-        return f"({self.user}) {self.film.title}"
+    def __str__(self):
+        return f"{self.pk} ({self.user}) {self.film.title} {self.date}"
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                 on_delete=models.CASCADE,
+                                 related_name="following")
+    followed = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                 on_delete=models.CASCADE,
+                                 related_name="followers")
+    date = models.DateField(default=datetime.date.today)
+
+    def __str__(self):
+        return f"{self.follower} follows {self.followed} since {self.date}"
 
 
 class ImportedFile(models.Model):
@@ -46,3 +59,6 @@ class ImportedFile(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField(default=datetime.date.today)
     upload = models.FileField(upload_to="user_imports")
+
+    def __str__(self):
+        return f"({self.user}) {self.name}"

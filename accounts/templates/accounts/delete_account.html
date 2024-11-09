@@ -1,5 +1,22 @@
 {% extends "journal/layout.html" %}
 
+{% block headblock %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let accountDeleteButton = document.getElementById("account_delete_button");
+            let confirmCheckbox = document.querySelector('input[type="checkbox"]');
+
+            confirmCheckbox.addEventListener("change", function(event) {
+                if (confirmCheckbox.checked) {
+                    accountDeleteButton.disabled = false;
+                } else {
+                    accountDeleteButton.disabled = true;
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block sidebar_links %}
     <li><a id="my_profile_link"
            href="{% url 'settings' %}">Back to settings</a></li>
@@ -39,7 +56,10 @@
             {% endfor %}
         </table>
         <div class="form_submit">
-            <button class="select_button delete_button" type="submit"><BR>&emsp;Delete Account&emsp;<BR><BR></button>
+            <button id="account_delete_button"
+                    class="select_button delete_button"
+                    disabled
+                    type="submit"><BR>&emsp;Delete Account&emsp;<BR><BR></button>
         </div>
     </div>
 </form>

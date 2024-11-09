@@ -404,9 +404,6 @@ function process_new_viewing_form(mode, movieData={}) {
                     xhr_validate.open("POST", validate_url, false);
                     xhr_validate.setRequestHeader("Content-Type", "application/json");
                     xhr_validate.setRequestHeader("X-CSRFToken", get_cookie("csrftoken"));
-                    console.log(JSON.stringify({
-                        validated: movieData["import_counter"]
-                    }));
                     xhr_validate.send(JSON.stringify({
                         validated: movieData["import_counter"]
                     }));

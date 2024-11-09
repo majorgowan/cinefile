@@ -7,10 +7,11 @@ from io import StringIO
 
 import json
 from . import tmdb
-from .models import Viewing, Film, ImportedFile
+from .models import Viewing, Film, ImportedFile, Follow
 
 
 # Create your views here.
+
 def index(request, user=None):
     """
     Basic page showing journal for logged-in user or another user if specified.
@@ -18,11 +19,11 @@ def index(request, user=None):
     :param user: str
         username of the user whose journal to display
     """
-    # TODO: default to a welcome screen, not "no such cinefile"
     viewings = []
     username = ""
     displayname = ""
     private = False
+    following = False
 
     if user is not None:
         # check for existence of user
@@ -31,6 +32,10 @@ def index(request, user=None):
         if matches.exists():
             user_obj = matches[0]
             username = user_obj.username
+            # check if following this user
+            if Follow.objects.filter(follower=request.user,
+                                     followed=user_obj).exists():
+                following = True
             displayname = user_obj.displayname
             if username != request.user.username and user_obj.private:
                 viewings = []
@@ -52,6 +57,7 @@ def index(request, user=None):
                       "displayname": displayname,
                       "viewings": viewings,
                       "private": private,
+                      "following": following,
                   })
 
 
@@ -234,6 +240,40 @@ def query_viewing(request):
             return JsonResponse({
                 "error": "viewing_id not found in database"
             })
+
+
+def follow(request):
+    """
+    Create or delete a follow relationship between two users
+    """
+    JUser = apps.get_model('accounts', 'JUser')
+    if request.method == "POST":
+        instructions = json.loads(request.body)
+        follower = instructions.get("follower", "")
+        if follower != request.user.username:
+            return JsonResponse({"error": "follower not active user"})
+        followed = instructions.get("followed", "")
+        # find followed user id
+        try:
+            followed_user_obj = JUser.objects.get(username=followed)
+        except JUser.DoesNotExist as e:
+            return JsonResponse({"error": "followed user does not exist"})
+
+        action = instructions.get("action")
+        if action == "follow":
+            follow_obj = Follow(follower=request.user,
+                                followed=followed_user_obj)
+            follow_obj.save()
+            return JsonResponse({"result": "now following!"})
+        else:
+            # find the follow object and delete it
+            follow_objs = Follow.objects.filter(follower=request.user,
+                                                followed=followed_user_obj)
+            print(follow_objs)
+            for follow_obj in follow_objs:
+                follow_obj.delete()
+
+            return JsonResponse({"result": "no longer following!"})
 
 
 def import_tool(request):

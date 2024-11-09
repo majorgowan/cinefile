@@ -41,8 +41,24 @@
         <li><a id="import_data_link"
                href="{% url 'import_tool' %}">Import data</a></li><BR>
     {% elif user.is_authenticated %}
+        {% if following %}
+            <li>
+                <a id="unfollow_link"
+                   data-follow_url="{% url 'follow' %}"
+                   data-followed="{{ username }}"
+                   data-follower="{{ user.username }}">Unfollow {{ username }}</a>
+            </li>
+        {% else %}
+            <li>
+                <a id="follow_link"
+                   data-follow_url="{% url 'follow' %}"
+                   data-followed="{{ username }}"
+                   data-follower="{{ user.username }}">Follow {{ username }}</a>
+            </li>
+        {% endif %}
+        <BR>
         <li><a id="my_profile_link"
-             href="{% url 'profile' %}"><span class="username_span">{{ user.username }}</span>'s cinefile</a></li><BR>
+             href="{% url 'profile' %}">My cinefile</a></li><BR>
     {% endif %}
     {% if user.is_authenticated %}
         <li><a href="{% url 'settings' %}">User settings</a></li>

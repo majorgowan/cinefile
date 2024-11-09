@@ -8,8 +8,9 @@
 - https://marks-cinefile-b5664d4051bf.herokuapp.com/
 
 ### Features
-- keep record of films you see in cinemas and video
+- keep record of films you see in cinemas and on video
 - write and edit comments beziehungsweise reviews
+- follow other accounts
 - retrieve film data from [The Movie Database (TMDB)](https://www.themoviedb.org/)
 - journal entries can be public or private
 - import data from local JSON file
@@ -20,4 +21,3 @@
 - post entries to X
 - mobile-friendly version
 - flexibility in import files (field names, CSV file)
-- follow other accounts
