@@ -20,3 +20,4 @@
 - post entries to X
 - mobile-friendly version
 - flexibility in import files (field names, CSV file)
+- follow other accounts

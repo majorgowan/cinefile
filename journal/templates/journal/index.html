@@ -65,7 +65,8 @@
      data-profile_url="{% url 'profile' %}">
     {% for viewing in viewings %}
         {% if username == user.username or not viewing.private %}
-            <div class="viewing_row viewing_private_{{ viewing.private }}">
+            <div class="viewing_row viewing_private_{{ viewing.private }}"
+                 id="viewing_{{ viewing.id }}">
                 <div class="movie_details">
                     <div class="movie_title">
                         {{ viewing.film.title }} ({{ viewing.film.year }})
