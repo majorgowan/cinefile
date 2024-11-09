@@ -48,7 +48,7 @@
                    data-followed="{{ username }}"
                    data-follower="{{ user.username }}">Unfollow {{ username }}</a>
             </li>
-        {% else %}
+        {% elif username != "__no_such_user__" %}
             <li>
                 <a id="follow_link"
                    data-follow_url="{% url 'follow' %}"
