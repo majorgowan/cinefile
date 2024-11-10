@@ -38,9 +38,10 @@ def index(request, user=None):
             user_obj = matches[0]
             username = user_obj.username
             # check if following this user
-            if Follow.objects.filter(follower=request.user,
-                                     followed=user_obj).exists():
-                follows = True
+            if request.user.is_authenticated:
+                if Follow.objects.filter(follower=request.user,
+                                         followed=user_obj).exists():
+                    follows = True
             displayname = user_obj.displayname
             if username != request.user.username and user_obj.private:
                 viewings = []
