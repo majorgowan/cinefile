@@ -34,6 +34,19 @@
 {% endblock %}
 
 {% block sidebar_links %}
+    {% if user.is_authenticated %}
+        {% if following %}
+            <select name="following_chooser"
+                    id="following_chooser"
+                    data-url="{% url 'profile_base' %}">
+                <option value="">-- followed 'files --</option>
+                {% for followed in following %}
+                    <option value="{{ followed }}">{{ followed }}</option>
+                {% endfor %}
+            </select><BR><BR>
+        {% endif %}
+    {% endif %}
+
     {% if user.is_authenticated and username == user.username %}
         <li><a id="add_viewing_link">Add viewing</a></li><BR>
         <li><a id="export_data_link"
@@ -41,7 +54,7 @@
         <li><a id="import_data_link"
                href="{% url 'import_tool' %}">Import data</a></li><BR>
     {% elif user.is_authenticated %}
-        {% if following %}
+        {% if follows %}
             <li>
                 <a id="unfollow_link"
                    data-follow_url="{% url 'follow' %}"
@@ -58,7 +71,7 @@
         {% endif %}
         <BR>
         <li><a id="my_profile_link"
-             href="{% url 'profile' %}">My cinefile</a></li><BR>
+             href="{% url 'index' %}">My cinefile</a></li><BR>
     {% endif %}
     {% if user.is_authenticated %}
         <li><a href="{% url 'settings' %}">User settings</a></li>
@@ -77,8 +90,7 @@
         <p>Sorry, no such cinefile</p>
     </div>
 {% endif %}
-<div class="movie_list" id="profile_movie_list"
-     data-profile_url="{% url 'profile' %}">
+<div class="movie_list" id="profile_movie_list">
     {% for viewing in viewings %}
         {% if username == user.username or not viewing.private %}
             <div class="viewing_row viewing_private_{{ viewing.private }}"

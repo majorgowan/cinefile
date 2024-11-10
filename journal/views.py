@@ -23,7 +23,12 @@ def index(request, user=None):
     username = ""
     displayname = ""
     private = False
-    following = False
+    follows = False
+    following = []
+
+    if request.user.is_authenticated:
+        following = [f.followed.username
+                     for f in request.user.following.all()]
 
     if user is not None:
         # check for existence of user
@@ -35,7 +40,7 @@ def index(request, user=None):
             # check if following this user
             if Follow.objects.filter(follower=request.user,
                                      followed=user_obj).exists():
-                following = True
+                follows = True
             displayname = user_obj.displayname
             if username != request.user.username and user_obj.private:
                 viewings = []
@@ -57,6 +62,7 @@ def index(request, user=None):
                       "displayname": displayname,
                       "viewings": viewings,
                       "private": private,
+                      "follows": follows,
                       "following": following,
                   })
 
@@ -439,6 +445,7 @@ def import_tool(request):
                 return render(request, "journal/import.html",
                               {
                                   "username": request.user.username,
+                                  "displayname": request.user.displayname,
                                   "viewings": viewings,
                                   "uploaded_files": uploaded_files,
                                   "uploaded_file": (uploaded_file
@@ -479,6 +486,7 @@ def import_tool(request):
     return render(request, "journal/import.html",
                   {
                       "username": request.user.username,
+                      "displayname": request.user.displayname,
                       "viewings": viewings,
                       "uploaded_files": uploaded_files,
                       "uploaded_file": uploaded_file.rsplit(".", 1)[0]

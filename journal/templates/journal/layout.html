@@ -62,12 +62,13 @@
                            id="view_another_label">view a cinefile<BR></label>
                     <input id="view_another_profile_input"
                            type="text"
-                           placeholder=" username" /></li><BR>
+                           placeholder=" username" /></li>
                 {% block sidebar_links %}
                 {% endblock %}
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'user_login' %}">Log out</a></li>
                 {% else %}
+                    <BR>
                     <li><a href="{% url 'user_login'%}">Log in</a></li>
                     <li><a href="{% url 'signup' %}">New Cinefile</a></li>
                 {% endif %}

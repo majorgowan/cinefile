@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // on user clicking "Follow / Unfollow" link in the sidebar
+    // implement "Follow / Unfollow" link in the sidebar
     const followLink = document.querySelector('[id$="follow_link"]');
     // if user not logged in, then there won't be a follow link
     if (followLink != null) {
@@ -74,11 +74,22 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
 
                     // console.log(JSON.parse(xhr_follow.responseText));
-
                 }
             }
-
         }
+    }
+
+    // implement following chooser in sidebar (to visit a 'file you're following)
+    const followingChooser = document.querySelector("#following_chooser");
+    // if user not logged in, then there won't be a follow link
+    if (followingChooser != null) {
+        followingChooser.addEventListener("change", function(event) {
+            const chosen_value = event.target.value;
+            const profile_url = event.target.dataset["url"];
+            const full_profile_url = profile_url + chosen_value;
+            console.log(full_profile_url);
+            window.location.replace(full_profile_url);
+        });
     }
 
     // search bar for TMDB title search

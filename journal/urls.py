@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="profile"),
+    path("", views.index, name="index"),
+    path("profile/", views.index, name="profile_base"),
     path("profile/<str:user>", views.index, name="profile"),
     path("tmdb/<str:api_command>", views.tmdb_search, name="tmdb"),
     path("new_viewing", views.new_viewing, name="new_viewing"),

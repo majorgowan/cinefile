@@ -101,8 +101,8 @@ body {
     background-color: bisque;
     color: darkred;
     font-family: Arial;
-    font-size: 20px;
-    line-height: 1.7;
+    font-size: 18px;
+    line-height: 1.6;
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
@@ -133,13 +133,17 @@ body {
     text-decoration: underline;
 }
 #view_another_label {
-    font-size: 17px;
+    font-size: 16px;
 }
 #view_another_profile_input {
     width: 80%;
-    font-size: 20px;
+    font-size: 18px;
     position: relative;
     top: -5px;
+}
+#following_chooser {
+    font-size: 18px;
+    background: inherit;
 }
 
 .overlay {

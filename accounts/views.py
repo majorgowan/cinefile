@@ -32,7 +32,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect(reverse("profile"))
+                    return HttpResponseRedirect(reverse("index"))
                 else:
                     error_message = "The account is disabled."
                     return render(request,
@@ -63,13 +63,13 @@ def settings(request):
             form = SettingsForm(request.POST, instance=request.user)
             if form.is_valid():
                 form.save(commit=True)
-                return HttpResponseRedirect(reverse("profile"))
+                return HttpResponseRedirect(reverse("index"))
         else:
             form = SettingsForm(instance=request.user)
         return render(request, "accounts/settings.html",
                       {"form": form})
     else:
-        return HttpResponseRedirect(reverse("profile"))
+        return HttpResponseRedirect(reverse("index"))
 
 
 def change_password(request):
@@ -86,7 +86,7 @@ def change_password(request):
         return render(request, "accounts/change_password.html",
                       {"form": form})
     else:
-        return HttpResponseRedirect(reverse("profile"))
+        return HttpResponseRedirect(reverse("index"))
 
 
 def delete_account(request):
@@ -96,10 +96,10 @@ def delete_account(request):
             if form.is_valid():
                 # delete user
                 request.user.delete()
-                return HttpResponseRedirect(reverse("profile"))
+                return HttpResponseRedirect(reverse("index"))
         else:
             form = DeleteAccountForm()
         return render(request, "accounts/delete_account.html",
                       {"form": form})
     else:
-        return HttpResponseRedirect(reverse("profile"))
+        return HttpResponseRedirect(reverse("index"))
