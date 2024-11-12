@@ -1,0 +1,99 @@
+{% extends "journal/mobile_layout.html" %}
+
+{% block headblock %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'journal/javascript/index.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+{% if private %}
+    <div id="private_cinefile" class="message_div">
+        <p>That user's <span class="cinefile">cinefile</span> is private.</p>
+    </div>
+{% elif username == "" %}
+    {% include "journal/welcome.html" %}
+{% elif username == "__no_such_user__" %}
+    <div id="no_such_user_div" class="message_div">
+        <p>Sorry, no such cinefile</p>
+    </div>
+{% endif %}
+<div class="movie_list" id="profile_movie_list">
+    {% for viewing in viewings %}
+        {% if username == user.username or not viewing.private %}
+            <div class="viewing_row viewing_private_{{ viewing.private }}"
+                 id="viewing_{{ viewing.id }}">
+                <div class="movie_details">
+                    <div class="movie_title">
+                        {{ viewing.film.title }} ({{ viewing.film.year }})
+                        {% if user.is_authenticated and username == user.username %}
+                            &ensp;
+                            <span data-viewing_id="{{ viewing.id }}" class="viewing_edit_button">&#x1F589;</span>
+                        {% endif %}
+                    </div>
+                    <div class="movie_info">
+                        <div class="tmdb_link_div">
+                            <img alt="tmdb_logo"
+                                 data-tmdb_id="{{ viewing.film.tmdb }}"
+                                 width="30px"
+                                 src="{% static 'images/tmdb.svg' %}">
+                        </div>
+                        <div class="movie_people">
+                            Director: {{ viewing.film.director }}<BR>
+                            Starring: {{ viewing.film.starring }}<BR>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie_location">
+                    {% if user.is_authenticated and username == user.username %}
+                        {{ viewing.date | date:"F j, Y" }}
+                        {% if viewing.location %}
+                            <br>{{ viewing.location }}
+                        {% endif %}
+                        {% if viewing.cinema %}
+                            <br>{{ viewing.cinema }}
+                        {% endif %}
+                        {% if viewing.tv_channel %}
+                            <br>{{ viewing.tv_channel }}
+                        {% endif %}
+                        {% if viewing.streaming_platform %}
+                            <br>{{ viewing.streaming_platform }}
+                        {% endif %}
+                        {% if viewing.video_medium == "DVD/PPV" %}
+                            <br>DVD / PPV
+                        {% endif %}
+                    {% else %}
+                        {{ viewing.date | date:"F, Y" }}
+                    {% endif %}
+                    {% if viewing.cinema_or_tv == "Cinema" %}
+                        <BR><img alt="cinema_icon"
+                                 width="100px"
+                                 src="{% static 'images/cinemamarquee_top_phase.png' %}">
+                    {% elif viewing.cinema_or_tv == "Video" %}
+                        <BR><img alt="tv_icon"
+                                 width="72px"
+                                 src="{% static 'images/old_tv_set.png' %}">
+                    {% endif %}
+                    {% if viewing.private %}
+                        <BR><BR>
+                        <span class="incognito_symbol">
+                            <img alt="private"
+                                 width="30px"
+                                 src="{% static 'images/incognito.svg' %}">
+                        </span>
+                        &nbsp;
+                    {% endif %}
+                    {% load static %}
+                </div>
+                <div class="movie_comment">
+                    {{ viewing.comments | linebreaks }}
+                </div>
+                <div class="movie_overview">
+                    <a class="overview_link" data-overview_id="overview_{{ forloop.counter }}">show tmdb overview</a>
+                    <span class="hidden_overview" id="overview_{{ forloop.counter }}"><BR>{{ viewing.film.overview }}</span>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

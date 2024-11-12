@@ -549,3 +549,59 @@ def get_session_data(request):
             return JsonResponse({
                 "error": f"{key} is not in session"
             })
+
+
+# mobile views
+def mobile_index(request, user=None):
+    """
+    Mobile-friendly page showing journal for logged-in user or another user
+    if specified.
+    """
+    viewings = []
+    username = ""
+    displayname = ""
+    private = False
+    follows = False
+    following = []
+
+    if request.user.is_authenticated:
+        following = [f.followed.username
+                     for f in request.user.following.all()]
+
+    if user is not None:
+        # check for existence of user
+        JUser = apps.get_model('accounts', 'JUser')
+        matches = JUser.objects.filter(username=user)
+        if matches.exists():
+            user_obj = matches[0]
+            username = user_obj.username
+            # check if following this user
+            if request.user.is_authenticated:
+                if Follow.objects.filter(follower=request.user,
+                                         followed=user_obj).exists():
+                    follows = True
+            displayname = user_obj.displayname
+            if username != request.user.username and user_obj.private:
+                viewings = []
+                private = True
+            else:
+                viewings = user_obj.viewings.all().order_by("-date")
+        else:
+            username = "__no_such_user__"
+
+    elif request.user.is_authenticated:
+        # use logged-in user
+        viewings = request.user.viewings.all().order_by("-date")
+        username = request.user.username
+        displayname = request.user.displayname
+
+    return render(request, "journal/mobile_index.html",
+                  {
+                      "username": username,
+                      "displayname": displayname,
+                      "viewings": viewings,
+                      "private": private,
+                      "follows": follows,
+                      "following": following,
+                  })
+

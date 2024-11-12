@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinefile!!</title>
+    {% load static %}
+    <link rel="stylesheet"
+          href="{% static 'journal/css/layout.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'journal/css/mobile_layout.css' %}">
+    <link rel="icon"
+          href="{% static 'images/favicon.ico' %}"
+          type="image/x-icon">
+    <script id="utils_script"
+            type="text/javascript"
+            src="{% static 'journal/javascript/utils.js' %}"></script>
+    <script id="mobile_utils_script"
+            type="text/javascript"
+            src="{% static 'journal/javascript/mobile_utils.js' %}"></script>
+
+    {% block headblock %}
+    {% endblock %}
+
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <div class="cinefile" id="mobile_title_div">
+                <div id="mobile_title">
+                    {% if displayname != "" %}
+                        {{ displayname }}'s
+                    {% endif %}
+                    Cinefile
+                </div>
+            </div>
+            <div id="nav_menu">
+                <a class="menu_item">News</a>
+                <a class="menu_item">Contact</a>
+                <a class="menu_item">About</a>
+            </div>
+            <a id="mobile_menu_symbol" class="icon">
+                <img alt="mobile_menu_symbol"
+                     height="50px"
+                     src="{% static 'images/favicon.ico' %}">
+            </a>
+        </nav>
+        <main class="main_block_mobile">
+            {% block body %}
+            {% endblock %}
+        </main>
+        <footer>Footer</footer>
+    </div>
+
+</body>
+</html>

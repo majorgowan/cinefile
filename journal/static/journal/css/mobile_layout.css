@@ -1,0 +1,76 @@
+/* CSS */
+body {
+    margin: 0;
+}
+
+.container {
+    max-width: 600px; /* adjust to your desired width */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    background-color: bisque;
+    color: darkred;
+    /* padding: 1em; */
+    position: fixed;
+    top: 0;
+    width: 600px;
+}
+nav #mobile_title_div {
+    text-align: center;
+    height: 50px;
+}
+nav #mobile_title {
+    font-size: 36px;
+    padding: 2px;
+}
+nav #nav_menu {
+    display: none;
+}
+nav a.menu_item {
+    background: sandybrown;
+    font-family: Arial;
+    font-size: 24px;
+    padding: 10px;
+    display: block;
+}
+nav a.menu_item:hover {
+    background: lightsteelblue;
+    color: darkolive;
+    cursor: pointer;
+}
+nav a.icon {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.main_block_mobile {
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    /* flex-grow: 1; */
+    /* padding: 2em; */
+    margin-top: 50px;
+}
+
+.viewing_row {
+    padding: 10px 20px 20px 20px;
+}
+
+footer {
+    background-color: bisque;
+    color: darkred;
+    padding: 1em;
+    text-align: center;
+}
+
+/* Media Queries */
+@media (min-width: 769px) {
+  .container {
+    max-width: 600px; /* adjust to your desired width */
+  }
+}

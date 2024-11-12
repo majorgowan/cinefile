@@ -59,6 +59,7 @@ class ImportedFile(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField(default=datetime.date.today)
     upload = models.FileField(upload_to="user_imports")
+    # TODO: make sure same filename uploaded by different user is distinct file on disk
 
     def __str__(self):
         return f"({self.user}) {self.name}"
