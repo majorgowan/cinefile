@@ -393,9 +393,6 @@ body {
     grid-area: details_div;
     text-align: left;
 }
-.movie_details_title {
-    font-size: 24px;
-}
 .movie_title {
     font-size: 25px;
     font-style: italic;

@@ -136,7 +136,7 @@ def new_viewing(request):
     Register a new Viewing instance (and a new Film instance if the film
     is not already in the database)
     """
-    # TODO: record date entered with date viewed optional
+    viewing_json = {}
     if request.method == "POST":
         form = request.POST
 
@@ -199,8 +199,13 @@ def new_viewing(request):
                           private=(private_checkbox == "on"),
                           comments=form.get("comments"))
         viewing.save()
+        viewing_json = {"id": viewing.pk,
+                        "title": viewing.film.title,
+                        "cinema_or_tv": viewing.cinema_or_tv,
+                        "comments": viewing.comments}
     return JsonResponse({
-        "response": "I think I did what you wanted (save)"
+        "response": "I think I did what you wanted (save)",
+        "viewing": viewing_json,
     })
 
 

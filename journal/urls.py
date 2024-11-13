@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("profile", views.index, name="profile_base"),
+    path("profile/", views.index, name="profile_base"),
     path("profile/<str:user>", views.index, name="profile"),
     path("tmdb/<str:api_command>", views.tmdb_search, name="tmdb"),
     path("new_viewing", views.new_viewing, name="new_viewing"),
@@ -15,4 +15,6 @@ urlpatterns = [
     path("follow", views.follow, name="follow"),
     # mobile views
     path("m", views.mobile_index, name="mobile_index"),
+    path("m/profile/<str:user>", views.mobile_index,
+         name="mobile_profile"),
 ]

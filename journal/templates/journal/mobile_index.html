@@ -2,7 +2,7 @@
 
 {% block headblock %}
     {% load static %}
-    <script type="text/javascript" src="{% static 'journal/javascript/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'journal/javascript/mobile_index.js' %}"></script>
 {% endblock %}
 
 
@@ -23,6 +23,13 @@
         {% if username == user.username or not viewing.private %}
             <div class="viewing_row viewing_private_{{ viewing.private }}"
                  id="viewing_{{ viewing.id }}">
+                <div class="viewing_date">
+                    {% if user.is_authenticated and username == user.username %}
+                        {{ viewing.date | date:"M j, Y" }}
+                    {% else %}
+                        {{ viewing.date | date:"M, Y" }}
+                    {% endif %}
+                </div>
                 <div class="movie_details">
                     <div class="movie_title">
                         {{ viewing.film.title }} ({{ viewing.film.year }})
@@ -32,12 +39,6 @@
                         {% endif %}
                     </div>
                     <div class="movie_info">
-                        <div class="tmdb_link_div">
-                            <img alt="tmdb_logo"
-                                 data-tmdb_id="{{ viewing.film.tmdb }}"
-                                 width="30px"
-                                 src="{% static 'images/tmdb.svg' %}">
-                        </div>
                         <div class="movie_people">
                             Director: {{ viewing.film.director }}<BR>
                             Starring: {{ viewing.film.starring }}<BR>
@@ -46,50 +47,54 @@
                 </div>
                 <div class="movie_location">
                     {% if user.is_authenticated and username == user.username %}
-                        {{ viewing.date | date:"F j, Y" }}
                         {% if viewing.location %}
-                            <br>{{ viewing.location }}
+                            {{ viewing.location }}<br>
                         {% endif %}
                         {% if viewing.cinema %}
-                            <br>{{ viewing.cinema }}
+                            {{ viewing.cinema }}<br>
                         {% endif %}
                         {% if viewing.tv_channel %}
-                            <br>{{ viewing.tv_channel }}
+                            {{ viewing.tv_channel }}<br>
                         {% endif %}
                         {% if viewing.streaming_platform %}
-                            <br>{{ viewing.streaming_platform }}
+                            {{ viewing.streaming_platform }}<br>
                         {% endif %}
                         {% if viewing.video_medium == "DVD/PPV" %}
-                            <br>DVD / PPV
+                            DVD / PPV<br>
                         {% endif %}
-                    {% else %}
-                        {{ viewing.date | date:"F, Y" }}
                     {% endif %}
                     {% if viewing.cinema_or_tv == "Cinema" %}
-                        <BR><img alt="cinema_icon"
-                                 width="100px"
-                                 src="{% static 'images/cinemamarquee_top_phase.png' %}">
+                        <img alt="cinema_icon"
+                             width="70px"
+                             src="{% static 'images/cinemamarquee_top_phase.png' %}">
                     {% elif viewing.cinema_or_tv == "Video" %}
-                        <BR><img alt="tv_icon"
-                                 width="72px"
-                                 src="{% static 'images/old_tv_set.png' %}">
+                        <img alt="tv_icon"
+                             width="50px"
+                             src="{% static 'images/old_tv_set.png' %}">
                     {% endif %}
                     {% if viewing.private %}
-                        <BR><BR>
+                        <BR>
                         <span class="incognito_symbol">
                             <img alt="private"
-                                 width="30px"
+                                 width="24px"
                                  src="{% static 'images/incognito.svg' %}">
                         </span>
-                        &nbsp;
                     {% endif %}
                     {% load static %}
                 </div>
                 <div class="movie_comment">
                     {{ viewing.comments | linebreaks }}
                 </div>
-                <div class="movie_overview">
+                <div class="overview_header">
+                    <div class="tmdb_link_div">
+                        <img alt="tmdb_logo"
+                             data-tmdb_id="{{ viewing.film.tmdb }}"
+                             width="30px"
+                             src="{% static 'images/tmdb.svg' %}">
+                    </div>
                     <a class="overview_link" data-overview_id="overview_{{ forloop.counter }}">show tmdb overview</a>
+                </div>
+                <div class="overview_text">
                     <span class="hidden_overview" id="overview_{{ forloop.counter }}"><BR>{{ viewing.film.overview }}</span>
                 </div>
             </div>

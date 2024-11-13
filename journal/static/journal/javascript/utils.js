@@ -391,6 +391,9 @@ function process_new_viewing_form(mode, movieData={}) {
         // Set the callback function for when the response is received
         xhr_new_viewing.onload = function() {
             if (xhr_new_viewing.status === 200) {
+                // get response
+                let responseData = JSON.parse(xhr_new_viewing.responseText);
+
                 // reset form and close Modal bzw. import form
                 newViewingForm.reset();
 
@@ -429,11 +432,13 @@ function process_new_viewing_form(mode, movieData={}) {
 
                 } else {
                     // new viewing bzw. edit viewing mode
-
                     document.querySelector("#new_viewing_form_modal").style.display = "none";
                     document.querySelector("#modal_overlay").style.display = "none";
+
                     // navigate (back) to index view
-                    window.location.replace(profile_url);
+                    const viewing_id = responseData["viewing"]["id"];
+                    const full_profile_url = profile_url + "#viewing_" + viewing_id;
+                    window.location.replace(full_profile_url);
                 }
             }
         }
