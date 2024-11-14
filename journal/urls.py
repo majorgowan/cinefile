@@ -15,6 +15,6 @@ urlpatterns = [
     path("follow", views.follow, name="follow"),
     # mobile views
     path("m", views.mobile_index, name="mobile_index"),
-    path("m/profile/<str:user>", views.mobile_index,
-         name="mobile_profile"),
+    path("m/profile/", views.mobile_index, name="mobile_profile_base"),
+    path("m/profile/<str:user>", views.mobile_index, name="mobile_profile"),
 ]

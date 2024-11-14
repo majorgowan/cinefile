@@ -33,6 +33,11 @@
             </div>
             <div id="nav_menu">
                 {% if user.is_authenticated %}
+                    {% if user.username != username %}
+                        <a class="menu_item"
+                           id="menu_my_cinefile_item"
+                           data-url="{% url 'mobile_index' %}">My Cinefile</a>
+                    {% endif %}
                     <a class="menu_item"
                        id="menu_add_viewing_item">Add viewing</a>
                     <a class="menu_item"
@@ -73,6 +78,9 @@
                 <p>Copyright 2024 by Mark Fruman &ensp;<span class="email">mark.fruman@yahoo.com</span></p>
             </div>
         </div>
+
+        {% block modal %}
+        {% endblock %}
     </div>
 
 </body>

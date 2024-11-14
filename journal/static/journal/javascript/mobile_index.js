@@ -40,4 +40,43 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
+    const menuMyCinefileItem = document.getElementById("menu_my_cinefile_item");
+    if (menuMyCinefileItem != null) {
+        my_cinefile_url = menuMyCinefileItem.dataset["url"];
+        menuMyCinefileItem.onclick = function() {
+            window.location.replace(my_cinefile_url);
+        }
+    }
+
+
+    const menuAddViewingItem = document.getElementById("menu_add_viewing_item");
+    const mobileAddViewingModal = document.getElementById("mobile_add_viewing_modal");
+    const mobileAddViewingModalClose = mobileAddViewingModal.querySelector(".close");
+
+    menuAddViewingItem.onclick = function() {
+        mobileAddViewingModal.setAttribute("class", "mobile_modal_visible");
+        // hide the menu
+        navMenu.style.display = "none";
+    }
+    mobileAddViewingModalClose.onclick = function() {
+        mobileAddViewingModal.setAttribute("class", "mobile_modal_invisible");
+    }
+
+
+    const menuViewAnotherItem = document.getElementById("menu_view_another_item");
+    const mobileViewAnotherModal = document.getElementById("mobile_view_another_modal");
+    const mobileViewAnotherModalClose = mobileViewAnotherModal.querySelector(".close");
+
+    menuViewAnotherItem.onclick = function() {
+        mobileViewAnotherModal.setAttribute("class", "mobile_modal_visible");
+        // hide the menu
+        navMenu.style.display = "none";
+    }
+    mobileViewAnotherModalClose.onclick = function() {
+        mobileViewAnotherModal.setAttribute("class", "mobile_modal_invisible");
+    }
+
+
+
+
 });

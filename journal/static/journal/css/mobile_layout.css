@@ -158,6 +158,31 @@ footer {
     text-align: center;
     width: 70%;
 }
+#mobile_add_viewing_modal {
+    background-color: lightsteelblue;
+    z-index: 10;
+}
+.mobile_inner_div {
+    width: 80%;
+    margin: 10%;
+}
+#mobile_view_another_modal {
+    background-color: lightsteelblue;
+    z-index: 10;
+}
+#mobile_follower_list_div {
+    padding-top: 20px;
+    font-size: 26px;
+    color: firebrick;
+    line-height: 1.7;
+}
+.mobile_scrolling_list {
+    list-style: none;
+    height: 360px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: firebrick lightsteelblue;
+}
 
 
 /* Media Queries */
