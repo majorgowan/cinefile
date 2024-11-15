@@ -8,4 +8,6 @@ urlpatterns = [
     path("settings/", views.settings, name="settings"),
     path("change_password/", views.change_password, name="change_password"),
     path("delete_account/", views.delete_account, name="delete_account"),
+    # mobile views
+    path("m/login/", views.mobile_user_login, name="mobile_user_login"),
 ]

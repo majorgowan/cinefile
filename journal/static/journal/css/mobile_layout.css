@@ -36,6 +36,8 @@ nav a.menu_item {
     font-size: 24px;
     padding: 10px;
     display: block;
+    color: darkred;
+    text-decoration: none;
 }
 nav a.menu_item:hover {
     background: lightsteelblue;
@@ -157,6 +159,12 @@ footer {
     line-height: 1.8;
     text-align: center;
     width: 70%;
+}
+.form_title {
+    font-size: 30px;
+    font-weight: bold;
+    color: firebrick;
+    margin: 50px 30px 40px;
 }
 #mobile_add_viewing_modal {
     background-color: lightsteelblue;

@@ -25,8 +25,10 @@
         <nav>
             <div class="cinefile" id="mobile_title_div">
                 <div id="mobile_title">
-                    {% if displayname != "" %}
-                        {{ displayname }}'s
+                    {% if displayname %}
+                        {% if displayname != "" %}
+                            {{ displayname }}'s
+                        {% endif %}
                     {% endif %}
                     Cinefile
                 </div>
@@ -45,10 +47,14 @@
                     <a class="menu_item"
                        id="menu_settings_item">User settings</a>
                     <a class="menu_item"
-                       id="menu_logout_item">Log out</a>
+                       id="menu_logout_item"
+                       href="{% url 'mobile_user_login' %}">Log out</a>
                 {% else %}
                     <a class="menu_item"
-                       id="menu_login_item">Log in</a>
+                       id="menu_login_item"
+                       href="{% url 'mobile_user_login' %}">Log in</a>
+                    <a class="menu_item"
+                       id="menu_view_a_cinefile_item">View a Cinefile</a>
                 {% endif %}
                 <a class="menu_item"
                    id="menu_about_item">About</a>
@@ -78,6 +84,39 @@
                 <p>Copyright 2024 by Mark Fruman &ensp;<span class="email">mark.fruman@yahoo.com</span></p>
             </div>
         </div>
+
+        <div class="mobile_modal_invisible" id="mobile_view_another_modal">
+            <div class="top_corner">
+                <span class="close close_corner">&times;</span>
+            </div>
+            <div class="form_title">
+                {% if user.is_authenticated %}
+                    View another Cinefile
+                {% else %}
+                    View a Cinefile
+                {% endif %}
+            </div>
+            <div id="mobile_view_another_form" class="mobile_inner_div">
+                <input id="view_another_search_text" type="text"
+                       class="tmdb_search_text_input"
+                       placeholder="username"
+                       data-url="{% url 'mobile_profile_base' %}">
+                &emsp;
+                <button class="select_button"
+                        id="mobile_view_another_search">View</button>
+                {% if following %}
+                <div id="mobile_follower_list_div">
+                    <h5>Following:</h5>
+                    <ul class="mobile_scrolling_list">
+                        {% for followed in following %}
+                        <li><a>{{ followed }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
 
         {% block modal %}
         {% endblock %}

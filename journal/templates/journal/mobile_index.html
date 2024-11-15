@@ -107,6 +107,9 @@
     <div class="top_corner">
         <span class="close close_corner">&times;</span>
     </div>
+    <div class="form_title">
+        Add viewing
+    </div>
     <div id="mobile_movie_title_form" class="mobile_inner_div">
         <input id="tmdb_search_text" type="text"
                class="tmdb_search_text_input"
@@ -122,27 +125,4 @@
     <div id="tmdb_search_results"></div>
 </div>
 
-<div class="mobile_modal_invisible" id="mobile_view_another_modal">
-    <div class="top_corner">
-        <span class="close close_corner">&times;</span>
-    </div>
-    <div id="mobile_view_another_form" class="mobile_inner_div">
-        <input id="view_another_search_text" type="text"
-               class="tmdb_search_text_input"
-               placeholder="username"
-               data-url="{% url 'mobile_profile_base' %}">
-        &emsp;
-        <button class="select_button"
-                id="mobile_view_another_search">View</button>
-        &nbsp;
-        <div id="mobile_follower_list_div">
-            <h4>Following:</h4>
-            <ul class="mobile_scrolling_list">
-                {% for followed in following %}
-                    <li><a>{{ followed }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-</div>
 {% endblock %}
