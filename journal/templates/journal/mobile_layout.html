@@ -39,6 +39,19 @@
                         <a class="menu_item"
                            id="menu_my_cinefile_item"
                            data-url="{% url 'mobile_index' %}">My Cinefile</a>
+                        {% if follows %}
+                            <a class="menu_item"
+                               id="menu_unfollow_item"
+                               data-follow_url="{% url 'follow' %}"
+                               data-followed="{{ username }}"
+                               data-follower="{{ user.username }}">Unfollow {{ username }}</a>
+                        {% else %}
+                            <a class="menu_item"
+                               id="menu_follow_item"
+                               data-follow_url="{% url 'follow' %}"
+                               data-followed="{{ username }}"
+                               data-follower="{{ user.username }}">Follow {{ username }}</a>
+                        {% endif %}
                     {% endif %}
                     <a class="menu_item"
                        id="menu_add_viewing_item">Add viewing</a>
@@ -100,23 +113,28 @@
                 <input id="view_another_search_text" type="text"
                        class="tmdb_search_text_input"
                        placeholder="username"
-                       data-url="{% url 'mobile_profile_base' %}">
+                       data-profile_url="{% url 'mobile_profile_base' %}"
+                       data-find_users_url="{% url 'find_users' %}">
                 &emsp;
                 <button class="select_button"
-                        id="mobile_view_another_search">View</button>
+                        id="mobile_view_another_search">Search</button>
+                <div id="mobile_cinefile_matches_list_div">
+                    <ul id="mobile_cinefile_matches_list"
+                        class="mobile_scrolling_list"></ul>
+                </div>
                 {% if following %}
                 <div id="mobile_follower_list_div">
                     <h5>Following:</h5>
-                    <ul class="mobile_scrolling_list">
+                    <ul id="mobile_follower_list"
+                        class="mobile_scrolling_list">
                         {% for followed in following %}
-                        <li><a>{{ followed }}</a></li>
+                            <li><a href="{% url 'mobile_profile' user=followed %}">{{ followed }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
                 {% endif %}
             </div>
         </div>
-
 
         {% block modal %}
         {% endblock %}

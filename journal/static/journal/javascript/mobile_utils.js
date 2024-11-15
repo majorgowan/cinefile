@@ -1,3 +1,12 @@
+// script for parsing browser cookie
+function get_cookie(cookie_name) {
+    const cookie_value = (document
+                          .cookie.split("; ")
+                          .find(row => row.startsWith(`${cookie_name}=`))?.split('=')[1]);
+    return cookie_value;
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     const mobileMenuSymbol = document.getElementById("mobile_menu_symbol");
@@ -27,6 +36,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuViewACinefileItem = document.getElementById("menu_view_a_cinefile_item");
     const mobileViewAnotherModal = document.getElementById("mobile_view_another_modal");
     const mobileViewAnotherModalClose = mobileViewAnotherModal.querySelector(".close");
+    // for the search functionality:
+    const mobileCinefileMatchesList = document.getElementById("mobile_cinefile_matches_list");
+    const viewAnotherSearchTextInput = document.getElementById("view_another_search_text");
+    const viewAnotherSearchButton = document.getElementById("mobile_view_another_search");
+
     if (menuViewAnotherItem != null) {
         menuViewAnotherItem.onclick = function() {
             mobileViewAnotherModal.setAttribute("class", "mobile_modal_visible");
@@ -35,6 +49,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         mobileViewAnotherModalClose.onclick = function() {
             mobileViewAnotherModal.setAttribute("class", "mobile_modal_invisible");
+            mobileCinefileMatchesList.innerHTML = "";
+            viewAnotherSearchTextInput.value = "";
         }
     }
     if (menuViewACinefileItem != null) {
@@ -45,8 +61,47 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         mobileViewAnotherModalClose.onclick = function() {
             mobileViewAnotherModal.setAttribute("class", "mobile_modal_invisible");
+            mobileCinefileMatchesList.innerHTML = "";
+            viewAnotherSearchTextInput.value = "";
         }
     }
+
+    // implement the search for users
+    if (viewAnotherSearchTextInput != null) {
+
+        function find_users(find_users_search_string) {
+            const find_users_url = viewAnotherSearchTextInput.dataset["find_users_url"];
+            const profile_url = viewAnotherSearchTextInput.dataset["profile_url"];
+            const xhr_find_users = new XMLHttpRequest();
+
+            const find_users_query_url = find_users_url + `?username=${find_users_search_string}`;
+            xhr_find_users.open('GET', find_users_query_url, false);
+
+            xhr_find_users.onload = function() {
+                if (xhr_find_users.status === 200) {
+                    let matching_users = JSON.parse(xhr_find_users.responseText)["matching_users"];
+                    let list_content = "";
+                    for (matching_user of matching_users) {
+                         list_content += `<li><a href="${profile_url}${matching_user}">${matching_user}</a></li>`;
+                    }
+
+                    mobileCinefileMatchesList.innerHTML = list_content;
+                }
+            }
+
+            xhr_find_users.send();
+        }
+
+        viewAnotherSearchTextInput.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                find_users(viewAnotherSearchTextInput.value);
+            }
+        });
+        viewAnotherSearchButton.addEventListener("click", function(event) {
+            find_users(viewAnotherSearchTextInput.value);
+        });
+    }
+
 
 });
 

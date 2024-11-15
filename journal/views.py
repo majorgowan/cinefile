@@ -556,6 +556,23 @@ def get_session_data(request):
             })
 
 
+def find_users(request):
+    """
+    find public cinefiles by username pattern
+    """
+    matching_users = []
+    if request.method == "GET":
+        search_string = request.GET.get("username", None)
+        JUser = apps.get_model('accounts', 'JUser')
+
+        if search_string is not None:
+            users = JUser.objects.filter(username__icontains=search_string)
+            matching_users = [u.username for u in users if not u.private]
+    return JsonResponse({
+        "matching_users": matching_users
+    })
+
+
 # mobile views
 def mobile_index(request, user=None):
     """

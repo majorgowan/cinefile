@@ -179,17 +179,24 @@ footer {
     z-index: 10;
 }
 #mobile_follower_list_div {
-    padding-top: 20px;
-    font-size: 26px;
+    padding-top: 10px;
     color: firebrick;
+    font-size: 30px;
     line-height: 1.7;
 }
 .mobile_scrolling_list {
     list-style: none;
-    height: 360px;
+    font-size: 30px;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: firebrick lightsteelblue;
+}
+#mobile_follower_list {
+    height: 360px;
+}
+.mobile_scrolling_list a {
+    text-decoration: none;
+    color: firebrick;
 }
 
 

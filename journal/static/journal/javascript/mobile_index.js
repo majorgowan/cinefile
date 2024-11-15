@@ -39,4 +39,56 @@ document.addEventListener("DOMContentLoaded", function() {
         mobileAddViewingModal.setAttribute("class", "mobile_modal_invisible");
     }
 
+    // implement "Follow / Unfollow" function
+    const followLink = document.querySelector('[id$="follow_item"]');
+    // if user not logged in, then there won't be a follow link
+    if (followLink != null) {
+        followLink.onclick = (event) => {
+
+            const follow_url = followLink.dataset["follow_url"];
+            const follower_name = followLink.dataset["follower"];
+            const followed_name = followLink.dataset["followed"];
+
+            let follow_action;
+            const followLink_text = followLink.innerHTML;
+            if (followLink_text.startsWith("Un")) {
+                follow_action = "unfollow";
+            } else {
+                follow_action = "follow";
+            }
+
+            const xhr_follow = new XMLHttpRequest();
+            xhr_follow.open("POST", follow_url, true);
+
+            // Set header data
+            xhr_follow.setRequestHeader("Content-Type", "application/json");
+            xhr_follow.setRequestHeader("X-CSRFToken", get_cookie("csrftoken"));
+
+            xhr_follow.send(JSON.stringify({
+                follower: follower_name,
+                followed: followed_name,
+                action: follow_action
+            }));
+
+            // Set the callback function for when the response is received
+            xhr_follow.onload = function() {
+                if (xhr_follow.status === 200) {
+                    // Process the response data
+
+                    // if success toggle the follow / unfollow
+                    if (followLink_text.startsWith("Un")) {
+                        followLink.innerHTML = followLink_text.replace("Unfollow", "Follow");
+                    } else {
+                        followLink.innerHTML = followLink_text.replace("Follow", "Unfollow");
+                    }
+
+                    // console.log(JSON.parse(xhr_follow.responseText));
+                }
+            }
+        }
+    }
+
+
+
+
 });
