@@ -82,7 +82,21 @@
                     {% load static %}
                 </div>
                 <div class="movie_comment">
-                    {{ viewing.comments | linebreaks }}
+                    {% if viewing.spoilers %}
+                        <div class="spoilers_div">
+                            <span class="spoilers_span">
+                                <span>Spoiler alert!</span>
+                                <a class="spoilers_link" data-comments_id="comments_{{ forloop.counter }}">show comments</a>
+                            </span>
+                        </div>
+                        <span class="hidden_comments" id="comments_{{ forloop.counter }}">
+                            {{ viewing.comments | linebreaks }}
+                        </span>
+                    {% else %}
+                        <span class="shown_comments">
+                            {{ viewing.comments | linebreaks }}
+                        </span>
+                    {% endif %}
                 </div>
                 <div class="overview_header">
                     <div class="tmdb_link_div">
@@ -122,7 +136,23 @@
                 id="tmdb_search_search_button">Search</button>
         &nbsp;
     </div>
-    <div id="tmdb_search_results"></div>
+    <div class="tmdb_search_results"
+         id="mobile_tmdb_search_results"></div>
 </div>
-
+<div class="mobile_modal_invisible" id="mobile_movie_detail_modal">
+    <div class="top_corner">
+        <span class="close close_corner">&times;</span>
+    </div>
+    <div id="tmdb_detail_modal_content">
+    </div>
+    <div id="mobile_movie_detail_select_div">
+        <button class="select_button"
+                id="tmdb_detail_select_cinema_button"
+                data-url="{% url 'mobile_new_viewing' cinema_video='cinema' %}">Cinema</button>
+        &emsp;&emsp;
+        <button class="select_button"
+                id="tmdb_detail_select_video_button"
+                data-url="{% url 'mobile_new_viewing' cinema_video='video' %}">TV/Video</button>
+    </div>
+</div>
 {% endblock %}

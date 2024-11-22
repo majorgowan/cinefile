@@ -1,12 +1,3 @@
-// script for parsing browser cookie
-function get_cookie(cookie_name) {
-    const cookie_value = (document
-                          .cookie.split("; ")
-                          .find(row => row.startsWith(`${cookie_name}=`))?.split('=')[1]);
-    return cookie_value;
-}
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     const mobileMenuSymbol = document.getElementById("mobile_menu_symbol");
@@ -101,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function() {
             find_users(viewAnotherSearchTextInput.value);
         });
     }
-
 
 });
 

@@ -1,0 +1,39 @@
+{% extends "journal/mobile_layout.html" %}
+
+{% block body %}
+
+{% if error_message %}
+<p>{{ error }}</p>
+{% endif %}
+
+<div class="form_title">
+    New Viewing
+</div>
+<form class="mobile_new_viewing_form"
+      method="post" action="{% url 'mobile_new_viewing' cinema_video=cinema_video %}">
+    {% csrf_token %}
+    <div class="mobile_new_viewing_form_content">
+        <table class="form_table">
+            {% for field in form %}
+            <tr>
+                <td class="viewing_label">{{ field.label_tag }}</td>
+                <td class="viewing_field">{{ field }}</td>
+            </tr>
+            {% if field.help_text %}
+            <tr>
+                <td></td>
+                <td class="help_text">
+                    ({{ field.help_text }})
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <div class="form_submit">
+            <button class="select_button" type="submit">Submit</button>
+            &emsp;&emsp;&emsp;<button class="select_button">Cancel</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

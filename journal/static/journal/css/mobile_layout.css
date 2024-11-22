@@ -41,7 +41,7 @@ nav a.menu_item {
 }
 nav a.menu_item:hover {
     background: lightsteelblue;
-    color: darkolive;
+    color: darkslategrey;
     cursor: pointer;
 }
 nav a.icon {
@@ -99,7 +99,7 @@ footer {
     font-size: 23px;
     font-style: italic;
     padding: 8px;
-    color: darkolive;
+    color: midnightblue;
 }
 .movie_details {
     grid-area: details_div;
@@ -108,7 +108,7 @@ footer {
 .movie_people {
     font-size: 18px;
     font-style: normal;
-    color: darkolive;
+    color: darkslategrey;
     margin-bottom: 4px;
 }
 .overview_header {
@@ -161,18 +161,25 @@ footer {
     width: 70%;
 }
 .form_title {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
     color: firebrick;
-    margin: 50px 30px 40px;
+    margin: 20px 30px 20px;
+}
+.form_table {
+    border-spacing: 12px 5px;
 }
 #mobile_add_viewing_modal {
     background-color: lightsteelblue;
     z-index: 10;
 }
+#mobile_movie_detail_modal {
+    background-color: bisque;
+    z-index: 12;
+}
 .mobile_inner_div {
-    width: 80%;
-    margin: 10%;
+    width: 84%;
+    margin: 20px 8%;
 }
 #mobile_view_another_modal {
     background-color: lightsteelblue;
@@ -186,10 +193,14 @@ footer {
 }
 .mobile_scrolling_list {
     list-style: none;
-    font-size: 30px;
+    font-size: 20px;
+    width: 80%;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: firebrick lightsteelblue;
+}
+#mobile_cinefile_matches_list {
+    font-size: 30px;
 }
 #mobile_follower_list {
     height: 360px;
@@ -197,6 +208,54 @@ footer {
 .mobile_scrolling_list a {
     text-decoration: none;
     color: firebrick;
+}
+#mobile_tmdb_search_results {
+    margin-left: 10%;
+}
+#tmdb_detail_modal_content {
+    margin: 50px;
+    font-size: 20px;
+    color: black;
+    height: 450px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: firebrick lightsteelblue;
+}
+.movie_details_title {
+    color: firebrick;
+    font-style: italic;
+    font-size: 30px;
+}
+.movie_details_overview {
+    color: darkslategrey;
+    padding-right: 15px;
+}
+#mobile_movie_detail_select_div {
+    text-align: center;
+}
+
+.mobile_new_viewing_form {
+    margin: 0 10px 0;
+}
+.mobile_new_viewing_form tr {
+    height: 40px;
+}
+.viewing_label {
+    text-align: right;
+}
+.viewing_label label{
+    font-size: 18px;
+}
+.viewing_field input {
+    padding: 4px 10px;
+    font-size: 18px;
+}
+label[for="id_spoilers"] {
+    font-weight: bold;
+    color: firebrick;
+}
+.form_submit button {
+    margin: 10px 0 30px;
 }
 
 

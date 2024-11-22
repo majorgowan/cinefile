@@ -18,4 +18,6 @@ urlpatterns = [
     path("m/profile/", views.mobile_index, name="mobile_profile_base"),
     path("m/profile/<str:user>", views.mobile_index, name="mobile_profile"),
     path("m/find_users", views.find_users, name="find_users"),
+    path("m/new_viewing/<str:cinema_video>",
+         views.mobile_new_viewing, name="mobile_new_viewing"),
 ]

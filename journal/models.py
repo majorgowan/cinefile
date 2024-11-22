@@ -34,6 +34,7 @@ class Viewing(models.Model):
     streaming_platform = models.CharField(max_length=16, blank=True)
     cinema = models.CharField(max_length=32, blank=True)
     comments = models.TextField(max_length=4096, blank=True)
+    spoilers = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.pk} ({self.user}) {self.film.title} {self.date}"

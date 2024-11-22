@@ -8,6 +8,7 @@ from io import StringIO
 import json
 from . import tmdb
 from .models import Viewing, Film, ImportedFile, Follow
+from .forms import ViewingFormCinema
 
 
 # Create your views here.
@@ -187,6 +188,7 @@ def new_viewing(request):
             film.save()
         # populate and save new Viewing entry
         private_checkbox = form.get("private", "off")
+        spoilers_checkbox = form.get("spoilers", "off")
         viewing = Viewing(pk=pk,
                           user=request.user,
                           film=film,
@@ -197,6 +199,7 @@ def new_viewing(request):
                           streaming_platform=form.get("platform"),
                           cinema=form.get("cinema"),
                           private=(private_checkbox == "on"),
+                          spoilers=(spoilers_checkbox == "on"),
                           comments=form.get("comments"))
         viewing.save()
         viewing_json = {"id": viewing.pk,
@@ -215,11 +218,9 @@ def delete_viewing(request):
     """
     if request.method == "POST":
         post_request = json.loads(request.body)
-        # print(post_request)
         # delete the viewing from the database
         pk = int(post_request["viewing_id"])
         to_delete = Viewing.objects.get(pk=pk)
-        # print(to_delete)
         to_delete.delete()
     return JsonResponse({
         "response": "I think I did what you wanted (delete)"
@@ -409,6 +410,7 @@ def import_tool(request):
                                 streaming_platform=viewing_dict["streaming_platform"],
                                 cinema=viewing_dict["cinema"],
                                 private=viewing_dict["private"],
+                                spoilers=viewing_dict["spoilers"],
                                 comments=viewing_dict["comments"]
                             )
                             viewingobj.save()
@@ -626,4 +628,26 @@ def mobile_index(request, user=None):
                       "follows": follows,
                       "following": following,
                   })
+
+
+def mobile_new_viewing(request, cinema_video="cinema"):
+    """
+    Form for recording a new viewing
+    """
+    if request.method == "POST":
+        # create an unsaved Viewing instance with values saved
+        # in session object
+        form = ViewingFormCinema(request.POST)
+    else:
+        tmdb_id = request.session.get("tmdb", None)
+        print(tmdb_id)
+        if tmdb_id is not None:
+            print(request.session.get("candidates", {})
+                  .get(tmdb_id, "nothing to see"))
+        form = ViewingFormCinema()
+    return render(request, "journal/mobile_new_viewing.html",
+                  {
+                      "form": form,
+                      "cinema_video": cinema_video
+                   })
 

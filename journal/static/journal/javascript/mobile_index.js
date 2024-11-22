@@ -16,6 +16,26 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // implement spoiler show/hide
+    const viewingSpoilersLinks = document.querySelectorAll(".spoilers_link");
+    // event listener for Spoilers links in Viewings (default to hide spoilers)
+    viewingSpoilersLinks.forEach(function(spoilersLink) {
+        spoilersLink.addEventListener("click", function(event) {
+            // get the corresponding comment span and toggle its class
+            const commentsSpan = document.getElementById(spoilersLink.dataset["comments_id"]);
+            if (commentsSpan.className == "hidden_comments") {
+                commentsSpan.className = "shown_comments";
+                spoilersLink.innerHTML = "hide comments";
+            } else {
+                commentsSpan.className = "hidden_comments";
+                spoilersLink.innerHTML = "show comments";
+            }
+        });
+    });
+
+
+
+
     const navMenu = document.getElementById("nav_menu");
 
     const menuMyCinefileItem = document.getElementById("menu_my_cinefile_item");
@@ -36,6 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
         navMenu.style.display = "none";
     }
     mobileAddViewingModalClose.onclick = function() {
+        tmdbSearchText.value = "";
+        tmdbSearchResults.innerHTML = "";
         mobileAddViewingModal.setAttribute("class", "mobile_modal_invisible");
     }
 
@@ -88,7 +110,141 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // implement "new viewing" modal
+    const tmdbSearchModal = document.getElementById("mobile_add_viewing_modal");
+    const mobileMovieTitleForm = document.getElementById("mobile_movie_title_form");
+    const tmdbSearchText = document.getElementById("tmdb_search_text");
+    const tmdbSearchSearchButton = document.getElementById("tmdb_search_search_button");
+    const tmdbSearchResults = document.getElementById("mobile_tmdb_search_results");
+    const tmdbDetailModal = document.getElementById("mobile_movie_detail_modal");
+    const tmdbDetailModalContent = document.getElementById("tmdb_detail_modal_content");
+    const tmdbDetailModalClose = tmdbDetailModal.querySelector(".close");
+    const tmdbDetailSelectCinema = tmdbDetailModal.querySelector("#tmdb_detail_select_cinema_button");
+    const tmdbDetailSelectVideo = tmdbDetailModal.querySelector("#tmdb_detail_select_video_button");
+    const search_url = tmdbSearchText.dataset["url"];
+    const credits_url = tmdbSearchText.dataset["credits_url"];
+
+    tmdbDetailModalClose.addEventListener("click", function() {
+        tmdbDetailModal.setAttribute("class", "mobile_modal_invisible");
+    });
 
 
+    if (mobileMovieTitleForm != null) {
+
+        // process search-tmdb form
+        function search_tmdb(search_pattern, results_page) {
+            const searchParams = new URLSearchParams({
+                "pattern": encodeURIComponent(search_pattern),
+                "page": results_page
+            });
+            let full_url = search_url + "?" + searchParams.toString();
+
+            // Create an XMLHttpRequest object
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', full_url, true);
+
+            // Set the callback function for when the response is received
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Process the response data
+                    let searchData = JSON.parse(xhr.responseText);
+                    let innercontent = process_tmdb_search(searchData);
+
+                    // clean query string (otherwise gets contaminated with %blahblah)
+                    const decodedQuery = decodeURIComponent(searchData["query"]);
+
+                    // add to div and unhide results
+                    tmdbSearchResults.innerHTML = innercontent;
+                    tmdbSearchResults.style.display = "block";
+
+                    // style the list
+                    tmdbSearchResults.querySelector("ul").classList.add("mobile_scrolling_list");
+                    tmdbSearchResults.querySelector("ul").style.height = "330px";
+                    tmdbSearchResults.querySelector("ul").style.marginBottom = "20px";
+
+                    // add listeners to Next bzw. Previous page links:
+                    const previousPageLink = document.querySelector("#previous_page_link");
+                    const nextPageLink = document.querySelector("#next_page_link");
+
+                    if (previousPageLink !== null) {
+                        previousPageLink.addEventListener("click", function() {
+                            search_tmdb(decodedQuery, previousPageLink.dataset["page"]);
+                        });
+                    }
+                    if (nextPageLink !== null) {
+                        nextPageLink.addEventListener("click", function() {
+                            search_tmdb(decodedQuery, nextPageLink.dataset["page"]);
+                        });
+                    }
+
+                    // add listener to each search result link
+                    const search_links = document.querySelectorAll(".movie_search_link");
+                    search_links.forEach((search_link) => {
+                        search_link.addEventListener("click", function() {
+                            const xhr_credits = new XMLHttpRequest();
+                            const movie_id = search_link.dataset["movie_id"];
+                            const full_credits_url = credits_url + "?movie_id=" + movie_id;
+                            xhr_credits.open('GET', full_credits_url, true);
+
+                            xhr_credits.onload = function() {
+                                if (xhr_credits.status === 200) {
+                                    // show detail modal
+                                    tmdbDetailModal.setAttribute("class", "mobile_modal_visible");
+                                    let creditsData = JSON.parse(xhr_credits.responseText);
+
+                                    let movieData = searchData["candidates"][movie_id];
+                                    movieData["tmdb_id"] = movie_id;
+                                    let detail_innercontent = process_tmdb_credits(movieData, creditsData);
+
+                                    tmdbDetailModalContent.innerHTML = detail_innercontent;
+
+                                    // on clicking Select in detail modal, open New Viewing modal and process
+                                    tmdbDetailSelectCinema.addEventListener("click", function() {
+
+                                        // close everything and show viewing form!
+                                        tmdbDetailModal.setAttribute("class", "mobile_modal_invisible");
+                                        tmdbSearchModal.setAttribute("class", "mobile_modal_invisible");
+
+                                        const new_viewing_form_url = tmdbDetailSelectCinema.dataset["url"];
+                                        window.location.replace(new_viewing_form_url);
+                                    });
+                                    tmdbDetailSelectVideo.addEventListener("click", function() {
+
+                                        // close everything and show viewing form!
+                                        tmdbDetailModal.setAttribute("class", "mobile_modal_invisible");
+                                        tmdbSearchModal.setAttribute("class", "mobile_modal_invisible");
+
+                                        const new_viewing_form_url = tmdbDetailSelectVideo.dataset["url"];
+                                        window.location.replace(new_viewing_form_url);
+                                    });
+                                }
+                            }
+
+                            // Send the request
+                            xhr_credits.send();
+                        });
+                    });
+
+                }
+            };
+            // Send the request
+            xhr.send();
+        }
+
+        function tmdbSearchGo(event) {
+            let search_pattern = tmdbSearchText.value;
+            const results_page = tmdbSearchText.dataset["page"];
+            search_tmdb(search_pattern, results_page);
+        }
+
+        // add listeners to text input and button
+        tmdbSearchSearchButton.addEventListener("click", tmdbSearchGo);
+        tmdbSearchText.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                tmdbSearchGo(event);
+            }
+        });
+
+    }
 
 });
