@@ -27,12 +27,12 @@ class Viewing(models.Model):
     film = models.ForeignKey(Film, on_delete=models.PROTECT,
                              related_name="viewings")
     date = models.DateField(default=datetime.date.today)
-    location = models.CharField(max_length=32, blank=True)
+    location = models.CharField(max_length=32, blank=True, null=True)
     cinema_or_tv = models.CharField(max_length=7, blank=True, null=True)
     video_medium = models.CharField(max_length=9, blank=True, null=True)
-    tv_channel = models.CharField(max_length=16, blank=True)
-    streaming_platform = models.CharField(max_length=16, blank=True)
-    cinema = models.CharField(max_length=32, blank=True)
+    tv_channel = models.CharField(max_length=16, blank=True, null=True)
+    streaming_platform = models.CharField(max_length=16, blank=True, null=True)
+    cinema = models.CharField(max_length=32, blank=True, null=True)
     comments = models.TextField(max_length=4096, blank=True)
     spoilers = models.BooleanField(default=False)
 

@@ -38,30 +38,32 @@
             </div>
             <div id="nav_menu">
                 {% if user.is_authenticated %}
-                    {% if user.username != username %}
-                        <a class="menu_item"
-                           id="menu_my_cinefile_item"
-                           data-url="{% url 'mobile_index' %}">My Cinefile</a>
-                        {% if follows %}
+                    {% if username %}
+                        {% if user.username != username %}
                             <a class="menu_item"
-                               id="menu_unfollow_item"
-                               data-follow_url="{% url 'follow' %}"
-                               data-followed="{{ username }}"
-                               data-follower="{{ user.username }}">Unfollow {{ username }}</a>
-                        {% else %}
-                            <a class="menu_item"
-                               id="menu_follow_item"
-                               data-follow_url="{% url 'follow' %}"
-                               data-followed="{{ username }}"
-                               data-follower="{{ user.username }}">Follow {{ username }}</a>
+                               id="menu_my_cinefile_item"
+                               data-url="{% url 'mobile_index' %}">My Cinefile</a>
+                            {% if follows %}
+                                <a class="menu_item"
+                                   id="menu_unfollow_item"
+                                   data-follow_url="{% url 'follow' %}"
+                                   data-followed="{{ username }}"
+                                   data-follower="{{ user.username }}">Unfollow {{ username }}</a>
+                            {% elif username %}
+                                <a class="menu_item"
+                                   id="menu_follow_item"
+                                   data-follow_url="{% url 'follow' %}"
+                                   data-followed="{{ username }}"
+                                   data-follower="{{ user.username }}">Follow {{ username }}</a>
+                            {% endif %}
                         {% endif %}
+                        <a class="menu_item"
+                           id="menu_add_viewing_item">Add viewing</a>
+                        <a class="menu_item"
+                           id="menu_view_another_item">View another Cinefile</a>
+                        <a class="menu_item"
+                           id="menu_settings_item">User settings</a>
                     {% endif %}
-                    <a class="menu_item"
-                       id="menu_add_viewing_item">Add viewing</a>
-                    <a class="menu_item"
-                       id="menu_view_another_item">View another Cinefile</a>
-                    <a class="menu_item"
-                       id="menu_settings_item">User settings</a>
                     <a class="menu_item"
                        id="menu_logout_item"
                        href="{% url 'mobile_user_login' %}">Log out</a>

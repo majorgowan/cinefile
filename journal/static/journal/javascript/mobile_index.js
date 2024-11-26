@@ -201,19 +201,13 @@ document.addEventListener("DOMContentLoaded", function() {
                                     // on clicking Select in detail modal, open New Viewing modal and process
                                     tmdbDetailSelectCinema.addEventListener("click", function() {
 
-                                        // close everything and show viewing form!
-                                        tmdbDetailModal.setAttribute("class", "mobile_modal_invisible");
-                                        tmdbSearchModal.setAttribute("class", "mobile_modal_invisible");
-
+                                        // show viewing form!
                                         const new_viewing_form_url = tmdbDetailSelectCinema.dataset["url"];
                                         window.location.replace(new_viewing_form_url);
                                     });
                                     tmdbDetailSelectVideo.addEventListener("click", function() {
 
-                                        // close everything and show viewing form!
-                                        tmdbDetailModal.setAttribute("class", "mobile_modal_invisible");
-                                        tmdbSearchModal.setAttribute("class", "mobile_modal_invisible");
-
+                                        // show viewing form!
                                         const new_viewing_form_url = tmdbDetailSelectVideo.dataset["url"];
                                         window.location.replace(new_viewing_form_url);
                                     });

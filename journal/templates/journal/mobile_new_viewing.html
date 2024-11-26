@@ -1,5 +1,10 @@
 {% extends "journal/mobile_layout.html" %}
 
+{% block headblock %}
+{% load static %}
+<script type="text/javascript" src="{% static 'journal/javascript/mobile_new_viewing.js' %}"></script>
+{% endblock %}
+
 {% block body %}
 
 {% if error_message %}
@@ -7,7 +12,7 @@
 {% endif %}
 
 <div class="form_title">
-    New Viewing
+    New {{ cinema_video | title }} Viewing
 </div>
 <form class="mobile_new_viewing_form"
       method="post" action="{% url 'mobile_new_viewing' cinema_video=cinema_video %}">
@@ -15,23 +20,31 @@
     <div class="mobile_new_viewing_form_content">
         <table class="form_table">
             {% for field in form %}
-            <tr>
-                <td class="viewing_label">{{ field.label_tag }}</td>
-                <td class="viewing_field">{{ field }}</td>
-            </tr>
-            {% if field.help_text %}
-            <tr>
-                <td></td>
-                <td class="help_text">
-                    ({{ field.help_text }})
-                </td>
-            </tr>
-            {% endif %}
+                {% if field.label != False %}
+                    <tr>
+                        <td class="viewing_label">{{ field.label_tag }}</td>
+                        <td class="viewing_field">{{ field }}</td>
+                    </tr>
+                    {% if field.help_text %}
+                        <tr>
+                            <td></td>
+                            <td class="help_text">
+                                ({{ field.help_text }})
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% else %}
+                    <!-- hidden field -->
+                    {{ field }}
+                {% endif %}
             {% endfor %}
         </table>
         <div class="form_submit">
             <button class="select_button" type="submit">Submit</button>
-            &emsp;&emsp;&emsp;<button class="select_button">Cancel</button>
+            &emsp;&emsp;&emsp;
+            <button class="select_button cancel_button"
+                    type="button"
+                    data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
         </div>
     </div>
 </form>

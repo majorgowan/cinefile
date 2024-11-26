@@ -205,6 +205,9 @@ footer {
 #mobile_follower_list {
     height: 360px;
 }
+#mobile_follower_list a {
+    font-size: 26px;
+}
 .mobile_scrolling_list a {
     text-decoration: none;
     color: firebrick;
@@ -248,6 +251,10 @@ footer {
 }
 .viewing_field input {
     padding: 4px 10px;
+    font-size: 18px;
+}
+.viewing_field select {
+    padding: 4px 1px;
     font-size: 18px;
 }
 label[for="id_spoilers"] {
