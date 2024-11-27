@@ -57,7 +57,7 @@ class ViewingFormCinema(forms.ModelForm):
         film = Film.objects.get(id=self.cleaned_data["film"])
         return film
 
-    def save(self, commit=False):
+    def save(self, commit=False, pk=None):
         viewing = self.instance
         viewing.user = self.cleaned_data.get("user")
         viewing.film = self.cleaned_data.get("film")
@@ -66,8 +66,11 @@ class ViewingFormCinema(forms.ModelForm):
         viewing.spoilers = self.cleaned_data.get("spoilers")
         viewing.comments = self.cleaned_data.get("comments")
         viewing.private = self.cleaned_data.get("private")
+        if pk is not None:
+            viewing.pk = int(pk)
         if commit:
             viewing.save()
+
         return viewing
 
 
@@ -141,7 +144,7 @@ class ViewingFormVideo(forms.ModelForm):
         film = Film.objects.get(id=self.cleaned_data["film"])
         return film
 
-    def save(self, commit=False):
+    def save(self, commit=False, pk=None):
         viewing = self.instance
         viewing.user = self.cleaned_data.get("user")
         viewing.film = self.cleaned_data.get("film")
@@ -151,6 +154,9 @@ class ViewingFormVideo(forms.ModelForm):
         viewing.spoilers = self.cleaned_data.get("spoilers")
         viewing.comments = self.cleaned_data.get("comments")
         viewing.private = self.cleaned_data.get("private")
+        if pk is not None:
+            viewing.pk = int(pk)
+
         if commit:
             viewing.save()
         return viewing

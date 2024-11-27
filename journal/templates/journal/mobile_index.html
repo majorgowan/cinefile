@@ -34,11 +34,14 @@
                         {{ viewing.film.title }} ({{ viewing.film.year }})
                         {% if user.is_authenticated and username == user.username %}
                             &ensp;
-                            <span data-viewing_id="{{ viewing.id }}" class="viewing_edit_button">
+                            <span data-viewing_id="{{ viewing.id }}"
+                                  class="viewing_edit_button">
                                 <!--&#x1F589;-->
-                                <img alt="edit"
-                                     width="23px"
-                                     src="{% static 'images/edit_pencil.svg' %}">
+                                <a href="{% url 'mobile_edit_viewing' edit_viewing_id=viewing.id %}">
+                                    <img alt="edit"
+                                         width="23px"
+                                         src="{% static 'images/edit_pencil.svg' %}">
+                                </a>
                             </span>
                         {% endif %}
                     </div>

@@ -141,3 +141,5 @@ def mobile_user_login(request):
     return render(request, "accounts/mobile_user_login.html",
                   {"form": form})
 
+
+# TODO: IMPLEMENT user settings IN MOBILE

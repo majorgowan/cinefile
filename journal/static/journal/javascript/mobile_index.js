@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    // implement overview show/hide
     const viewingOverviewLinks = document.querySelectorAll(".overview_link");
     // event listener for Overview links in Viewings (default to hide overview)
     viewingOverviewLinks.forEach(function(overviewLink) {
@@ -33,9 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-
-
-
+    // navigation menu dynamics
     const navMenu = document.getElementById("nav_menu");
 
     const menuMyCinefileItem = document.getElementById("menu_my_cinefile_item");

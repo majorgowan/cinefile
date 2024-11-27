@@ -12,10 +12,21 @@
 {% endif %}
 
 <div class="form_title">
-    New {{ cinema_video | title }} Viewing
+    {% if edit_viewing_id %}
+        Edit {{ cinema_video | title }} Viewing
+    {% else %}
+        New {{ cinema_video | title }} Viewing
+    {% endif %}
 </div>
-<form class="mobile_new_viewing_form"
-      method="post" action="{% url 'mobile_new_viewing' cinema_video=cinema_video %}">
+
+{% if edit_viewing_id %}
+    <form class="mobile_new_viewing_form"
+          method="post" action="{% url 'mobile_edit_viewing' edit_viewing_id=edit_viewing_id %}">
+{% else %}
+    <form class="mobile_new_viewing_form"
+          method="post" action="{% url 'mobile_new_viewing' cinema_video=cinema_video %}">
+{% endif %}
+
     {% csrf_token %}
     <div class="mobile_new_viewing_form_content">
         <table class="form_table">
@@ -39,13 +50,31 @@
                 {% endif %}
             {% endfor %}
         </table>
-        <div class="form_submit">
-            <button class="select_button" type="submit">Submit</button>
-            &emsp;&emsp;&emsp;
-            <button class="select_button cancel_button"
-                    type="button"
-                    data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
-        </div>
+        {% if edit_viewing_id %}
+            <div class="form_submit">
+                <button class="select_button" type="submit">Save</button>
+                &emsp;&emsp;&emsp;
+                <button class="select_button cancel_button"
+                        type="button"
+                        data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
+                &emsp;&emsp;
+                &emsp;&emsp;
+                <button class="select_button delete_button"
+                        id="mobile_delete_viewing_button"
+                        type="button"
+                        data-viewing_id="{{ edit_viewing_id }}"
+                        data-cancel_url="{% url 'mobile_index' %}"
+                        data-delete_url="{% url 'delete_viewing' %}">Delete Viewing</button>
+            </div>
+        {% else %}
+            <div class="form_submit">
+                <button class="select_button" type="submit">Submit</button>
+                &emsp;&emsp;&emsp;
+                <button class="select_button cancel_button"
+                        type="button"
+                        data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
+            </div>
+        {% endif %}
     </div>
 </form>
 

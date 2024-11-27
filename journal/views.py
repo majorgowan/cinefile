@@ -630,84 +630,113 @@ def mobile_index(request, user=None):
                   })
 
 
-def mobile_new_viewing(request, cinema_video="cinema"):
+def mobile_new_viewing(request, cinema_video="cinema",
+                       edit_viewing_id=None):
     """
     Form for recording a new viewing
     """
     if request.method == "POST":
         form_data = request.POST
 
-        if cinema_video == "cinema":
+        if cinema_video.lower() == "cinema":
             form = ViewingFormCinema(data=form_data)
-        elif cinema_video == "video":
+        elif cinema_video.lower() == "video":
             form = ViewingFormVideo(data=form_data)
 
         if form.is_valid():
             # get the form object
-            viewing_obj = form.save(commit=True)
+            viewing_obj = form.save(commit=True, pk=edit_viewing_id)
             return HttpResponseRedirect(reverse("mobile_index")
                                         + f"#viewing_{viewing_obj.pk}")
         else:
             print(form.errors)
-
     else:
-        tmdb_id = request.session.get("tmdb", None)
-        print(tmdb_id)
-        if tmdb_id is not None:
-            # if film not already in database, create it
-            if Film.objects.filter(tmdb=tmdb_id).exists():
-                filmobj = Film.objects.get(tmdb=tmdb_id)
+        # GET request
+        if edit_viewing_id is not None:
+            # edit an existing Viewing
+            print(edit_viewing_id)
+            viewing_obj = Viewing.objects.get(pk=int(edit_viewing_id))
+            if viewing_obj.cinema_or_tv == "Cinema":
+                cinema_video = "cinema"
+                form = ViewingFormCinema(
+                    instance=viewing_obj,
+                    initial={
+                        "title": viewing_obj.film.title
+                    }
+                )
             else:
-                filmobj = Film(tmdb=int(request.session.get("tmdb", 0)),
-                               title=(request.session
-                                      .get("candidates", {})
-                                      .get(tmdb_id, {})
-                                      .get("title", "unknown")),
-                               original_title=(request.session
-                                               .get("candidates", {})
-                                               .get(tmdb_id, {})
-                                               .get("original_title", "unknown")),
-                               release_date=(request.session
-                                             .get("candidates", {})
-                                             .get(tmdb_id, {})
-                                             .get("release_date", None)),
-                               year=(request.session
-                                     .get("candidates", {})
-                                     .get(tmdb_id, {})
-                                     .get("year", None)),
-                               director=request.session.get("director", None),
-                               starring=", ".join(request.session.get("starring")),
-                               overview=(request.session
+                cinema_video = "video"
+                form = ViewingFormVideo(
+                    instance=viewing_obj,
+                    initial={
+                        "title": viewing_obj.film.title
+                    }
+                )
+
+        else:
+            # new Viewing
+            tmdb_id = request.session.get("tmdb", None)
+            print(tmdb_id)
+            if tmdb_id is not None:
+                # if film not already in database, create it
+                if Film.objects.filter(tmdb=tmdb_id).exists():
+                    filmobj = Film.objects.get(tmdb=tmdb_id)
+                else:
+                    filmobj = Film(tmdb=int(request.session.get("tmdb", 0)),
+                                   title=(request.session
+                                          .get("candidates", {})
+                                          .get(tmdb_id, {})
+                                          .get("title", "unknown")),
+                                   original_title=(request.session
+                                                   .get("candidates", {})
+                                                   .get(tmdb_id, {})
+                                                   .get("original_title",
+                                                        "unknown")),
+                                   release_date=(request.session
+                                                 .get("candidates", {})
+                                                 .get(tmdb_id, {})
+                                                 .get("release_date", None)),
+                                   year=(request.session
                                          .get("candidates", {})
                                          .get(tmdb_id, {})
-                                         .get("overview", None)))
-                filmobj.save()
+                                         .get("year", None)),
+                                   director=request.session.get("director",
+                                                                None),
+                                   starring=", ".join(request
+                                                      .session
+                                                      .get("starring")),
+                                   overview=(request.session
+                                             .get("candidates", {})
+                                             .get(tmdb_id, {})
+                                             .get("overview", None)))
+                    filmobj.save()
 
-            # create an unsaved Viewing instance with
-            # values saved in the session object
-            if cinema_video == "cinema":
-                form = ViewingFormCinema(
-                    initial={
-                        "title": filmobj.title,
-                        "date": datetime.today,
-                        "cinema_or_tv": "Cinema",
-                        "user": request.user.pk,
-                        "film": filmobj.pk
-                    }
-                )
-            else:
-                form = ViewingFormVideo(
-                    initial={
-                        "title": filmobj.title,
-                        "date": datetime.today,
-                        "cinema_or_tv": "Video",
-                        "user": request.user.pk,
-                        "film": filmobj.pk
-                    }
-                )
+                # create an unsaved Viewing instance with
+                # values saved in the session object
+                if cinema_video.lower() == "cinema":
+                    form = ViewingFormCinema(
+                        initial={
+                            "title": filmobj.title,
+                            "date": datetime.today,
+                            "cinema_or_tv": "Cinema",
+                            "user": request.user.pk,
+                            "film": filmobj.pk
+                        }
+                    )
+                else:
+                    form = ViewingFormVideo(
+                        initial={
+                            "title": filmobj.title,
+                            "date": datetime.today,
+                            "cinema_or_tv": "Video",
+                            "user": request.user.pk,
+                            "film": filmobj.pk
+                        }
+                    )
 
     return render(request, "journal/mobile_new_viewing.html",
                   {
                       "form": form,
-                      "cinema_video": cinema_video
+                      "cinema_video": cinema_video,
+                      "edit_viewing_id": edit_viewing_id
                    })

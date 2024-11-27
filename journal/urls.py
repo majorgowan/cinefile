@@ -20,4 +20,6 @@ urlpatterns = [
     path("m/find_users", views.find_users, name="find_users"),
     path("m/new_viewing/<str:cinema_video>",
          views.mobile_new_viewing, name="mobile_new_viewing"),
+    path("m/edit_viewing/<str:edit_viewing_id>",
+         views.mobile_new_viewing, name="mobile_edit_viewing"),
 ]
