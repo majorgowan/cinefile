@@ -142,4 +142,33 @@ def mobile_user_login(request):
                   {"form": form})
 
 
-# TODO: IMPLEMENT user settings IN MOBILE
+def mobile_signup(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        print(form)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("mobile_user_login"))
+    else:
+        form = SignupForm()
+    return render(request, "accounts/mobile_signup.html",
+                  {"form": form})
+
+
+def mobile_settings(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = SettingsForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save(commit=True)
+                return HttpResponseRedirect(reverse("mobile_index"))
+        else:
+            form = SettingsForm(instance=request.user)
+        return render(request, "accounts/mobile_settings.html",
+                      {"form": form})
+    else:
+        return HttpResponseRedirect(reverse("mobile_index"))
+
+# TODO: implement DELETE ACCOUNT and CHANGE PASSWORD
+
+

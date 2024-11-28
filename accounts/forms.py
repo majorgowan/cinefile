@@ -15,13 +15,11 @@ class SignupForm(forms.ModelForm):
     error_messages = {
         "password_mismatch": "The two password fields didn't match.",
     }
-    username = forms.CharField(label="Username",
-                               help_text="no spaces")
+    username = forms.CharField(label="Username (no spaces)")
     password1 = forms.CharField(label="Password",
                                 widget=forms.PasswordInput)
     password2 = forms.CharField(label="Password confirmation",
-                                widget=forms.PasswordInput,
-                                help_text="reenter same password")
+                                widget=forms.PasswordInput)
     email = forms.CharField(label="Email address",
                             widget=forms.EmailInput)
     displayname = forms.CharField(label="Display Name")

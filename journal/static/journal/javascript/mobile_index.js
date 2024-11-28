@@ -1,5 +1,16 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    // implement TMDB links in Viewings
+    const viewingTMDBButtons = document.querySelectorAll(".viewing_row .tmdb_link_div img");
+    viewingTMDBButtons.forEach(function(tmdbButton) {
+        tmdbButton.addEventListener("click", function(event) {
+            // handle click event for each div
+            let button_tmdb_id = tmdbButton.dataset["tmdb_id"];
+            let tmdb_url = "https://www.themoviedb.org/movie/" + button_tmdb_id;
+            window.open(tmdb_url, "_blank");
+        });
+    });
+
     // implement overview show/hide
     const viewingOverviewLinks = document.querySelectorAll(".overview_link");
     // event listener for Overview links in Viewings (default to hide overview)
@@ -108,6 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     }
+
 
     // implement "new viewing" modal
     const tmdbSearchModal = document.getElementById("mobile_add_viewing_modal");

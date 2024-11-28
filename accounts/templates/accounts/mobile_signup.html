@@ -7,10 +7,10 @@
 {% endif %}
 
 <div class="form_title">
-    Log in
+    Create new Cinefile
 </div>
 <form class="cinefile_form"
-      method="post" action="{% url 'mobile_user_login' %}">
+      method="post" action="{% url 'mobile_signup' %}">
     {% csrf_token %}
     <div class="mobile_signup_login_form">
         <table>
@@ -30,10 +30,7 @@
             {% endfor %}
         </table>
         <div class="form_submit">
-            <button class="select_button" type="submit">Log in</button>
-        </div>
-        <div class="under_form_div">
-            &emsp;No account yet?&nbsp; <a href="{% url 'mobile_signup' %}">Create new Cinefile</a>
+            <button class="select_button" type="submit">Submit</button>
         </div>
     </div>
 </form>

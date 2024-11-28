@@ -638,6 +638,10 @@ def mobile_new_viewing(request, cinema_video="cinema",
     if request.method == "POST":
         form_data = request.POST
 
+        if edit_viewing_id is not None:
+            viewing_obj = Viewing.objects.get(pk=int(edit_viewing_id))
+            cinema_video = viewing_obj.cinema_or_tv
+
         if cinema_video.lower() == "cinema":
             form = ViewingFormCinema(data=form_data)
         elif cinema_video.lower() == "video":
@@ -654,14 +658,14 @@ def mobile_new_viewing(request, cinema_video="cinema",
         # GET request
         if edit_viewing_id is not None:
             # edit an existing Viewing
-            print(edit_viewing_id)
             viewing_obj = Viewing.objects.get(pk=int(edit_viewing_id))
+
             if viewing_obj.cinema_or_tv == "Cinema":
                 cinema_video = "cinema"
                 form = ViewingFormCinema(
                     instance=viewing_obj,
                     initial={
-                        "title": viewing_obj.film.title
+                        "title": viewing_obj.film.title,
                     }
                 )
             else:
@@ -669,7 +673,8 @@ def mobile_new_viewing(request, cinema_video="cinema",
                 form = ViewingFormVideo(
                     instance=viewing_obj,
                     initial={
-                        "title": viewing_obj.film.title
+                        "title": viewing_obj.film.title,
+                        "video_medium": viewing_obj.video_medium
                     }
                 )
 

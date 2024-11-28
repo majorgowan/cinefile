@@ -265,6 +265,30 @@ label[for="id_spoilers"] {
     margin: 10px 0 30px;
 }
 
+.mobile_signup_login_form tr {
+    height: 50px;
+}
+.signup_field input {
+    padding: 4px 10px;
+    font-size: 18px;
+}
+.signup_label label{
+    font-size: 18px;
+}
+.under_form_div {
+    text-align: left;
+    color: firebrick;
+    font-size: 20px;
+    margin: 25px auto;
+    line-height: 2;
+}
+.under_form_div a {
+    color: darkblue;
+}
+.under_form_div a:visited {
+    color: darkblue;
+}
+
 
 /* Media Queries */
 @media (min-width: 769px) {

@@ -59,6 +59,7 @@ class ViewingFormCinema(forms.ModelForm):
 
     def save(self, commit=False, pk=None):
         viewing = self.instance
+        viewing.cinema_or_tv = "Cinema"
         viewing.user = self.cleaned_data.get("user")
         viewing.film = self.cleaned_data.get("film")
         viewing.location = self.cleaned_data.get("location")
@@ -146,6 +147,7 @@ class ViewingFormVideo(forms.ModelForm):
 
     def save(self, commit=False, pk=None):
         viewing = self.instance
+        viewing.cinema_or_tv = "Video"
         viewing.user = self.cleaned_data.get("user")
         viewing.film = self.cleaned_data.get("film")
         viewing.video_medium = self.cleaned_data.get("video_medium")
