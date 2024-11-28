@@ -1,6 +1,6 @@
 from django.core.files.base import File, ContentFile
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
 from django.apps import apps
 from datetime import datetime
 from io import StringIO
@@ -8,6 +8,7 @@ from io import StringIO
 import json
 from . import tmdb
 from .models import Viewing, Film, ImportedFile, Follow
+from .forms import ViewingFormCinema, ViewingFormVideo
 
 
 # Create your views here.
@@ -136,7 +137,7 @@ def new_viewing(request):
     Register a new Viewing instance (and a new Film instance if the film
     is not already in the database)
     """
-    # TODO: record date entered with date viewed optional
+    viewing_json = {}
     if request.method == "POST":
         form = request.POST
 
@@ -187,6 +188,7 @@ def new_viewing(request):
             film.save()
         # populate and save new Viewing entry
         private_checkbox = form.get("private", "off")
+        spoilers_checkbox = form.get("spoilers", "off")
         viewing = Viewing(pk=pk,
                           user=request.user,
                           film=film,
@@ -197,10 +199,16 @@ def new_viewing(request):
                           streaming_platform=form.get("platform"),
                           cinema=form.get("cinema"),
                           private=(private_checkbox == "on"),
+                          spoilers=(spoilers_checkbox == "on"),
                           comments=form.get("comments"))
         viewing.save()
+        viewing_json = {"id": viewing.pk,
+                        "title": viewing.film.title,
+                        "cinema_or_tv": viewing.cinema_or_tv,
+                        "comments": viewing.comments}
     return JsonResponse({
-        "response": "I think I did what you wanted (save)"
+        "response": "I think I did what you wanted (save)",
+        "viewing": viewing_json,
     })
 
 
@@ -210,11 +218,9 @@ def delete_viewing(request):
     """
     if request.method == "POST":
         post_request = json.loads(request.body)
-        # print(post_request)
         # delete the viewing from the database
         pk = int(post_request["viewing_id"])
         to_delete = Viewing.objects.get(pk=pk)
-        # print(to_delete)
         to_delete.delete()
     return JsonResponse({
         "response": "I think I did what you wanted (delete)"
@@ -404,6 +410,7 @@ def import_tool(request):
                                 streaming_platform=viewing_dict["streaming_platform"],
                                 cinema=viewing_dict["cinema"],
                                 private=viewing_dict["private"],
+                                spoilers=viewing_dict["spoilers"],
                                 comments=viewing_dict["comments"]
                             )
                             viewingobj.save()
@@ -549,3 +556,192 @@ def get_session_data(request):
             return JsonResponse({
                 "error": f"{key} is not in session"
             })
+
+
+def find_users(request):
+    """
+    find public cinefiles by username pattern
+    """
+    matching_users = []
+    if request.method == "GET":
+        search_string = request.GET.get("username", None)
+        JUser = apps.get_model('accounts', 'JUser')
+
+        if search_string is not None:
+            users = JUser.objects.filter(username__icontains=search_string)
+            matching_users = [u.username for u in users if not u.private]
+    return JsonResponse({
+        "matching_users": matching_users
+    })
+
+
+# mobile views
+def mobile_index(request, user=None):
+    """
+    Mobile-friendly page showing journal for logged-in user or another user
+    if specified.
+    """
+    viewings = []
+    username = ""
+    displayname = ""
+    private = False
+    follows = False
+    following = []
+
+    if request.user.is_authenticated:
+        following = [f.followed.username
+                     for f in request.user.following.all()]
+
+    if user is not None:
+        # check for existence of user
+        JUser = apps.get_model('accounts', 'JUser')
+        matches = JUser.objects.filter(username=user)
+        if matches.exists():
+            user_obj = matches[0]
+            username = user_obj.username
+            # check if following this user
+            if request.user.is_authenticated:
+                if Follow.objects.filter(follower=request.user,
+                                         followed=user_obj).exists():
+                    follows = True
+            displayname = user_obj.displayname
+            if username != request.user.username and user_obj.private:
+                viewings = []
+                private = True
+            else:
+                viewings = user_obj.viewings.all().order_by("-date")
+        else:
+            username = "__no_such_user__"
+
+    elif request.user.is_authenticated:
+        # use logged-in user
+        viewings = request.user.viewings.all().order_by("-date")
+        username = request.user.username
+        displayname = request.user.displayname
+
+    return render(request, "journal/mobile_index.html",
+                  {
+                      "username": username,
+                      "displayname": displayname,
+                      "viewings": viewings,
+                      "private": private,
+                      "follows": follows,
+                      "following": following,
+                  })
+
+
+def mobile_new_viewing(request, cinema_video="cinema",
+                       edit_viewing_id=None):
+    """
+    Form for recording a new viewing
+    """
+    if request.method == "POST":
+        form_data = request.POST
+
+        if edit_viewing_id is not None:
+            viewing_obj = Viewing.objects.get(pk=int(edit_viewing_id))
+            cinema_video = viewing_obj.cinema_or_tv
+
+        if cinema_video.lower() == "cinema":
+            form = ViewingFormCinema(data=form_data)
+        elif cinema_video.lower() == "video":
+            form = ViewingFormVideo(data=form_data)
+
+        if form.is_valid():
+            # get the form object
+            viewing_obj = form.save(commit=True, pk=edit_viewing_id)
+            return HttpResponseRedirect(reverse("mobile_index")
+                                        + f"#viewing_{viewing_obj.pk}")
+        else:
+            print(form.errors)
+    else:
+        # GET request
+        if edit_viewing_id is not None:
+            # edit an existing Viewing
+            viewing_obj = Viewing.objects.get(pk=int(edit_viewing_id))
+
+            if viewing_obj.cinema_or_tv == "Cinema":
+                cinema_video = "cinema"
+                form = ViewingFormCinema(
+                    instance=viewing_obj,
+                    initial={
+                        "title": viewing_obj.film.title,
+                    }
+                )
+            else:
+                cinema_video = "video"
+                form = ViewingFormVideo(
+                    instance=viewing_obj,
+                    initial={
+                        "title": viewing_obj.film.title,
+                        "video_medium": viewing_obj.video_medium
+                    }
+                )
+
+        else:
+            # new Viewing
+            tmdb_id = request.session.get("tmdb", None)
+            print(tmdb_id)
+            if tmdb_id is not None:
+                # if film not already in database, create it
+                if Film.objects.filter(tmdb=tmdb_id).exists():
+                    filmobj = Film.objects.get(tmdb=tmdb_id)
+                else:
+                    filmobj = Film(tmdb=int(request.session.get("tmdb", 0)),
+                                   title=(request.session
+                                          .get("candidates", {})
+                                          .get(tmdb_id, {})
+                                          .get("title", "unknown")),
+                                   original_title=(request.session
+                                                   .get("candidates", {})
+                                                   .get(tmdb_id, {})
+                                                   .get("original_title",
+                                                        "unknown")),
+                                   release_date=(request.session
+                                                 .get("candidates", {})
+                                                 .get(tmdb_id, {})
+                                                 .get("release_date", None)),
+                                   year=(request.session
+                                         .get("candidates", {})
+                                         .get(tmdb_id, {})
+                                         .get("year", None)),
+                                   director=request.session.get("director",
+                                                                None),
+                                   starring=", ".join(request
+                                                      .session
+                                                      .get("starring")),
+                                   overview=(request.session
+                                             .get("candidates", {})
+                                             .get(tmdb_id, {})
+                                             .get("overview", None)))
+                    filmobj.save()
+
+                # create an unsaved Viewing instance with
+                # values saved in the session object
+                if cinema_video.lower() == "cinema":
+                    form = ViewingFormCinema(
+                        initial={
+                            "title": filmobj.title,
+                            "date": datetime.today,
+                            "cinema_or_tv": "Cinema",
+                            "user": request.user.pk,
+                            "film": filmobj.pk
+                        }
+                    )
+                else:
+                    form = ViewingFormVideo(
+                        initial={
+                            "title": filmobj.title,
+                            "date": datetime.today,
+                            "cinema_or_tv": "Video",
+                            "user": request.user.pk,
+                            "film": filmobj.pk
+                        }
+                    )
+
+    return render(request, "journal/mobile_new_viewing.html",
+                  {
+                      "form": form,
+                      "cinema_video": cinema_video,
+                      "edit_viewing_id": edit_viewing_id
+                   })

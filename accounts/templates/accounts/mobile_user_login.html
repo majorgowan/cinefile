@@ -1,0 +1,41 @@
+{% extends "journal/mobile_layout.html" %}
+
+{% block body %}
+
+{% if error_message %}
+<p>{{ error }}</p>
+{% endif %}
+
+<div class="form_title">
+    Log in
+</div>
+<form class="cinefile_form"
+      method="post" action="{% url 'mobile_user_login' %}">
+    {% csrf_token %}
+    <div class="mobile_signup_login_form">
+        <table>
+            {% for field in form %}
+            <tr>
+                <td class="signup_label">{{ field.label_tag }}</td>
+                <td class="signup_field">{{ field }}</td>
+            </tr>
+            {% if field.help_text %}
+            <tr>
+                <td></td>
+                <td class="help_text">
+                    ({{ field.help_text }})
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <div class="form_submit">
+            <button class="select_button" type="submit">Log in</button>
+        </div>
+        <div class="under_form_div" id="mobile_no_account_yet_div">
+            &emsp;No account yet?&nbsp; <a href="{% url 'mobile_signup' %}">Create new Cinefile</a>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

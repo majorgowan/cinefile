@@ -1,0 +1,298 @@
+/* CSS */
+body {
+    margin: 0;
+}
+
+.container {
+    max-width: 600px; /* adjust to your desired width */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    background-color: bisque;
+    color: darkred;
+    /* padding: 1em; */
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    width: 600px;
+}
+nav #mobile_title_div {
+    text-align: center;
+    height: 50px;
+}
+nav #mobile_title {
+    font-size: 36px;
+    padding: 2px;
+}
+nav #nav_menu {
+    display: none;
+}
+nav a.menu_item {
+    background: sandybrown;
+    font-family: Arial;
+    font-size: 24px;
+    padding: 10px;
+    display: block;
+    color: darkred;
+    text-decoration: none;
+}
+nav a.menu_item:hover {
+    background: lightsteelblue;
+    color: darkslategrey;
+    cursor: pointer;
+}
+nav a.icon {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+nav a.icon:hover {
+    background: sandybrown;
+}
+
+.main_block_mobile {
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    /* flex-grow: 1; */
+    /* padding: 2em; */
+    margin-top: 50px;
+}
+
+.viewing_row {
+    padding: 10px 20px 20px 20px;
+}
+
+footer {
+    background-color: bisque;
+    color: darkred;
+    padding: 1em;
+    text-align: center;
+}
+
+
+.viewing_row {
+    display: grid;
+    grid-template-columns: auto 20%;
+    grid-template-rows: auto;
+    grid-template-areas:
+     'details_div date_div'
+     'details_div location_div'
+     'overview_head_div location_div'
+     'overview_text_div overview_text_div'
+     'comment_div comment_div';
+    gap: 3px;
+    padding: 10px 20px 20px 20px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+}
+.viewing_date {
+    grid-area: date_div;
+    text-align: right;
+    font-size: 17px;
+}
+.movie_title {
+    font-size: 23px;
+    font-style: italic;
+    padding: 8px;
+    color: midnightblue;
+}
+.movie_details {
+    grid-area: details_div;
+    text-align: left;
+}
+.movie_people {
+    font-size: 18px;
+    font-style: normal;
+    color: darkslategrey;
+    margin-bottom: 4px;
+}
+.overview_header {
+    grid-area: overview_head_div;
+    font-size: 17px;
+    display: flex;
+    flex-direction: right;
+}
+.movie_comment {
+    grid-area: comment_div;
+    font-size: 17px;
+    color: darkgreen;
+}
+.overview_text {
+    grid-area: overview_text_div;
+    font-size: 17px;
+    color: darkblue;
+}
+.movie_location {
+    font-size: 17px;
+    line-height: 1.3;
+    grid-area: location_div;
+    text-align: right;
+}
+.movie_info {
+    font-size: 10px;
+    display: flex;
+    flex-direction: right;
+}
+
+.mobile_modal_invisible {
+    display: none;
+}
+.mobile_modal_visible {
+    display: block;
+    position: fixed;
+    height: 100vh;
+    width: 600px;
+    overscroll-behavior: contain;
+}
+#mobile_about_modal {
+    background: aliceblue;
+    z-index: 10; /* Sit on top */
+}
+#mobile_about_content {
+    margin: 30% 15%;
+    font-size: 26px;
+    line-height: 1.8;
+    text-align: center;
+    width: 70%;
+}
+.form_title {
+    font-size: 25px;
+    font-weight: bold;
+    color: firebrick;
+    margin: 20px 30px 20px;
+}
+.form_table {
+    border-spacing: 12px 5px;
+}
+#mobile_add_viewing_modal {
+    background-color: lightsteelblue;
+    z-index: 10;
+}
+#mobile_movie_detail_modal {
+    background-color: bisque;
+    z-index: 12;
+}
+.mobile_inner_div {
+    width: 84%;
+    margin: 20px 8%;
+}
+#mobile_view_another_modal {
+    background-color: lightsteelblue;
+    z-index: 10;
+}
+#mobile_follower_list_div {
+    padding-top: 10px;
+    color: firebrick;
+    font-size: 30px;
+    line-height: 1.7;
+}
+.mobile_scrolling_list {
+    list-style: none;
+    font-size: 20px;
+    width: 80%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: firebrick lightsteelblue;
+}
+#mobile_cinefile_matches_list {
+    font-size: 30px;
+}
+#mobile_follower_list {
+    height: 360px;
+}
+#mobile_follower_list a {
+    font-size: 26px;
+}
+.mobile_scrolling_list a {
+    text-decoration: none;
+    color: firebrick;
+}
+#mobile_tmdb_search_results {
+    margin-left: 10%;
+}
+#tmdb_detail_modal_content {
+    margin: 50px;
+    font-size: 20px;
+    color: black;
+    height: 450px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: firebrick lightsteelblue;
+}
+.movie_details_title {
+    color: firebrick;
+    font-style: italic;
+    font-size: 30px;
+}
+.movie_details_overview {
+    color: darkslategrey;
+    padding-right: 15px;
+}
+#mobile_movie_detail_select_div {
+    text-align: center;
+}
+
+.mobile_new_viewing_form {
+    margin: 0 10px 0;
+}
+.mobile_new_viewing_form tr {
+    height: 40px;
+}
+.viewing_label {
+    text-align: right;
+}
+.viewing_label label{
+    font-size: 18px;
+}
+.viewing_field input {
+    padding: 4px 10px;
+    font-size: 18px;
+}
+.viewing_field select {
+    padding: 4px 1px;
+    font-size: 18px;
+}
+label[for="id_spoilers"] {
+    font-weight: bold;
+    color: firebrick;
+}
+.form_submit button {
+    margin: 10px 0 30px;
+}
+
+.mobile_signup_login_form tr {
+    height: 50px;
+}
+.signup_field input {
+    padding: 4px 10px;
+    font-size: 18px;
+}
+.signup_label label{
+    font-size: 18px;
+}
+.under_form_div {
+    text-align: left;
+    font-size: 20px;
+    margin: 25px auto;
+}
+.under_form_div a {
+    text-decoration: none;
+    color: firebrick;
+}
+.under_form_div a:visited {
+    text-decoration: none;
+    color: firebrick;
+}
+
+
+/* Media Queries */
+@media (min-width: 769px) {
+  .container {
+    max-width: 600px; /* adjust to your desired width */
+  }
+}

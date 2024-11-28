@@ -25,7 +25,7 @@ body {
     font-size: 35px;
     margin: 100px;
     padding: 0;
-    color: darkolive;
+    color: darkslategrey;
 }
 
 .wrapper {
@@ -45,6 +45,10 @@ body {
     line-height: 2;
 }
 .form_submit {
+    display: flex;
+    padding-top: 20px;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 .form_submit button {
@@ -76,15 +80,15 @@ body {
 .cinefile_form {
     margin: 0 30px 0;
 }
-#more_settings_actions {
+.more_settings_actions {
     margin: 0 20px 0;
     line-height: 2.2;
 }
-#more_settings_actions a {
+.more_settings_actions a {
     text-decoration: none;
     color: firebrick;
 }
-#more_settings_actions a:hover {
+.more_settings_actions a:hover {
     cursor: pointer;
 }
 #account_delete_div {
@@ -251,13 +255,13 @@ body {
     background-color: lightsteelblue;
     overflow: auto; /* Enable scroll if needed */
 }
-#new_viewing_form input[type="text"], input[type="date"], label {
+#new_viewing_form input[type="text"], #new_viewing_form input[type="date"], #new_viewing_form label {
     padding: 3px;
     border: none;
     font-size: 18px;
     font-family: Arial;
 }
-#new_viewing_form input[type="text"], input[type="date"] {
+#new_viewing_form input[type="text"], #new_viewing_form input[type="date"] {
     background-color: rgb(240, 240, 250);
 }
 #new_viewing_form tr {
@@ -328,14 +332,14 @@ body {
     height: 40px;
     border: none;
 }
-#tmdb_search_results {
+.tmdb_search_results {
     display: none;
     font-size: 20px;
     padding: 5px 20px;
     line-height: 1.4;
     color: maroon;
 }
-#tmdb_search_results a:hover {
+.tmdb_search_results a:hover {
   color: inherit;
   cursor: pointer;
   text-decoration: underline;
@@ -389,18 +393,39 @@ body {
     font-size: 17px;
     color: darkgreen;
 }
+.hidden_comments {
+    display: none;
+}
+.shown_comments {
+    display: block;
+}
+.spoilers_div {
+    margin-top: 9px;
+}
+.spoilers_span {
+    font-variant: small-caps;
+    color: darkred;
+    padding: 2px;
+}
+.spoilers_link {
+    background-color: mistyrose;
+    color: darkgreen;
+    padding: 4px;
+}
+.spoilers_link:hover {
+    cursor: pointer;
+}
+
+
 .movie_details {
     grid-area: details_div;
     text-align: left;
-}
-.movie_details_title {
-    font-size: 24px;
 }
 .movie_title {
     font-size: 25px;
     font-style: italic;
     padding: 8px;
-    color: darkolive;
+    color: midnightblue;
 }
 .movie_info {
     display: flex;
@@ -417,7 +442,7 @@ body {
 .movie_people {
     font-size: 18px;
     font-style: normal;
-    color: darkolive;
+    color: darkslategrey;
 }
 .movie_location {
     font-size: 20px;

@@ -199,10 +199,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // run TMDB search
     function tmdbSearchGo(event) {
-            // get search text
-            let search_pattern = tmdbSearchText.value;
-            const results_page = tmdbSearchText.dataset["page"];
-            search_tmdb(search_pattern, results_page);
+        // get search text
+        let search_pattern = tmdbSearchText.value;
+        const results_page = tmdbSearchText.dataset["page"];
+        search_tmdb(search_pattern, results_page);
     }
     // allow either clicking search or pressing Enter
     tmdbSearchSearchButton.addEventListener("click", tmdbSearchGo);

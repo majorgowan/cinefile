@@ -21,7 +21,8 @@
                     id="tmdb_search_search_button">Search</button>
             &nbsp;
         </div>
-        <div id="tmdb_search_results"></div>
+        <div class="tmdb_search_results"
+             id="tmdb_search_results"></div>
         {% include "journal/tmdb_detail.html" %}
     </div>
 
@@ -90,7 +91,9 @@
         <p>Sorry, no such cinefile</p>
     </div>
 {% endif %}
-<div class="movie_list" id="profile_movie_list">
+<div class="movie_list"
+     id="profile_movie_list"
+     data-profile_url="{% url 'index' %}">
     {% for viewing in viewings %}
         {% if username == user.username or not viewing.private %}
             <div class="viewing_row viewing_private_{{ viewing.private }}"

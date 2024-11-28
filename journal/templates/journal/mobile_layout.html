@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinefile!!</title>
+    {% load static %}
+    <link rel="stylesheet"
+          href="{% static 'journal/css/layout.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'journal/css/mobile_layout.css' %}">
+    <link rel="icon"
+          href="{% static 'images/favicon.ico' %}"
+          type="image/x-icon">
+    <script id="utils_script"
+            type="text/javascript"
+            src="{% static 'journal/javascript/utils.js' %}"></script>
+    <script id="mobile_utils_script"
+            type="text/javascript"
+            src="{% static 'journal/javascript/mobile_utils.js' %}"></script>
+
+    {% block headblock %}
+    {% endblock %}
+
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <div class="cinefile" id="mobile_title_div">
+                <div id="mobile_title">
+                    {% if displayname %}
+                        {% if displayname != "" %}
+                            {{ displayname }}'s
+                        {% endif %}
+                    {% endif %}
+                    Cinefile
+                </div>
+            </div>
+            <div id="nav_menu">
+                {% if user.is_authenticated %}
+                    {% if username %}
+                        {% if user.username != username %}
+                            <a class="menu_item"
+                               id="menu_my_cinefile_item"
+                               data-url="{% url 'mobile_index' %}">My Cinefile</a>
+                            {% if follows %}
+                                <a class="menu_item"
+                                   id="menu_unfollow_item"
+                                   data-follow_url="{% url 'follow' %}"
+                                   data-followed="{{ username }}"
+                                   data-follower="{{ user.username }}">Unfollow {{ username }}</a>
+                            {% elif username %}
+                                <a class="menu_item"
+                                   id="menu_follow_item"
+                                   data-follow_url="{% url 'follow' %}"
+                                   data-followed="{{ username }}"
+                                   data-follower="{{ user.username }}">Follow {{ username }}</a>
+                            {% endif %}
+                        {% endif %}
+                        <a class="menu_item"
+                           id="menu_add_viewing_item">Add viewing</a>
+                        <a class="menu_item"
+                           id="menu_view_another_item">View another Cinefile</a>
+                        <a class="menu_item"
+                           id="menu_settings_item"
+                           href="{% url 'mobile_settings' %}">User settings</a>
+                    {% endif %}
+                    <a class="menu_item"
+                       id="menu_logout_item"
+                       href="{% url 'mobile_user_login' %}">Log out</a>
+                {% else %}
+                    <a class="menu_item"
+                       id="menu_login_item"
+                       href="{% url 'mobile_user_login' %}">Log in</a>
+                    <a class="menu_item"
+                       id="menu_view_a_cinefile_item">View a Cinefile</a>
+                {% endif %}
+                <a class="menu_item"
+                   id="menu_about_item">About</a>
+            </div>
+            <a id="mobile_menu_symbol" class="icon">
+                <img alt="mobile_menu_symbol"
+                     src="{% static 'images/menu_icon.svg' %}">
+            </a>
+        </nav>
+        <main class="main_block_mobile">
+            {% block body %}
+            {% endblock %}
+        </main>
+        <footer></footer>
+
+        <div class="mobile_modal_invisible" id="mobile_about_modal">
+            <div class="top_corner">
+                <span class="close close_corner">&times;</span>
+            </div>
+            <div id="mobile_about_content">
+                <p>
+                    <span class="cinefile">Cinefile</span> is the original internet cinema journal
+                    for keeping track of the films you see. <span class="cinefile">Cinefile</span>
+                    uses data from<BR> <a href="https://www.themoviedb.org/">The Movie Database</a>.
+                </p>
+                <BR>
+                <p>Copyright 2024 by Mark Fruman &ensp;<span class="email">mark.fruman@yahoo.com</span></p>
+            </div>
+        </div>
+
+        <div class="mobile_modal_invisible" id="mobile_view_another_modal">
+            <div class="top_corner">
+                <span class="close close_corner">&times;</span>
+            </div>
+            <div class="form_title">
+                {% if user.is_authenticated %}
+                    View another Cinefile
+                {% else %}
+                    View a Cinefile
+                {% endif %}
+            </div>
+            <div id="mobile_view_another_form" class="mobile_inner_div">
+                <input id="view_another_search_text" type="text"
+                       class="tmdb_search_text_input"
+                       placeholder="username"
+                       data-profile_url="{% url 'mobile_profile_base' %}"
+                       data-find_users_url="{% url 'find_users' %}">
+                &emsp;
+                <button class="select_button"
+                        id="mobile_view_another_search">Search</button>
+                <div id="mobile_cinefile_matches_list_div">
+                    <ul id="mobile_cinefile_matches_list"
+                        class="mobile_scrolling_list"></ul>
+                </div>
+                {% if following %}
+                <div id="mobile_follower_list_div">
+                    <h5>Following:</h5>
+                    <ul id="mobile_follower_list"
+                        class="mobile_scrolling_list">
+                        {% for followed in following %}
+                            <li><a href="{% url 'mobile_profile' user=followed %}">{{ followed }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% block modal %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

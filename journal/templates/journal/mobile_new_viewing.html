@@ -1,0 +1,81 @@
+{% extends "journal/mobile_layout.html" %}
+
+{% block headblock %}
+{% load static %}
+<script type="text/javascript" src="{% static 'journal/javascript/mobile_new_viewing.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+{% if error_message %}
+<p>{{ error }}</p>
+{% endif %}
+
+<div class="form_title">
+    {% if edit_viewing_id %}
+        Edit {{ cinema_video | title }} Viewing
+    {% else %}
+        New {{ cinema_video | title }} Viewing
+    {% endif %}
+</div>
+
+{% if edit_viewing_id %}
+    <form class="mobile_new_viewing_form"
+          method="post" action="{% url 'mobile_edit_viewing' edit_viewing_id=edit_viewing_id %}">
+{% else %}
+    <form class="mobile_new_viewing_form"
+          method="post" action="{% url 'mobile_new_viewing' cinema_video=cinema_video %}">
+{% endif %}
+
+    {% csrf_token %}
+    <div class="mobile_new_viewing_form_content">
+        <table class="form_table">
+            {% for field in form %}
+                {% if field.label != False %}
+                    <tr>
+                        <td class="viewing_label">{{ field.label_tag }}</td>
+                        <td class="viewing_field">{{ field }}</td>
+                    </tr>
+                    {% if field.help_text %}
+                        <tr>
+                            <td></td>
+                            <td class="help_text">
+                                ({{ field.help_text }})
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% else %}
+                    <!-- hidden field -->
+                    {{ field }}
+                {% endif %}
+            {% endfor %}
+        </table>
+        {% if edit_viewing_id %}
+            <div class="form_submit">
+                <button class="select_button" type="submit">Save</button>
+                &emsp;&emsp;&emsp;
+                <button class="select_button cancel_button"
+                        type="button"
+                        data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
+                &emsp;&emsp;
+                &emsp;&emsp;
+                <button class="select_button delete_button"
+                        id="mobile_delete_viewing_button"
+                        type="button"
+                        data-viewing_id="{{ edit_viewing_id }}"
+                        data-cancel_url="{% url 'mobile_index' %}"
+                        data-delete_url="{% url 'delete_viewing' %}">Delete Viewing</button>
+            </div>
+        {% else %}
+            <div class="form_submit">
+                <button class="select_button" type="submit">Save</button>
+                &emsp;&emsp;&emsp;
+                <button class="select_button cancel_button"
+                        type="button"
+                        data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
+            </div>
+        {% endif %}
+    </div>
+</form>
+
+{% endblock %}
