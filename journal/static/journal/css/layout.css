@@ -45,6 +45,10 @@ body {
     line-height: 2;
 }
 .form_submit {
+    display: flex;
+    padding-top: 20px;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 .form_submit button {
@@ -76,15 +80,15 @@ body {
 .cinefile_form {
     margin: 0 30px 0;
 }
-#more_settings_actions {
+.more_settings_actions {
     margin: 0 20px 0;
     line-height: 2.2;
 }
-#more_settings_actions a {
+.more_settings_actions a {
     text-decoration: none;
     color: firebrick;
 }
-#more_settings_actions a:hover {
+.more_settings_actions a:hover {
     cursor: pointer;
 }
 #account_delete_div {

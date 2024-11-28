@@ -1,0 +1,82 @@
+{% extends "journal/mobile_layout.html" %}
+
+{% block headblock %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let accountDeleteButton = document.getElementById("mobile_account_delete_button");
+        let confirmCheckbox = document.querySelector('input[type="checkbox"]');
+        let cancelButton = document.querySelector(".cancel_button");
+
+        confirmCheckbox.addEventListener("change", function(event) {
+            if (confirmCheckbox.checked) {
+                accountDeleteButton.disabled = false;
+            } else {
+                accountDeleteButton.disabled = true;
+            }
+        });
+
+        cancelButton.onclick = function() {
+            window.location.replace("{% url 'mobile_settings' %}");
+        }
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+
+{% if error_message %}
+<p>{{ error }}</p>
+{% endif %}
+
+<div class="form_title">
+       Delete account
+</div>
+<div id="account_delete_div">
+    <p>
+        Are you sure you want to delete the account?!<BR>
+        <b>All data will be lost.  This cannot be undone.</b>
+    </p>
+    <p>
+        Consider exporting your data (on desktop version)
+        before deleting.
+    </p>
+</div>
+
+<form class="cinefile_form"
+      method="post" action="{% url 'mobile_delete_account' %}">
+    {% csrf_token %}
+    <div class="mobile_signup_login_form">
+        <table>
+            {% for field in form %}
+            <tr>
+                <td class="signup_label">{{ field.label_tag }}</td>
+                <td class="signup_field">{{ field }}</td>
+            </tr>
+            {% if field.help_text %}
+            <tr>
+                <td></td>
+                <td class="help_text">
+                    ({{ field.help_text }})
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <div class="form_submit">
+            <button id="mobile_account_delete_button"
+                    class="select_button delete_button"
+                    disabled
+                    type="submit">
+                <BR>&emsp;Delete Account&emsp;<BR><BR>
+            </button>
+            &emsp;&emsp;
+            <button id="account_delete_cancel_button"
+                    class="select_button cancel_button"
+                    type="button">
+                <BR>&emsp;Cancel&emsp;<BR><BR>
+            </button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

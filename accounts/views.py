@@ -169,6 +169,36 @@ def mobile_settings(request):
     else:
         return HttpResponseRedirect(reverse("mobile_index"))
 
-# TODO: implement DELETE ACCOUNT and CHANGE PASSWORD
 
+def mobile_change_password(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = ChangePasswordForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save(commit=True)
+                # prevent logging out user on password change
+                update_session_auth_hash(request, request.user)
+                return HttpResponseRedirect(reverse("mobile_settings"))
+        else:
+            form = ChangePasswordForm(instance=request.user)
+        return render(request, "accounts/mobile_change_password.html",
+                      {"form": form})
+    else:
+        return HttpResponseRedirect(reverse("mobile_index"))
+
+
+def mobile_delete_account(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = DeleteAccountForm(request.POST)
+            if form.is_valid():
+                # delete user
+                request.user.delete()
+                return HttpResponseRedirect(reverse("mobile_index"))
+        else:
+            form = DeleteAccountForm()
+        return render(request, "accounts/mobile_delete_account.html",
+                      {"form": form})
+    else:
+        return HttpResponseRedirect(reverse("mobile_index"))
 

@@ -120,8 +120,7 @@ class ChangePasswordForm(forms.ModelForm):
     password1 = forms.CharField(label="New Password",
                                 widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirm New Password",
-                                widget=forms.PasswordInput,
-                                help_text="reenter same password")
+                                widget=forms.PasswordInput)
 
     class Meta:
         model = JUser

@@ -277,16 +277,16 @@ label[for="id_spoilers"] {
 }
 .under_form_div {
     text-align: left;
-    color: firebrick;
     font-size: 20px;
     margin: 25px auto;
-    line-height: 2;
 }
 .under_form_div a {
-    color: darkblue;
+    text-decoration: none;
+    color: firebrick;
 }
 .under_form_div a:visited {
-    color: darkblue;
+    text-decoration: none;
+    color: firebrick;
 }
 
 
