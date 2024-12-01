@@ -124,7 +124,7 @@
 {% endblock %}
 
 {% block modal %}
-<div class="mobile_modal_invisible" id="mobile_add_viewing_modal">
+<div class="mobile_modal mobile_modal_invisible" id="mobile_add_viewing_modal">
     <div class="top_corner">
         <span class="close close_corner">&times;</span>
     </div>
@@ -132,32 +132,34 @@
         Add viewing
     </div>
     <div id="mobile_movie_title_form" class="mobile_inner_div">
-        <input id="tmdb_search_text" type="text"
-               class="tmdb_search_text_input"
-               placeholder="title"
+        <input id="mobile_tmdb_search_text_input" type="search"
+               class="mobile_search_text_input"
+               placeholder="title search"
                data-page="1"
                data-url="{% url 'tmdb' api_command='search' %}"
                data-credits_url="{% url 'tmdb' api_command='credits' %}">
+        <!--
         &emsp;
-        <button class="select_button"
+        <button class="mobile_select_button"
                 id="tmdb_search_search_button">Search</button>
         &nbsp;
+        -->
     </div>
     <div class="tmdb_search_results"
          id="mobile_tmdb_search_results"></div>
 </div>
-<div class="mobile_modal_invisible" id="mobile_movie_detail_modal">
+<div class="mobile_modal mobile_modal_invisible" id="mobile_movie_detail_modal">
     <div class="top_corner">
         <span class="close close_corner">&times;</span>
     </div>
-    <div id="tmdb_detail_modal_content">
+    <div id="mobile_tmdb_detail_modal_content">
     </div>
-    <div id="mobile_movie_detail_select_div">
-        <button class="select_button"
+    <div class="form_submit" id="mobile_movie_detail_select_div">
+        <button class="mobile_select_button"
                 id="tmdb_detail_select_cinema_button"
                 data-url="{% url 'mobile_new_viewing' cinema_video='cinema' %}">Cinema</button>
         &emsp;&emsp;
-        <button class="select_button"
+        <button class="mobile_select_button"
                 id="tmdb_detail_select_video_button"
                 data-url="{% url 'mobile_new_viewing' cinema_video='video' %}">TV/Video</button>
     </div>

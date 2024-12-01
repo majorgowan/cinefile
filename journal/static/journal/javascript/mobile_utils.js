@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const mobileAboutModal = document.getElementById("mobile_about_modal");
     const mobileAboutModalClose = mobileAboutModal.querySelector(".close");
     menuAboutItem.onclick = function() {
-        mobileAboutModal.setAttribute("class", "mobile_modal_visible");
+        mobileAboutModal.setAttribute("class", "mobile_modal mobile_modal_visible");
         // hide the menu
         navMenu.style.display = "none";
     }
     mobileAboutModalClose.onclick = function() {
-        mobileAboutModal.setAttribute("class", "mobile_modal_invisible");
+        mobileAboutModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
     }
 
     const menuViewAnotherItem = document.getElementById("menu_view_another_item");
@@ -30,28 +30,29 @@ document.addEventListener("DOMContentLoaded", function() {
     // for the search functionality:
     const mobileCinefileMatchesList = document.getElementById("mobile_cinefile_matches_list");
     const viewAnotherSearchTextInput = document.getElementById("view_another_search_text");
-    const viewAnotherSearchButton = document.getElementById("mobile_view_another_search");
+    // DEPRECATED
+    // const viewAnotherSearchButton = document.getElementById("mobile_view_another_search");
 
     if (menuViewAnotherItem != null) {
         menuViewAnotherItem.onclick = function() {
-            mobileViewAnotherModal.setAttribute("class", "mobile_modal_visible");
+            mobileViewAnotherModal.setAttribute("class", "mobile_modal mobile_modal_visible");
             // hide the menu
             navMenu.style.display = "none";
         }
         mobileViewAnotherModalClose.onclick = function() {
-            mobileViewAnotherModal.setAttribute("class", "mobile_modal_invisible");
+            mobileViewAnotherModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
             mobileCinefileMatchesList.innerHTML = "";
             viewAnotherSearchTextInput.value = "";
         }
     }
     if (menuViewACinefileItem != null) {
         menuViewACinefileItem.onclick = function() {
-            mobileViewAnotherModal.setAttribute("class", "mobile_modal_visible");
+            mobileViewAnotherModal.setAttribute("class", "mobile_modal mobile_modal_visible");
             // hide the menu
             navMenu.style.display = "none";
         }
         mobileViewAnotherModalClose.onclick = function() {
-            mobileViewAnotherModal.setAttribute("class", "mobile_modal_invisible");
+            mobileViewAnotherModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
             mobileCinefileMatchesList.innerHTML = "";
             viewAnotherSearchTextInput.value = "";
         }
@@ -88,9 +89,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 find_users(viewAnotherSearchTextInput.value);
             }
         });
+        /* DEPRECATED!!
         viewAnotherSearchButton.addEventListener("click", function(event) {
             find_users(viewAnotherSearchTextInput.value);
-        });
+        });*/
     }
 
 });

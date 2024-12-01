@@ -52,14 +52,14 @@
         </table>
         {% if edit_viewing_id %}
             <div class="form_submit">
-                <button class="select_button" type="submit">Save</button>
+                <button class="mobile_select_button" type="submit">Save</button>
                 &emsp;&emsp;&emsp;
-                <button class="select_button cancel_button"
+                <button class="mobile_select_button cancel_button"
                         type="button"
                         data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
                 &emsp;&emsp;
                 &emsp;&emsp;
-                <button class="select_button delete_button"
+                <button class="mobile_select_button delete_button"
                         id="mobile_delete_viewing_button"
                         type="button"
                         data-viewing_id="{{ edit_viewing_id }}"
@@ -68,9 +68,9 @@
             </div>
         {% else %}
             <div class="form_submit">
-                <button class="select_button" type="submit">Save</button>
+                <button class="mobile_select_button" type="submit">Save</button>
                 &emsp;&emsp;&emsp;
-                <button class="select_button cancel_button"
+                <button class="mobile_select_button cancel_button"
                         type="button"
                         data-cancel_url="{% url 'mobile_index' %}">Cancel</button>
             </div>

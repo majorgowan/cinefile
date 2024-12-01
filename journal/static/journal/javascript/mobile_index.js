@@ -61,14 +61,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const mobileAddViewingModalClose = mobileAddViewingModal.querySelector(".close");
 
     menuAddViewingItem.onclick = function() {
-        mobileAddViewingModal.setAttribute("class", "mobile_modal_visible");
+        mobileAddViewingModal.setAttribute("class", "mobile_modal mobile_modal_visible");
         // hide the menu
         navMenu.style.display = "none";
     }
     mobileAddViewingModalClose.onclick = function() {
         tmdbSearchText.value = "";
         tmdbSearchResults.innerHTML = "";
-        mobileAddViewingModal.setAttribute("class", "mobile_modal_invisible");
+        mobileAddViewingModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
     }
 
     // implement "Follow / Unfollow" function
@@ -124,11 +124,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // implement "new viewing" modal
     const tmdbSearchModal = document.getElementById("mobile_add_viewing_modal");
     const mobileMovieTitleForm = document.getElementById("mobile_movie_title_form");
-    const tmdbSearchText = document.getElementById("tmdb_search_text");
-    const tmdbSearchSearchButton = document.getElementById("tmdb_search_search_button");
+    const tmdbSearchText = document.getElementById("mobile_tmdb_search_text_input");
+    // deprecating the button!
+    // const tmdbSearchSearchButton = document.getElementById("tmdb_search_search_button");
     const tmdbSearchResults = document.getElementById("mobile_tmdb_search_results");
     const tmdbDetailModal = document.getElementById("mobile_movie_detail_modal");
-    const tmdbDetailModalContent = document.getElementById("tmdb_detail_modal_content");
+    const tmdbDetailModalContent = document.getElementById("mobile_tmdb_detail_modal_content");
     const tmdbDetailModalClose = tmdbDetailModal.querySelector(".close");
     const tmdbDetailSelectCinema = tmdbDetailModal.querySelector("#tmdb_detail_select_cinema_button");
     const tmdbDetailSelectVideo = tmdbDetailModal.querySelector("#tmdb_detail_select_video_button");
@@ -136,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const credits_url = tmdbSearchText.dataset["credits_url"];
 
     tmdbDetailModalClose.addEventListener("click", function() {
-        tmdbDetailModal.setAttribute("class", "mobile_modal_invisible");
+        tmdbDetailModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
     });
 
 
@@ -200,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             xhr_credits.onload = function() {
                                 if (xhr_credits.status === 200) {
                                     // show detail modal
-                                    tmdbDetailModal.setAttribute("class", "mobile_modal_visible");
+                                    tmdbDetailModal.setAttribute("class", "mobile_modal mobile_modal_visible");
                                     let creditsData = JSON.parse(xhr_credits.responseText);
 
                                     let movieData = searchData["candidates"][movie_id];
@@ -242,8 +243,8 @@ document.addEventListener("DOMContentLoaded", function() {
             search_tmdb(search_pattern, results_page);
         }
 
-        // add listeners to text input and button
-        tmdbSearchSearchButton.addEventListener("click", tmdbSearchGo);
+        // add listeners to text input (and button -- DEPRECATED)
+        // tmdbSearchSearchButton.addEventListener("click", tmdbSearchGo);
         tmdbSearchText.addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
                 tmdbSearchGo(event);
