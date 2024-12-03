@@ -17,42 +17,41 @@
         <p>Sorry, no such cinefile</p>
     </div>
 {% endif %}
-<div class="movie_list" id="profile_movie_list">
+<div class="mobile_movie_list" id="profile_movie_list">
     {% for viewing in viewings %}
         {% if username == user.username or not viewing.private %}
-            <div class="viewing_row viewing_private_{{ viewing.private }}"
+            <div class="mobile_viewing_row viewing_private_{{ viewing.private }}"
                  id="viewing_{{ viewing.id }}">
-                <div class="viewing_date">
+                <div class="mobile_viewing_date">
                     {% if user.is_authenticated and username == user.username %}
                         {{ viewing.date | date:"M j, Y" }}
                     {% else %}
                         {{ viewing.date | date:"M, Y" }}
                     {% endif %}
                 </div>
-                <div class="movie_details">
-                    <div class="movie_title">
+                <div class="mobile_movie_details">
+                    <div class="mobile_movie_title">
                         {{ viewing.film.title }} ({{ viewing.film.year }})
                         {% if user.is_authenticated and username == user.username %}
-                            &ensp;
                             <span data-viewing_id="{{ viewing.id }}"
                                   class="viewing_edit_button">
                                 <!--&#x1F589;-->
                                 <a href="{% url 'mobile_edit_viewing' edit_viewing_id=viewing.id %}">
                                     <img alt="edit"
-                                         width="23px"
+                                         width="27px"
                                          src="{% static 'images/edit_pencil.svg' %}">
                                 </a>
                             </span>
                         {% endif %}
                     </div>
-                    <div class="movie_info">
-                        <div class="movie_people">
+                    <div class="mobile_movie_info">
+                        <div class="mobile_movie_people">
                             Director: {{ viewing.film.director }}<BR>
                             Starring: {{ viewing.film.starring }}<BR>
                         </div>
                     </div>
                 </div>
-                <div class="movie_location">
+                <div class="mobile_movie_location">
                     {% if user.is_authenticated and username == user.username %}
                         {% if viewing.location %}
                             {{ viewing.location }}<br>
@@ -88,12 +87,12 @@
                         </span>
                     {% endif %}
                 </div>
-                <div class="movie_comment">
+                <div class="mobile_movie_comment">
                     {% if viewing.spoilers %}
-                        <div class="spoilers_div">
-                            <span class="spoilers_span">
+                        <div class="mobile_spoilers_div">
+                            <span class="mobile_spoilers_span">
                                 <span>Spoiler alert!</span>
-                                <a class="spoilers_link" data-comments_id="comments_{{ forloop.counter }}">show comments</a>
+                                <a class="mobile_spoilers_link" data-comments_id="comments_{{ forloop.counter }}">show comments</a>
                             </span>
                         </div>
                         <span class="hidden_comments" id="comments_{{ forloop.counter }}">
@@ -105,7 +104,7 @@
                         </span>
                     {% endif %}
                 </div>
-                <div class="overview_header">
+                <div class="mobile_overview_header">
                     <div class="tmdb_link_div">
                         <img alt="tmdb_logo"
                              data-tmdb_id="{{ viewing.film.tmdb }}"
@@ -114,7 +113,7 @@
                     </div>
                     <a class="overview_link" data-overview_id="overview_{{ forloop.counter }}">show tmdb overview</a>
                 </div>
-                <div class="overview_text">
+                <div class="mobile_overview_text">
                     <span class="hidden_overview" id="overview_{{ forloop.counter }}"><BR>{{ viewing.film.overview }}</span>
                 </div>
             </div>

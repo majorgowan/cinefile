@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // implement TMDB links in Viewings
-    const viewingTMDBButtons = document.querySelectorAll(".viewing_row .tmdb_link_div img");
+    const viewingTMDBButtons = document.querySelectorAll(".mobile_viewing_row .tmdb_link_div img");
     viewingTMDBButtons.forEach(function(tmdbButton) {
         tmdbButton.addEventListener("click", function(event) {
             // handle click event for each div
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // implement spoiler show/hide
-    const viewingSpoilersLinks = document.querySelectorAll(".spoilers_link");
+    const viewingSpoilersLinks = document.querySelectorAll(".mobile_spoilers_link");
     // event listener for Spoilers links in Viewings (default to hide spoilers)
     viewingSpoilersLinks.forEach(function(spoilersLink) {
         spoilersLink.addEventListener("click", function(event) {
