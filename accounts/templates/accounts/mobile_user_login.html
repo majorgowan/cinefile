@@ -12,7 +12,7 @@
 <form class="cinefile_form"
       method="post" action="{% url 'mobile_user_login' %}">
     {% csrf_token %}
-    <div class="mobile_signup_login_form">
+    <div class="mobile_form">
         <table>
             {% for field in form %}
             <tr>
@@ -29,11 +29,11 @@
             {% endif %}
             {% endfor %}
         </table>
-        <div class="form_submit">
+        <div class="mobile_form_submit">
             <button class="mobile_select_button" type="submit">Log in</button>
         </div>
         <div class="under_form_div" id="mobile_no_account_yet_div">
-            &emsp;No account yet?&nbsp; <a href="{% url 'mobile_signup' %}">Create new Cinefile</a>
+            No account yet?<BR><a href="{% url 'mobile_signup' %}">Create new Cinefile</a>
         </div>
     </div>
 </form>

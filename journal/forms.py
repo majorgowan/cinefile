@@ -25,14 +25,13 @@ class ViewingFormCinema(forms.ModelForm):
     date = forms.DateField(label="Date",
                            widget=forms.DateInput(
                                format="%Y-%m-%d",
-                               attrs={"type": "date",
-                                      "style": "font-size: 20px;"}
+                               attrs={"type": "date"}
                            ))
     comments = forms.CharField(label="",
                                widget=forms.Textarea(
                                    attrs={"placeholder": "comments",
                                           "style": "padding: 5px; line-height: 1.2;",
-                                          "cols": 52,
+                                          "cols": 38,
                                           "rows": 7}
                                ))
     user = forms.Field(label=False,
@@ -94,22 +93,21 @@ class ViewingFormVideo(forms.ModelForm):
     date = forms.DateField(label="Date",
                            widget=forms.DateInput(
                                format="%Y-%m-%d",
-                               attrs={"type": "date",
-                                      "style": "font-size: 20px;"}
+                               attrs={"type": "date"}
                            ))
-    video_medium = forms.ChoiceField(label="Video Medium",
+    video_medium = forms.ChoiceField(label="Medium",
                                      choices=[
                                          ("", "-- Select Media Type --"),
                                          ("TV", "TV"),
                                          ("Streaming", "Streaming"),
                                          ("DVD/PPV", "DVD / PPV")
                                      ])
-    tv_channel = forms.CharField(label="TV Channel",
+    tv_channel = forms.CharField(label="Channel",
                                  required=False,
                                  widget=forms.TextInput(
                                      attrs={"disabled": True}
                                  ))
-    streaming_platform = forms.CharField(label="Streaming Platform",
+    streaming_platform = forms.CharField(label="Platform",
                                          required=False,
                                          widget=forms.TextInput(
                                              attrs={"disabled": True}
@@ -118,7 +116,7 @@ class ViewingFormVideo(forms.ModelForm):
                                widget=forms.Textarea(
                                    attrs={"placeholder": "comments",
                                           "style": "padding: 5px; line-height: 1.2;",
-                                          "cols": 52,
+                                          "cols": 38,
                                           "rows": 7}
                                ))
     user = forms.Field(label=False,

@@ -1,5 +1,6 @@
 from django import forms
 from .models import JUser
+from django.utils.safestring import mark_safe
 
 
 class LoginForm(forms.Form):
@@ -15,11 +16,15 @@ class SignupForm(forms.ModelForm):
     error_messages = {
         "password_mismatch": "The two password fields didn't match.",
     }
-    username = forms.CharField(label="Username (no spaces)")
+    username = forms.CharField(
+        label=mark_safe("Username&nbsp;<BR>(no spaces)")
+    )
     password1 = forms.CharField(label="Password",
                                 widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Password confirmation",
-                                widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label=mark_safe("Password&nbsp;<BR>confirmation"),
+        widget=forms.PasswordInput
+    )
     email = forms.CharField(label="Email address",
                             widget=forms.EmailInput)
     displayname = forms.CharField(label="Display Name")

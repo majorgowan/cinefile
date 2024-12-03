@@ -171,8 +171,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     // style the list
                     tmdbSearchResults.querySelector("ul").classList.add("mobile_scrolling_list");
-                    tmdbSearchResults.querySelector("ul").style.height = "330px";
-                    tmdbSearchResults.querySelector("ul").style.marginBottom = "20px";
+                    tmdbSearchResults.querySelector("ul").style.height = "70vh";
 
                     // add listeners to Next bzw. Previous page links:
                     const previousPageLink = document.querySelector("#previous_page_link");

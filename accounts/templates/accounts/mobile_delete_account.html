@@ -31,7 +31,7 @@
 <div class="form_title">
        Delete account
 </div>
-<div id="account_delete_div">
+<div id="mobile_account_delete_div">
     <p>
         Are you sure you want to delete the account?!<BR>
         <b>All data will be lost.  This cannot be undone.</b>
@@ -45,7 +45,7 @@
 <form class="cinefile_form"
       method="post" action="{% url 'mobile_delete_account' %}">
     {% csrf_token %}
-    <div class="mobile_signup_login_form">
+    <div class="mobile_form">
         <table>
             {% for field in form %}
             <tr>
@@ -62,12 +62,12 @@
             {% endif %}
             {% endfor %}
         </table>
-        <div class="form_submit">
+        <div class="mobile_form_submit">
             <button id="mobile_account_delete_button"
                     class="mobile_select_button delete_button"
                     disabled
                     type="submit">
-                <BR>&emsp;Delete Account&emsp;<BR><BR>
+                Delete Account
             </button>
             &emsp;&emsp;
             <button id="account_delete_cancel_button"

@@ -20,10 +20,10 @@
 </div>
 
 {% if edit_viewing_id %}
-    <form class="mobile_new_viewing_form"
+    <form class="mobile_form"
           method="post" action="{% url 'mobile_edit_viewing' edit_viewing_id=edit_viewing_id %}">
 {% else %}
-    <form class="mobile_new_viewing_form"
+    <form class="mobile_form"
           method="post" action="{% url 'mobile_new_viewing' cinema_video=cinema_video %}">
 {% endif %}
 
@@ -51,7 +51,7 @@
             {% endfor %}
         </table>
         {% if edit_viewing_id %}
-            <div class="form_submit">
+            <div class="mobile_form_submit">
                 <button class="mobile_select_button" type="submit">Save</button>
                 &emsp;&emsp;&emsp;
                 <button class="mobile_select_button cancel_button"
@@ -67,7 +67,7 @@
                         data-delete_url="{% url 'delete_viewing' %}">Delete Viewing</button>
             </div>
         {% else %}
-            <div class="form_submit">
+            <div class="mobile_form_submit">
                 <button class="mobile_select_button" type="submit">Save</button>
                 &emsp;&emsp;&emsp;
                 <button class="mobile_select_button cancel_button"

@@ -5,8 +5,10 @@ document.addEventListener("DOMContentLoaded", function() {
     mobileMenuSymbol.onclick = function() {
         if (navMenu.style.display === "block") {
             navMenu.style.display = "none";
+            mobileMenuSymbol.style.background = "inherit";
         } else {
             navMenu.style.display = "block";
+            mobileMenuSymbol.style.background = "sandybrown";
         }
     };
 

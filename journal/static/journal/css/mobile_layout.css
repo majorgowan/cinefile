@@ -52,13 +52,11 @@ nav a.menu_item:hover {
 }
 nav a.icon {
     display: block;
+    background: inherit;
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
-}
-nav a.icon:hover {
-    background: sandybrown;
 }
 #mobile_menu_symbol {
     height: 6vh;
@@ -69,12 +67,11 @@ nav a.icon:hover {
 
 
 .mobile_select_button {
-    width: 80%;
-    line-height: 2;
-    font-size: 20px;
+    width: 90%;
+    line-height: 1.5;
+    font-size: 4.5vw;
     /* border: none; */
     border: 2px outset steelblue;
-    padding: 5px 20px;
     cursor: pointer;
 }
 .mobile_select_button:hover {
@@ -93,7 +90,7 @@ nav a.icon:hover {
     height: 89vh;
     position: fixed;
     top: 6vh;
-    width: inherit;
+    width: 100%;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: firebrick seashell;
@@ -120,7 +117,7 @@ footer div {
 
 .mobile_viewing_row {
     display: grid;
-    grid-template-columns: auto 28%;
+    grid-template-columns: auto 30%;
     grid-template-rows: auto;
     grid-template-areas:
      'details_div date_div'
@@ -241,10 +238,11 @@ footer div {
 }
 
 .form_title {
-    font-size: 25px;
+    font-size: 8vw;
     font-weight: bold;
     color: firebrick;
     margin: 20px 30px 20px;
+    padding: 1vh 1vw 3vh;
 }
 .form_table {
     border-spacing: 12px 5px;
@@ -258,9 +256,9 @@ footer div {
     z-index: 12;
 }
 #mobile_tmdb_detail_modal_content {
-    font-size: 16px;
+    font-size: 5vw;
     margin: 10%;
-    height: 50vh;
+    height: 65vh;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: firebrick bisque;
@@ -276,25 +274,28 @@ footer div {
 #mobile_follower_list_div {
     padding-top: 10px;
     color: firebrick;
-    font-size: 30px;
+    font-size: 6vw;
     line-height: 1.7;
 }
 .mobile_scrolling_list {
     list-style: none;
-    font-size: 20px;
-    width: 80%;
+    font-size: 4vw;
+    width: 90%;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: firebrick lightsteelblue;
 }
+.mobile_scrolling_list li {
+    padding-bottom: 0.7vh;
+}
 #mobile_cinefile_matches_list {
-    font-size: 30px;
+    font-size: 6vw;
 }
 #mobile_follower_list {
-    height: 360px;
+    height: 60vh;
 }
 #mobile_follower_list a {
-    font-size: 26px;
+    font-size: 6vw;
 }
 .mobile_scrolling_list a {
     text-decoration: none;
@@ -304,27 +305,21 @@ footer div {
     text-align: center;
 }
 .mobile_search_text_input {
-    font-size: 30px;
+    font-size: 5vw;
     width: 90%;
     padding: 15px;
     border: none;
 }
-#mobile_tmdb_search_results {
+.mobile_tmdb_search_results {
     margin-left: 10%;
-}
-#tmdb_detail_modal_content {
-    margin: 50px;
-    font-size: 20px;
-    color: black;
-    height: 450px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: firebrick lightsteelblue;
+    display: none;
+    font-size: 4vw;
+    color: maroon;
 }
 .movie_details_title {
     color: firebrick;
     font-style: italic;
-    font-size: 30px;
+    font-size: 7vw;
 }
 .movie_details_overview {
     color: darkslategrey;
@@ -334,53 +329,80 @@ footer div {
     text-align: center;
 }
 
-.mobile_new_viewing_form {
-    margin: 0 10px 0;
+.mobile_form {
+    width: 95%;
+    margin: 0 auto;
 }
-.mobile_new_viewing_form tr {
-    height: 40px;
+.mobile_form tr {
+    height: 5vh;
 }
 .viewing_label {
     text-align: right;
 }
-.viewing_label label{
-    font-size: 18px;
+.viewing_label label {
+    font-size: 4.5vw;
 }
 .viewing_field input {
     padding: 4px 10px;
-    font-size: 18px;
+    font-size: 4.5vw;
 }
 .viewing_field select {
     padding: 4px 1px;
-    font-size: 18px;
+    font-size: 4.5vw;
+}
+.viewing_field option {
+    font-size: 2vw;
 }
 label[for="id_spoilers"] {
     font-weight: bold;
     color: firebrick;
 }
-.form_submit {
+.mobile_form input[type="date"] {
+    padding: 3px;
+    border: none;
+    font-size: 4.5vw;
+    font-family: Arial;
+}
+.mobile_form input[type="checkbox"] {
+    transform: scale(3);
+    margin-left: 2vw;
+}
+.mobile_form .form_checkbox {
+    text-align: left;
+    font-size: 4vw;
+}
+.mobile_new_viewing_form_content textarea {
+    padding: 3px;
+    border: none;
+    font-size: 3.8vw;
+    font-family: Arial;
+    margin-left: -16vw;
+}
+.mobile_form_submit {
     display: flex;
     flex-direction: column;
-    padding-bottom: 5vh;
+    padding-bottom: 2vh;
+    margin-top: 3vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
-.form_submit button {
-    margin: 0;
+.mobile_form_submit button {
+    margin: 0.8vh auto;
+    padding: 1.5vh 0;
 }
 
-.mobile_signup_login_form tr {
-    height: 50px;
-}
 .signup_field input {
     padding: 4px 10px;
-    font-size: 18px;
+    font-size: 4vw;
 }
-.signup_label label{
-    font-size: 18px;
+.signup_label label {
+    font-size: 4vw;
 }
 .under_form_div {
     text-align: left;
-    font-size: 20px;
-    margin: 25px auto;
+    font-size: 7vw;
+    margin: 5vh 5vw;
 }
 .under_form_div a {
     text-decoration: none;
@@ -389,6 +411,12 @@ label[for="id_spoilers"] {
 .under_form_div a:visited {
     text-decoration: none;
     color: firebrick;
+}
+#mobile_account_delete_div {
+    margin: 0 40px 0;
+    line-height: 1.5;
+    font-size: 4vw;
+    color: darkred;
 }
 
 

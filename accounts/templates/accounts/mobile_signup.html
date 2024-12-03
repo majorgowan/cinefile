@@ -12,24 +12,30 @@
 <form class="cinefile_form"
       method="post" action="{% url 'mobile_signup' %}">
     {% csrf_token %}
-    <div class="mobile_signup_login_form">
+    <div class="mobile_form">
         <table>
             {% for field in form %}
-            <tr>
-                <td class="signup_label">{{ field.label_tag }}</td>
-                <td class="signup_field">{{ field }}</td>
-            </tr>
-            {% if field.help_text %}
-            <tr>
-                <td></td>
-                <td class="help_text">
-                    ({{ field.help_text }})
-                </td>
-            </tr>
-            {% endif %}
+                {% if field.field.widget.input_type == "checkbox" %}
+                    <tr>
+                        <td class="form_checkbox" colspan="2">{{ field.label_tag }} {{ field }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td class="signup_label">{{ field.label_tag }}</td>
+                        <td class="signup_field">{{ field }}</td>
+                    </tr>
+                {% endif %}
+                {% if field.help_text %}
+                    <tr>
+                        <td></td>
+                        <td class="help_text">
+                            ({{ field.help_text }})
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
-        <div class="form_submit">
+        <div class="mobile_form_submit">
             <button class="mobile_select_button" type="submit">Submit</button>
         </div>
     </div>
