@@ -38,7 +38,7 @@
             </div>
             <div id="nav_menu">
                 {% if user.is_authenticated %}
-                    {% if username %}
+                    {% if username or displayname %}
                         {% if user.username != username %}
                             <a class="menu_item"
                                id="menu_my_cinefile_item"
@@ -57,8 +57,10 @@
                                    data-follower="{{ user.username }}">Follow {{ username }}</a>
                             {% endif %}
                         {% endif %}
-                        <a class="menu_item"
-                           id="menu_add_viewing_item">Add viewing</a>
+                        {% if username %}
+                            <a class="menu_item"
+                               id="menu_add_viewing_item">Add viewing</a>
+                        {% endif %}
                         <a class="menu_item"
                            id="menu_view_another_item">View another Cinefile</a>
                         <a class="menu_item"

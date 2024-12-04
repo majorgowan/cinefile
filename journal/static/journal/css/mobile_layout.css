@@ -18,13 +18,13 @@ nav {
     overflow: hidden;
     top: 0;
     position: relative;
-    min-height: 6vh;
+    min-height: 8vh;
     width: 100%;
     z-index: 5;
 }
 nav #mobile_title_div {
     position: relative;
-    height: 6vh;
+    height: 8vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -59,7 +59,7 @@ nav a.icon {
     height: 100%;
 }
 #mobile_menu_symbol {
-    height: 6vh;
+    height: 8vh;
 }
 #mobile_menu_symbol img {
     height: 100%;
@@ -87,9 +87,9 @@ nav a.icon {
     color: inherit;
     display: flex;
     flex-direction: column;
-    height: 89vh;
+    height: 84vh;
     position: fixed;
-    top: 6vh;
+    top: 8vh;
     width: 100%;
     overflow-y: auto;
     scrollbar-width: thin;
@@ -101,7 +101,7 @@ nav a.icon {
 
 footer {
     color: darkred;
-    height: 5vh;
+    height: 8vh;
     text-align: center;
     position: absolute;
     bottom: 0;
@@ -437,18 +437,18 @@ label[for="id_spoilers"] {
 }
 @media (orientation: landscape) {
   footer {
-    height: 5vw;
+    height: 8vw;
   }
   nav {
-    min-height: 6vw;
+    min-height: 8vw;
   }
   nav #mobile_title_div {
-    height: 6vw;
+    height: 8vw;
   }
   nav #mobile_title {
     font-size: 6vh;
   }
   #mobile_menu_symbol {
-    height: 6vw;
+    height: 8vw;
   }
 }

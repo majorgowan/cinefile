@@ -743,5 +743,6 @@ def mobile_new_viewing(request, cinema_video="cinema",
                   {
                       "form": form,
                       "cinema_video": cinema_video,
-                      "edit_viewing_id": edit_viewing_id
+                      "edit_viewing_id": edit_viewing_id,
+                      "displayname": request.user.displayname
                    })

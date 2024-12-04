@@ -67,7 +67,10 @@ def settings(request):
         else:
             form = SettingsForm(instance=request.user)
         return render(request, "accounts/settings.html",
-                      {"form": form})
+                      {
+                          "form": form,
+                          "displayname": request.user.displayname
+                      })
     else:
         return HttpResponseRedirect(reverse("index"))
 
@@ -84,7 +87,10 @@ def change_password(request):
         else:
             form = ChangePasswordForm(instance=request.user)
         return render(request, "accounts/change_password.html",
-                      {"form": form})
+                      {
+                          "form": form,
+                          "displayname": request.user.displayname
+                      })
     else:
         return HttpResponseRedirect(reverse("index"))
 
@@ -100,7 +106,10 @@ def delete_account(request):
         else:
             form = DeleteAccountForm()
         return render(request, "accounts/delete_account.html",
-                      {"form": form})
+                      {
+                          "form": form,
+                          "displayname": request.user.displayname
+                      })
     else:
         return HttpResponseRedirect(reverse("index"))
 
@@ -165,7 +174,10 @@ def mobile_settings(request):
         else:
             form = SettingsForm(instance=request.user)
         return render(request, "accounts/mobile_settings.html",
-                      {"form": form})
+                      {
+                          "form": form,
+                          "displayname": request.user.displayname
+                      })
     else:
         return HttpResponseRedirect(reverse("mobile_index"))
 
@@ -182,7 +194,10 @@ def mobile_change_password(request):
         else:
             form = ChangePasswordForm(instance=request.user)
         return render(request, "accounts/mobile_change_password.html",
-                      {"form": form})
+                      {
+                          "form": form,
+                          "displayname": request.user.displayname
+                      })
     else:
         return HttpResponseRedirect(reverse("mobile_index"))
 
@@ -198,7 +213,10 @@ def mobile_delete_account(request):
         else:
             form = DeleteAccountForm()
         return render(request, "accounts/mobile_delete_account.html",
-                      {"form": form})
+                      {
+                          "form": form,
+                          "displayname": request.user.displayname
+                       })
     else:
         return HttpResponseRedirect(reverse("mobile_index"))
 

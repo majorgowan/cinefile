@@ -192,3 +192,29 @@ LOGIN_REDIRECT_URL = '/journal'
 TMDB_AUTH = os.getenv("TMDB_AUTH")
 # load locally with
 # export $(cat .env | xargs)
+
+# configure Logging
+# LOGGING = {
+#     "version": 1,  # the dictConfig format version
+#     "disable_existing_loggers": False,  # retain the default loggers
+#     "handlers": {
+#         "file": {
+#             "class": "logging.FileHandler",
+#             "filename": "general.log",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["file"],
+#             "level": "INFO",
+#         },
+#         "accounts": {
+#             "handlers": ["file"],
+#             "level": "DEBUG",
+#         },
+#         "journal": {
+#             "handlers": ["file"],
+#             "level": "DEBUG",
+#         },
+#     },
+# }

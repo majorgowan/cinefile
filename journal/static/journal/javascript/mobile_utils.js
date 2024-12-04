@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    // navigation menu dynamics
+
     const mobileMenuSymbol = document.getElementById("mobile_menu_symbol");
     const navMenu = document.getElementById("nav_menu");
     mobileMenuSymbol.onclick = function() {
@@ -12,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
+    // About menu / modal
     const menuAboutItem = document.getElementById("menu_about_item");
     const mobileAboutModal = document.getElementById("mobile_about_modal");
     const mobileAboutModalClose = mobileAboutModal.querySelector(".close");
@@ -24,6 +27,17 @@ document.addEventListener("DOMContentLoaded", function() {
         mobileAboutModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
     }
 
+    // (return to) my Cinefile
+    const menuMyCinefileItem = document.getElementById("menu_my_cinefile_item");
+    if (menuMyCinefileItem != null) {
+        my_cinefile_url = menuMyCinefileItem.dataset["url"];
+        menuMyCinefileItem.onclick = function() {
+            window.location.replace(my_cinefile_url);
+        }
+    }
+
+
+    // view another Cinefile
     const menuViewAnotherItem = document.getElementById("menu_view_another_item");
     // same thing but for not-logged in user (code duplication, sorry)
     const menuViewACinefileItem = document.getElementById("menu_view_a_cinefile_item");

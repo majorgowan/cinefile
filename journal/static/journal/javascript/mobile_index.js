@@ -48,14 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // navigation menu dynamics
     const navMenu = document.getElementById("nav_menu");
 
-    const menuMyCinefileItem = document.getElementById("menu_my_cinefile_item");
-    if (menuMyCinefileItem != null) {
-        my_cinefile_url = menuMyCinefileItem.dataset["url"];
-        menuMyCinefileItem.onclick = function() {
-            window.location.replace(my_cinefile_url);
-        }
-    }
-
+    // add viewing menu
     const menuAddViewingItem = document.getElementById("menu_add_viewing_item");
     const mobileAddViewingModal = document.getElementById("mobile_add_viewing_modal");
     const mobileAddViewingModalClose = mobileAddViewingModal.querySelector(".close");
