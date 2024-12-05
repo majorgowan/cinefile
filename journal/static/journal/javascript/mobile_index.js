@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuAddViewingItem = document.getElementById("menu_add_viewing_item");
     const mobileAddViewingModal = document.getElementById("mobile_add_viewing_modal");
     const mobileAddViewingModalClose = mobileAddViewingModal.querySelector(".close");
+    const mobileMenuSymbol = document.getElementById("mobile_menu_symbol");
 
     menuAddViewingItem.onclick = function() {
         mobileAddViewingModal.setAttribute("class", "mobile_modal mobile_modal_visible");
@@ -62,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
         tmdbSearchText.value = "";
         tmdbSearchResults.innerHTML = "";
         mobileAddViewingModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
+        mobileMenuSymbol.style.background = "inherit";
     }
 
     // implement "Follow / Unfollow" function

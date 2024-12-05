@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     mobileAboutModalClose.onclick = function() {
         mobileAboutModal.setAttribute("class", "mobile_modal mobile_modal_invisible");
+        mobileMenuSymbol.style.background = "inherit";
     }
 
     // (return to) my Cinefile

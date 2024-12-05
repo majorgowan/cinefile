@@ -1,4 +1,8 @@
 /* CSS */
+html {
+    touch-action: none;
+}
+
 body {
     margin: 0;
 }
@@ -68,8 +72,8 @@ nav a.icon {
 
 .mobile_select_button {
     width: 90%;
-    line-height: 1.5;
-    font-size: 4.5vw;
+    line-height: 1.3;
+    font-size: 4.2vw;
     /* border: none; */
     border: 2px outset steelblue;
     cursor: pointer;
@@ -256,9 +260,9 @@ footer div {
     z-index: 12;
 }
 #mobile_tmdb_detail_modal_content {
-    font-size: 5vw;
+    font-size: 4.5vw;
     margin: 10%;
-    height: 65vh;
+    height: 60vh;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: firebrick bisque;
@@ -381,7 +385,7 @@ label[for="id_spoilers"] {
 .mobile_form_submit {
     display: flex;
     flex-direction: column;
-    padding-bottom: 2vh;
+    padding-bottom: 1vh;
     margin-top: 3vh;
     justify-content: center;
     align-items: center;
@@ -402,7 +406,7 @@ label[for="id_spoilers"] {
 .under_form_div {
     text-align: left;
     font-size: 7vw;
-    margin: 5vh 5vw;
+    margin: 1vh 5vw;
 }
 .under_form_div a {
     text-decoration: none;
@@ -414,7 +418,7 @@ label[for="id_spoilers"] {
 }
 #mobile_account_delete_div {
     margin: 0 40px 0;
-    line-height: 1.5;
+    line-height: 1.3;
     font-size: 4vw;
     color: darkred;
 }
